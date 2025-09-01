@@ -24,7 +24,7 @@ kotlin {
                 implementation(project(":shared"))
                 
                 // Compose Web
-                implementation(compose.web.core)
+                implementation(compose.html.core)
                 implementation(compose.runtime)
                 
                 // Koin
