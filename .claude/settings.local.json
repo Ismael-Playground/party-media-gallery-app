@@ -5,7 +5,9 @@
       "Bash(mkdir:*)",
       "Bash(chmod:*)",
       "Bash(tree:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "defaultMode": "acceptEdits"
   }
