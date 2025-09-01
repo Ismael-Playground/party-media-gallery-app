@@ -1,0 +1,170 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement for Party Gallery
+title: "[Feature]: "
+labels: ["enhancement", "needs-discussion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please fill out this form as completely as possible.
+        
+        ⚠️ **Important**: Major features require prior approval. Please check existing issues first.
+        
+        🚨 **Legal Note**: This is proprietary software. Feature requests may be declined based on business priorities.
+
+  - type: checkboxes
+    id: cla-signed
+    attributes:
+      label: Legal Compliance
+      description: Confirm you have proper authorization
+      options:
+        - label: I have signed the required CLA and have authorization to suggest features
+          required: true
+
+  - type: dropdown
+    id: feature-type
+    attributes:
+      label: Feature Type
+      description: What type of feature is this?
+      options:
+        - Party Content Creation
+        - Party Social Features
+        - Party Discovery/Recommendations
+        - Event Management
+        - Chat/Messaging
+        - User Profile/Settings
+        - Performance Improvement
+        - UI/UX Enhancement
+        - Platform-specific Feature
+        - Third-party Integration
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Target Platform
+      description: Which platform(s) should this feature target?
+      options:
+        - All Platforms
+        - Android
+        - iOS
+        - Web
+        - Desktop
+        - Mobile Only (Android + iOS)
+        - Shared Module
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What party-related problem does this feature solve?
+      placeholder: "Describe the problem or need this feature addresses..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution in detail
+      placeholder: "Describe how you envision this feature working..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: party-flow
+    attributes:
+      label: Party User Flow
+      description: Which part of the party experience does this affect?
+      options:
+        - Party Planning/Setup
+        - During Party (Live)
+        - After Party (Memories)
+        - Party Discovery
+        - Social Connections
+        - Content Creation
+        - Event Management
+        - All Party Flows
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: User Stories
+      description: Describe user stories for this feature
+      placeholder: |
+        As a party host, I want to...
+        As a party attendee, I want to...
+        As a party content creator, I want to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What criteria must be met for this feature to be considered complete?
+      placeholder: |
+        - [ ] Feature works on all target platforms
+        - [ ] UI follows Material Design 3 (Android) and platform guidelines
+        - [ ] Performance impact is minimal
+        - [ ] Feature integrates with existing party flows
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority Level
+      description: How important is this feature?
+      options:
+        - Critical (Blocking party functionality)
+        - High (Important for party experience)
+        - Medium (Nice to have for parties)
+        - Low (Future enhancement)
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Describe any alternative solutions or workarounds you've considered
+      placeholder: "What other approaches have you considered?"
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Design Mockups/Wireframes
+      description: Add any design mockups, wireframes, or visual references
+      placeholder: "Drag and drop images here or paste links..."
+
+  - type: textarea
+    id: technical-considerations
+    attributes:
+      label: Technical Considerations
+      description: Any technical considerations, dependencies, or implementation notes
+      placeholder: |
+        - Firebase integration needed
+        - Third-party API requirements
+        - Platform-specific implementations
+        - Performance considerations
+
+  - type: checkboxes
+    id: feature-acknowledgment
+    attributes:
+      label: Feature Request Acknowledgment
+      description: Please confirm your understanding
+      options:
+        - label: I understand this is a proprietary project and feature requests may be declined
+          required: true
+        - label: I understand that approved features become part of the proprietary codebase
+          required: true
+        - label: I have searched existing issues to avoid duplicates
+          required: true

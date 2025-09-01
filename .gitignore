@@ -1,0 +1,30 @@
+# Claude Code related files
+CLAUDE.md
+CONTEXT.md
+.claude/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build/
+*.log
+
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.local
+
+# Firebase config (should be provided separately)
+google-services.json
+GoogleService-Info.plist
+firebase-config.js

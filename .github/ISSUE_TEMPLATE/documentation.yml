@@ -1,0 +1,153 @@
+name: 📚 Documentation Issue
+description: Report issues with documentation or suggest documentation improvements
+title: "[Docs]: "
+labels: ["documentation", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve Party Gallery's documentation!
+        
+        ⚠️ **Note**: This is proprietary software. Ensure you have proper authorization.
+
+  - type: checkboxes
+    id: authorization
+    attributes:
+      label: Authorization
+      options:
+        - label: I have signed the required CLA and have authorization to suggest documentation changes
+          required: true
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation issue?
+      options:
+        - README Updates
+        - API Documentation
+        - Architecture Documentation
+        - Setup/Installation Guide
+        - Party Feature Documentation
+        - Platform-specific Docs
+        - Code Comments
+        - Contributing Guidelines
+        - Legal Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-category
+    attributes:
+      label: Issue Category
+      description: What kind of documentation issue?
+      options:
+        - Missing Documentation
+        - Incorrect Information
+        - Outdated Information
+        - Unclear/Confusing Content
+        - Typos/Grammar
+        - Missing Examples
+        - Broken Links
+        - Formatting Issues
+        - Translation Needed
+        - New Documentation Request
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Describe the documentation issue
+      placeholder: "What's wrong with the current documentation or what's missing?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: location
+    attributes:
+      label: Documentation Location
+      description: Where is this documentation located?
+      placeholder: |
+        - File: [e.g., README.md, CONTRIBUTING.md]
+        - Section: [e.g., Setup Instructions, API Reference]
+        - Line numbers: [if applicable]
+        - URL: [if web documentation]
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-content
+    attributes:
+      label: Current Content
+      description: What does the current documentation say? (if applicable)
+      placeholder: "Copy the current problematic content here..."
+
+  - type: textarea
+    id: suggested-content
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be improved?
+      placeholder: "Provide your suggested content or improvements..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: audience
+    attributes:
+      label: Target Audience
+      description: Who is the target audience for this documentation?
+      options:
+        - New Contributors
+        - Experienced Developers
+        - Party App Users
+        - Project Maintainers
+        - Platform-specific Developers
+        - Third-party Integrators
+        - Legal/Compliance Team
+        - All Audiences
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this documentation fix?
+      options:
+        - Critical (Blocks development)
+        - High (Important for onboarding)
+        - Medium (Improves clarity)
+        - Low (Minor enhancement)
+    validations:
+      required: true
+
+  - type: textarea
+    id: party-context
+    attributes:
+      label: Party Feature Context
+      description: If this relates to specific party features
+      placeholder: |
+        - Which party features need better documentation?
+        - What party user flows are unclear?
+        - Any party-specific scenarios to document?
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Examples Needed
+      description: What examples would be helpful?
+      placeholder: |
+        - Code examples
+        - Party usage scenarios
+        - Configuration examples
+        - Platform-specific examples
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other relevant information
+      placeholder: "Screenshots, references, related documentation..."

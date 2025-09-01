@@ -1,0 +1,160 @@
+name: 📱 Platform-Specific Issue
+description: Report issues specific to Android, iOS, Web, or Desktop
+title: "[Platform]: "
+labels: ["platform-specific", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report platform-specific issues with Party Gallery's multiplatform implementation.
+        
+        ⚠️ **Note**: This is proprietary software. Ensure you have proper authorization.
+
+  - type: checkboxes
+    id: cla-signed
+    attributes:
+      label: Legal Compliance
+      options:
+        - label: I have signed the required CLA and have authorization to report issues
+          required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Affected Platform
+      description: Which specific platform is affected?
+      options:
+        - Android
+        - iOS
+        - Web
+        - Desktop
+    validations:
+      required: true
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What type of platform issue?
+      options:
+        - Platform-specific Bug
+        - Missing Platform Feature
+        - Platform Integration Issue
+        - Platform Performance Issue
+        - Platform UI/UX Issue
+        - Platform Build Issue
+        - Platform Testing Issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Issue Description
+      description: Describe the platform-specific issue
+      placeholder: "What platform-specific problem are you experiencing?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: party-feature
+    attributes:
+      label: Party Feature Affected
+      description: Which party features are impacted?
+      options:
+        - Party Media Capture
+        - Party Event Creation
+        - Live Party Sharing
+        - Party Chat
+        - Party Feed
+        - Party Discovery
+        - User Authentication
+        - Profile Management
+        - Party Studio
+        - Social Features
+        - All Features
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: platform-details
+    attributes:
+      label: Platform-Specific Details
+      description: Platform version and specific details
+      placeholder: |
+        For Android:
+        - Android Version: [e.g., Android 13]
+        - Device: [e.g., Pixel 7, Samsung Galaxy S23]
+        - API Level: [e.g., API 33]
+        
+        For iOS:
+        - iOS Version: [e.g., iOS 16.1]
+        - Device: [e.g., iPhone 14 Pro]
+        
+        For Web:
+        - Browser: [e.g., Chrome 116, Safari 16]
+        - Browser Version: [version]
+        
+        For Desktop:
+        - OS: [e.g., Windows 11, macOS 13, Ubuntu 22.04]
+        - JVM Version: [e.g., OpenJDK 17]
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Platform Behavior
+      description: How should this work on this platform?
+      placeholder: "Describe the expected platform-specific behavior..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Platform Behavior
+      description: What actually happens on this platform?
+      placeholder: "Describe what actually happens..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: other-platforms
+    attributes:
+      label: Behavior on Other Platforms
+      description: How does this feature work on other platforms?
+      placeholder: "Does this work correctly on other platforms? Describe the differences..."
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Platform-Specific Logs
+      description: Any platform-specific error logs or console output
+      render: shell
+      placeholder: "Paste platform-specific logs here..."
+
+  - type: textarea
+    id: party-impact
+    attributes:
+      label: Impact on Party Experience
+      description: How does this platform issue affect party users?
+      placeholder: |
+        - Does this prevent party creation/attendance?
+        - Impact on live party sharing?
+        - Effect on party social features?
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots/Videos
+      description: Platform-specific screenshots or videos
+      placeholder: "Show the platform-specific issue with screenshots/videos..."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other platform-specific context
+      placeholder: "Any other relevant platform-specific information..."

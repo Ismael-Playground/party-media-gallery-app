@@ -1,0 +1,156 @@
+name: ⚡ Performance Issue
+description: Report performance problems or optimization opportunities
+title: "[Performance]: "
+labels: ["performance", "needs-investigation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Report performance issues to help us optimize Party Gallery for the best party experience!
+        
+        ⚠️ **Note**: This is proprietary software. Ensure you have proper authorization.
+
+  - type: checkboxes
+    id: cla-signed
+    attributes:
+      label: Legal Compliance
+      description: Confirm authorization
+      options:
+        - label: I have signed the required CLA and have authorization to report issues
+          required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: Which platform has the performance issue?
+      options:
+        - Android
+        - iOS
+        - Web
+        - Desktop
+        - Multiple platforms
+        - Shared module
+    validations:
+      required: true
+
+  - type: dropdown
+    id: performance-type
+    attributes:
+      label: Performance Issue Type
+      description: What type of performance issue?
+      options:
+        - App Launch Time
+        - Party Feed Loading
+        - Media Upload/Download
+        - Camera/Photo Capture
+        - Party Event Loading
+        - Chat Message Loading
+        - Memory Usage
+        - Battery Drain
+        - Network Usage
+        - UI Responsiveness
+        - Party Search Performance
+        - Database Queries
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Performance Issue Description
+      description: Describe the performance problem in detail
+      placeholder: "What performance issue are you experiencing?"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: party-scenario
+    attributes:
+      label: Party Scenario
+      description: In what party context does this occur?
+      options:
+        - During Live Party
+        - Party Planning
+        - Browsing Party Feed
+        - Creating Party Content
+        - Party Discovery
+        - Event Management
+        - Post-Party Activities
+        - General App Usage
+        - All Scenarios
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this performance issue?
+      placeholder: |
+        1. Open the app
+        2. Navigate to party feed
+        3. Start uploading multiple party photos
+        4. Notice slow performance
+    validations:
+      required: true
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Performance Metrics
+      description: Any specific metrics or measurements
+      placeholder: |
+        - Load time: X seconds
+        - Memory usage: X MB
+        - CPU usage: X%
+        - Network requests: X calls
+        - Battery drain: X% per hour
+
+  - type: textarea
+    id: device-specs
+    attributes:
+      label: Device Specifications
+      description: Device and system specifications
+      placeholder: |
+        - Device: [e.g., iPhone 14 Pro, Pixel 7, MacBook Pro M2]
+        - OS Version: [e.g., iOS 16.1, Android 13, macOS 13.0]
+        - RAM: [e.g., 8GB]
+        - Storage: [e.g., 256GB, 50% full]
+        - Network: [e.g., WiFi, 4G, 5G]
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-performance
+    attributes:
+      label: Expected Performance
+      description: What performance level do you expect?
+      placeholder: "Describe the expected performance behavior..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact on Party Experience
+      description: How does this affect the party experience?
+      placeholder: |
+        - Does this affect live party sharing?
+        - Impact on party event management?
+        - Effect on user engagement during parties?
+
+  - type: textarea
+    id: workarounds
+    attributes:
+      label: Workarounds
+      description: Any workarounds you've found
+      placeholder: "Have you found any temporary solutions?"
+
+  - type: textarea
+    id: additional-info
+    attributes:
+      label: Additional Information
+      description: Any other relevant information
+      placeholder: "Screenshots, logs, profiling data, etc."

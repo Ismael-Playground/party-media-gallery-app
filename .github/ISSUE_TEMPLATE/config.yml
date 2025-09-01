@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🎉 Party Gallery Support
+    url: mailto:hello@partygallery.app
+    about: General support and questions about Party Gallery
+  - name: 📄 Legal/CLA Questions
+    url: mailto:legal@partygallery.app
+    about: Questions about licensing, CLA, or legal matters
+  - name: 🔒 Security Issues
+    url: mailto:security@partygallery.app
+    about: Report security vulnerabilities (private disclosure)
+  - name: 📚 Documentation
+    url: https://github.com/yourusername/party-gallery/wiki
+    about: Check our documentation and developer guides

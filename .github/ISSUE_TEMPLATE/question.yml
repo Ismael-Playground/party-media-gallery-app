@@ -1,0 +1,116 @@
+name: ❓ Question
+description: Ask a question about Party Gallery development or usage
+title: "[Question]: "
+labels: ["question", "needs-response"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about Party Gallery? We're here to help!
+        
+        ⚠️ **Note**: This is proprietary software. Ensure you have proper authorization to access this repository.
+
+  - type: checkboxes
+    id: authorization
+    attributes:
+      label: Authorization
+      description: Confirm you have proper access
+      options:
+        - label: I have signed the required CLA and have authorization to access this project
+          required: true
+
+  - type: dropdown
+    id: question-category
+    attributes:
+      label: Question Category
+      description: What type of question is this?
+      options:
+        - Development Setup
+        - Architecture/Design
+        - Platform-specific Implementation
+        - Firebase Configuration
+        - Party Features Usage
+        - Third-party Integrations
+        - Testing & QA
+        - Performance
+        - Legal/Licensing
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform Context
+      description: Which platform is your question about?
+      options:
+        - All Platforms
+        - Android
+        - iOS
+        - Web
+        - Desktop
+        - Shared Module
+        - Build System
+        - Not Platform Specific
+    validations:
+      required: false
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: Ask your question clearly and provide context
+      placeholder: "What would you like to know about Party Gallery?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context & Background
+      description: Provide any relevant context or background information
+      placeholder: |
+        - What are you trying to achieve?
+        - What have you already tried?
+        - Any relevant party feature context?
+
+  - type: textarea
+    id: attempted-solutions
+    attributes:
+      label: What You've Tried
+      description: What solutions or approaches have you already attempted?
+      placeholder: "Describe what you've already tried..."
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Development Environment
+      description: Information about your development setup (if relevant)
+      placeholder: |
+        - OS: [e.g., macOS 12.1, Windows 11, Ubuntu 20.04]
+        - IDE: [e.g., Android Studio 2023.1.1, IntelliJ IDEA 2023.2]
+        - JDK: [e.g., JDK 17]
+        - Gradle: [e.g., 8.4]
+
+  - type: textarea
+    id: party-feature-context
+    attributes:
+      label: Party Feature Context
+      description: If your question relates to specific party features
+      placeholder: |
+        - Which party features are involved?
+        - What user flow are you working on?
+        - Any specific party scenarios?
+
+  - type: checkboxes
+    id: search-acknowledgment
+    attributes:
+      label: Due Diligence
+      description: Please confirm
+      options:
+        - label: I have searched existing issues and documentation
+          required: true
+        - label: I have checked the README and CONTRIBUTING guidelines
+          required: true
+        - label: I have reviewed the project's architecture documentation
+          required: false
