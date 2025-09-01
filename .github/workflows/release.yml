@@ -1,0 +1,70 @@
+name: Release
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      - name: Show Release Info
+        run: |
+          echo "🎉 Creating Release: ${{ github.ref_name }}"
+          echo "📦 Build Number: ${{ github.run_number }}"
+          echo "🔧 Git SHA: ${{ github.sha }}"
+      
+      - name: Build Release APK
+        run: ./gradlew :androidApp:assembleDebug  # Cambiar a assembleRelease cuando tengas signing
+      
+      - name: Build Web Production
+        run: ./gradlew :webApp:jsBrowserProductionWebpack
+      
+      - name: Build Desktop JAR
+        run: ./gradlew :desktopApp:jar
+      
+      - name: Create Release Archive
+        run: |
+          mkdir -p release-artifacts
+          cp androidApp/build/outputs/apk/debug/*.apk release-artifacts/ 2>/dev/null || true
+          cp desktopApp/build/libs/*.jar release-artifacts/ 2>/dev/null || true
+          cd webApp/build/distributions && zip -r ../../../release-artifacts/party-gallery-web.zip . || true
+      
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: release-artifacts/*
+          generate_release_notes: true
+          body: |
+            ## 🎉 New Release: ${{ github.ref_name }}
+            
+            ### 📱 Downloads:
+            - **Android APK**: `party-gallery-android-debug.apk`
+            - **Desktop JAR**: `party-gallery-desktop.jar` 
+            - **Web App**: `party-gallery-web.zip`
+            
+            ### 🌐 Online Demo:
+            Try the web version at: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+            
+            ### 🚀 What's New:
+            Auto-generated release notes below...

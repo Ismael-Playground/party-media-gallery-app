@@ -12,7 +12,8 @@
       "Bash(gradle wrapper:*)",
       "Bash(source:*)",
       "Read(/private/tmp/**)",
-      "Read(/tmp/**)"
+      "Read(/tmp/**)",
+      "Bash(GITHUB_RUN_NUMBER=42 ./gradlew versionInfo)"
     ],
     "defaultMode": "acceptEdits"
   }

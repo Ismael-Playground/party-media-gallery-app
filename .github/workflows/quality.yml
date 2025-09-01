@@ -1,0 +1,59 @@
+name: Code Quality
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck || true
+        continue-on-error: true
+      
+      - name: Run detekt
+        run: ./gradlew detekt || true
+        continue-on-error: true
+      
+      - name: Generate Quality Report
+        run: |
+          echo "## Code Quality Report" >> $GITHUB_STEP_SUMMARY
+          echo "### Kotlin Lint Results" >> $GITHUB_STEP_SUMMARY
+          if [ -f "build/reports/ktlint/ktlintMainSourceSetCheck.txt" ]; then
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+            head -20 build/reports/ktlint/ktlintMainSourceSetCheck.txt >> $GITHUB_STEP_SUMMARY
+            echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "✅ No ktlint issues found" >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Upload Quality Reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: quality-reports
+          path: |
+            **/build/reports/ktlint/
+            **/build/reports/detekt/

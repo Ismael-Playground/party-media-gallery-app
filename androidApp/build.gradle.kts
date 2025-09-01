@@ -13,10 +13,16 @@ android {
         applicationId = "com.partygallery.android"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = VersionConfig.getVersionCode()
+        versionName = VersionConfig.getVersionName()
         
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        // Agregar información de build como BuildConfig
+        buildConfigField("String", "BUILD_NUMBER", "\"${VersionConfig.getBuildNumber()}\"")
+        buildConfigField("String", "GIT_HASH", "\"${VersionConfig.getGitCommitHash()}\"")
+        buildConfigField("String", "BUILD_TIME", "\"${System.currentTimeMillis()}\"")
+        buildConfigField("boolean", "IS_CI_BUILD", "${VersionConfig.isReleaseBuild()}")
     }
     
     buildTypes {
@@ -40,6 +46,7 @@ android {
     
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     
     composeOptions {

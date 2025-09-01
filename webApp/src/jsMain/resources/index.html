@@ -7,6 +7,16 @@
 </head>
 <body>
     <div id="root"></div>
+    <script src="version.js"></script>
     <script src="webApp.js"></script>
+    <script>
+        // Mostrar información de versión en consola
+        if (window.APP_VERSION) {
+            console.log('🎉 Party Gallery v' + window.APP_VERSION.version);
+            console.log('🔧 Build: ' + window.APP_VERSION.buildNumber);
+            console.log('📅 Built: ' + new Date(parseInt(window.APP_VERSION.buildTime)));
+            console.log('🏗️ CI Build: ' + window.APP_VERSION.isCiBuild);
+        }
+    </script>
 </body>
 </html>

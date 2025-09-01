@@ -1,0 +1,53 @@
+name: Deploy Web
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch: # Permite deploy manual
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      
+      - name: Build Web App
+        run: ./gradlew :webApp:jsBrowserProductionWebpack
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./webApp/build/distributions
+      
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

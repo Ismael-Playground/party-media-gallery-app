@@ -23,8 +23,8 @@ compose.desktop {
             )
             
             packageName = "Party Gallery"
-            packageVersion = "1.0.0"
-            description = "The ultimate multiplatform app for capturing and sharing party moments"
+            packageVersion = VersionConfig.getVersionName()
+            description = "The ultimate multiplatform app for capturing and sharing party moments - v${VersionConfig.getVersionName()}"
             copyright = "© 2025 Party Gallery. All rights reserved."
             vendor = "Party Gallery"
             

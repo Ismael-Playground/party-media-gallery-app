@@ -26,6 +26,40 @@ allprojects {
         google()
         mavenCentral()
     }
+    
+    // Aplicar configuración de versión a todos los proyectos
+    version = VersionConfig.getVersionName()
+    
+    // Logging de versión
+    gradle.projectsEvaluated {
+        println("🚀 Building Party Gallery v${VersionConfig.getVersionName()}")
+        println("📦 Version Code: ${VersionConfig.getVersionCode()}")
+        println("🏗️  Build Type: ${VersionConfig.getBuildType()}")
+        println("🔧 Build Number: ${VersionConfig.getBuildNumber()}")
+        println("📝 Git Hash: ${VersionConfig.getGitCommitHash()}")
+    }
+}
+
+tasks.register("versionInfo") {
+    group = "help"
+    description = "Shows version information"
+    
+    doLast {
+        val versionInfo = VersionConfig.getVersionInfo()
+        
+        println("\n" + "=".repeat(50))
+        println("🎉 PARTY GALLERY VERSION INFO")
+        println("=".repeat(50))
+        
+        versionInfo.forEach { (key, value) ->
+            val displayKey = key.replaceFirstChar { it.uppercase() }
+                .replace("([A-Z])".toRegex(), " $1")
+                .trim()
+            println("📋 $displayKey: $value")
+        }
+        
+        println("=".repeat(50) + "\n")
+    }
 }
 
 // tasks.register("clean", Delete::class) {
