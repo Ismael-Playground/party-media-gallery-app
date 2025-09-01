@@ -1,9 +1,11 @@
+@file:OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("com.android.library")
     id("org.jetbrains.compose")
-    id("app.cash.sqldelight")
+    // id("app.cash.sqldelight")
 }
 
 kotlin {
@@ -88,11 +90,24 @@ kotlin {
             }
         }
         
-        val iosMain by getting {
+        val iosMain by creating {
+            dependsOn(commonMain)
             dependencies {
                 // Ktor iOS
                 implementation("io.ktor:ktor-client-darwin:2.3.6")
             }
+        }
+        
+        val iosX64Main by getting {
+            dependsOn(iosMain)
+        }
+        
+        val iosArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
         }
         
         val desktopMain by getting {
@@ -111,7 +126,7 @@ kotlin {
                 implementation("io.ktor:ktor-client-js:2.3.6")
                 
                 // Compose Web
-                implementation(compose.web.core)
+                implementation(compose.html.core)
             }
         }
         
@@ -139,10 +154,10 @@ android {
     }
 }
 
-sqldelight {
-    databases {
-        create("PartyGalleryDatabase") {
-            packageName.set("com.partygallery.database")
-        }
-    }
-}
+// sqldelight {
+//     databases {
+//         create("PartyGalleryDatabase") {
+//             packageName.set("com.partygallery.database")
+//         }
+//     }
+// }

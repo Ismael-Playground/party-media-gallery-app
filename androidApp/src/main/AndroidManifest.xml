@@ -32,10 +32,8 @@
     <application
         android:name=".PartyGalleryApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.PartyGallery"
-        android:exported="true">
+        android:theme="@style/Theme.PartyGallery">
         
         <activity
             android:name=".MainActivity"

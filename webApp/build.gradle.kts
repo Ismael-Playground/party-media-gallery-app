@@ -1,5 +1,5 @@
 plugins {
-    kotlin("js")
+    kotlin("multiplatform")
     id("org.jetbrains.compose")
 }
 
@@ -17,22 +17,25 @@ kotlin {
         }
         binaries.executable()
     }
-}
-
-dependencies {
-    implementation(project(":shared"))
     
-    // Compose Web
-    implementation(compose.web.core)
-    implementation(compose.runtime)
-    
-    // Koin
-    implementation("io.insert-koin:koin-core:3.5.0")
-    
-    // Testing
-    testImplementation(kotlin("test-js"))
-}
-
-compose.web {
-    
+    sourceSets {
+        val jsMain by getting {
+            dependencies {
+                implementation(project(":shared"))
+                
+                // Compose Web
+                implementation(compose.web.core)
+                implementation(compose.runtime)
+                
+                // Koin
+                implementation("io.insert-koin:koin-core:3.5.0")
+            }
+        }
+        
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+            }
+        }
+    }
 }

@@ -2,7 +2,7 @@ plugins {
     kotlin("android")
     id("com.android.application")
     id("org.jetbrains.compose")
-    id("com.google.gms.google-services")
+    // id("com.google.gms.google-services") // Disabled until Firebase is configured
 }
 
 android {
