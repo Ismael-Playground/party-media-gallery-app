@@ -45,13 +45,11 @@
             </intent-filter>
         </activity>
         
-        <!-- Firebase Messaging Service -->
+        <!-- Party Notification Service (Firebase integration pending) -->
         <service
             android:name=".service.PartyNotificationService"
             android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
+            <!-- Firebase intent-filter will be added when Firebase is configured -->
         </service>
         
     </application>
