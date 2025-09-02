@@ -2,6 +2,8 @@
 CLAUDE.md
 CONTEXT.md
 .claude/
+.claude/*
+PR.md
 
 # IDE
 .idea/
