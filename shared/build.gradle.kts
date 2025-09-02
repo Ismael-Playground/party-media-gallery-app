@@ -12,7 +12,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "17"
+                jvmTarget = Dependencies.jvmTargetVersion
             }
         }
     }
@@ -38,55 +38,55 @@ kotlin {
                 implementation(compose.components.resources)
                 
                 // Networking
-                implementation("io.ktor:ktor-client-core:2.3.6")
-                implementation("io.ktor:ktor-client-content-negotiation:2.3.6")
-                implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.6")
+                implementation("io.ktor:ktor-client-core:${Dependencies.ktorVersion}")
+                implementation("io.ktor:ktor-client-content-negotiation:${Dependencies.ktorVersion}")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:${Dependencies.ktorVersion}")
                 
                 // Serialization
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Dependencies.kotlinxSerializationVersion}")
                 
                 // DateTime
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:${Dependencies.kotlinxDatetimeVersion}")
                 
                 // Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Dependencies.kotlinxCoroutinesVersion}")
                 
                 // DI
-                implementation("io.insert-koin:koin-core:3.5.0")
-                implementation("io.insert-koin:koin-compose:1.1.0")
+                implementation("io.insert-koin:koin-core:${Dependencies.koinVersion}")
+                implementation("io.insert-koin:koin-compose:${Dependencies.koinComposeVersion}")
                 
                 // Navigation
-                implementation("cafe.adriel.voyager:voyager-navigator:1.0.0")
-                implementation("cafe.adriel.voyager:voyager-koin:1.0.0")
+                implementation("cafe.adriel.voyager:voyager-navigator:${Dependencies.voyagerVersion}")
+                implementation("cafe.adriel.voyager:voyager-koin:${Dependencies.voyagerVersion}")
                 
                 // File I/O
-                implementation("com.squareup.okio:okio:3.6.0")
+                implementation("com.squareup.okio:okio:${Dependencies.okioVersion}")
                 
                 // UUID
-                implementation("com.benasher44:uuid:0.8.2")
+                implementation("com.benasher44:uuid:${Dependencies.uuidVersion}")
             }
         }
         
         val androidMain by getting {
             dependencies {
                 // Android Compose
-                implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
-                implementation("androidx.activity:activity-compose:1.8.1")
+                implementation("androidx.compose.ui:ui-tooling-preview:${Dependencies.composeCompilerVersion}")
+                implementation("androidx.activity:activity-compose:${Dependencies.activityComposeVersion}")
                 
                 // Ktor Android
-                implementation("io.ktor:ktor-client-okhttp:2.3.6")
+                implementation("io.ktor:ktor-client-okhttp:${Dependencies.ktorVersion}")
                 
                 // Firebase Android
-                implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
-                implementation("com.google.firebase:firebase-firestore-ktx:24.9.1")
-                implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-                implementation("com.google.firebase:firebase-messaging-ktx:23.4.0")
+                implementation("com.google.firebase:firebase-auth-ktx:${Dependencies.firebaseAuthVersion}")
+                implementation("com.google.firebase:firebase-firestore-ktx:${Dependencies.firebaseFirestoreVersion}")
+                implementation("com.google.firebase:firebase-storage-ktx:${Dependencies.firebaseStorageVersion}")
+                implementation("com.google.firebase:firebase-messaging-ktx:${Dependencies.firebaseMessagingVersion}")
                 
                 // Android specific
-                implementation("androidx.work:work-runtime-ktx:2.8.1")
-                implementation("androidx.camera:camera-camera2:1.3.0")
-                implementation("androidx.camera:camera-lifecycle:1.3.0")
-                implementation("androidx.camera:camera-view:1.3.0")
+                implementation("androidx.work:work-runtime-ktx:${Dependencies.workManagerVersion}")
+                implementation("androidx.camera:camera-camera2:${Dependencies.cameraXVersion}")
+                implementation("androidx.camera:camera-lifecycle:${Dependencies.cameraXVersion}")
+                implementation("androidx.camera:camera-view:${Dependencies.cameraXVersion}")
             }
         }
         
@@ -94,7 +94,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 // Ktor iOS
-                implementation("io.ktor:ktor-client-darwin:2.3.6")
+                implementation("io.ktor:ktor-client-darwin:${Dependencies.ktorVersion}")
             }
         }
         
@@ -116,14 +116,14 @@ kotlin {
                 implementation(compose.desktop.currentOs)
                 
                 // Ktor JVM
-                implementation("io.ktor:ktor-client-cio:2.3.6")
+                implementation("io.ktor:ktor-client-cio:${Dependencies.ktorVersion}")
             }
         }
         
         val jsMain by getting {
             dependencies {
                 // Ktor JS
-                implementation("io.ktor:ktor-client-js:2.3.6")
+                implementation("io.ktor:ktor-client-js:${Dependencies.ktorVersion}")
                 
                 // Compose Web
                 implementation(compose.html.core)
@@ -133,8 +133,8 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-                implementation("io.insert-koin:koin-test:3.5.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+                implementation("io.insert-koin:koin-test:${Dependencies.koinTestVersion}")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Dependencies.kotlinxCoroutinesVersion}")
             }
         }
     }
@@ -142,10 +142,10 @@ kotlin {
 
 android {
     namespace = "com.partygallery.shared"
-    compileSdk = 34
+    compileSdk = Dependencies.compileSdkVersion
     
     defaultConfig {
-        minSdk = 24
+        minSdk = Dependencies.minSdkVersion
     }
     
     compileOptions {

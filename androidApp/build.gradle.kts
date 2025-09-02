@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace = "com.partygallery.android"
-    compileSdk = 34
+    compileSdk = Dependencies.compileSdkVersion
     
     defaultConfig {
         applicationId = "com.partygallery.android"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = Dependencies.minSdkVersion
+        targetSdk = Dependencies.targetSdkVersion
         versionCode = VersionConfig.getVersionCode()
         versionName = VersionConfig.getVersionName()
         
@@ -41,7 +41,7 @@ android {
     }
     
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = Dependencies.jvmTargetVersion
     }
     
     buildFeatures {
@@ -50,7 +50,7 @@ android {
     }
     
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = Dependencies.composeCompilerVersion
     }
     
     packaging {
@@ -64,27 +64,27 @@ dependencies {
     implementation(project(":shared"))
     
     // Android Compose BOM
-    implementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    implementation(platform("androidx.compose:compose-bom:${Dependencies.composeBomVersion}"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     
     // Activity Compose
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation("androidx.activity:activity-compose:${Dependencies.activityComposeVersion}")
     
     // Lifecycle
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:${Dependencies.lifecycleViewModelComposeVersion}")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:${Dependencies.lifecycleRuntimeComposeVersion}")
     
     // Koin Android
-    implementation("io.insert-koin:koin-android:3.5.0")
-    implementation("io.insert-koin:koin-androidx-compose:3.5.0")
+    implementation("io.insert-koin:koin-android:${Dependencies.koinAndroidVersion}")
+    implementation("io.insert-koin:koin-androidx-compose:${Dependencies.koinAndroidxComposeVersion}")
     
     // Testing
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
+    testImplementation("junit:junit:${Dependencies.junitVersion}")
+    androidTestImplementation("androidx.test.ext:junit:${Dependencies.androidxJunitVersion}")
+    androidTestImplementation("androidx.test.espresso:espresso-core:${Dependencies.espressoVersion}")
+    androidTestImplementation(platform("androidx.compose:compose-bom:${Dependencies.composeBomVersion}"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     
     debugImplementation("androidx.compose.ui:ui-tooling")

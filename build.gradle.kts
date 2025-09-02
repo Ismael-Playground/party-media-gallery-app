@@ -1,23 +1,23 @@
 plugins {
     // Kotlin Multiplatform
-    kotlin("multiplatform") version "1.9.20" apply false
-    kotlin("android") version "1.9.20" apply false
+    kotlin("multiplatform") version Dependencies.kotlinVersion apply false
+    kotlin("android") version Dependencies.kotlinVersion apply false
     
     // Android
-    id("com.android.application") version "8.1.4" apply false
-    id("com.android.library") version "8.1.4" apply false
+    id("com.android.application") version Dependencies.androidGradlePluginVersion apply false
+    id("com.android.library") version Dependencies.androidGradlePluginVersion apply false
     
     // Compose Multiplatform
-    id("org.jetbrains.compose") version "1.5.11" apply false
+    id("org.jetbrains.compose") version Dependencies.composeMultiplatformVersion apply false
     
     // Serialization
-    kotlin("plugin.serialization") version "1.9.20" apply false
+    kotlin("plugin.serialization") version Dependencies.kotlinVersion apply false
     
     // SQLDelight
-    id("app.cash.sqldelight") version "2.0.0" apply false
+    id("app.cash.sqldelight") version Dependencies.sqlDelightVersion apply false
     
     // Firebase
-    id("com.google.gms.google-services") version "4.4.0" apply false
+    id("com.google.gms.google-services") version Dependencies.googleServicesVersion apply false
 }
 
 allprojects {
