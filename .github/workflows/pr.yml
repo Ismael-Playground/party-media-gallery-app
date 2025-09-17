@@ -4,6 +4,14 @@ on:
     branches: [ main, develop ]
     types: [opened, synchronize, reopened]
 
+# Add permissions for GitHub Pages deployment and PR comments
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  pull-requests: write
+  issues: write
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -21,7 +29,7 @@ jobs:
           distribution: 'temurin'
       
       - name: Cache Gradle
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -47,6 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Build PR Preview
     if: github.event.pull_request.head.repo.full_name == github.repository
+    
     steps:
       - name: Checkout PR
         uses: actions/checkout@v4
@@ -58,7 +67,7 @@ jobs:
           distribution: 'temurin'
       
       - name: Cache Gradle
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -71,22 +80,62 @@ jobs:
       - name: Build Web Preview
         run: ./gradlew :webApp:jsBrowserProductionWebpack
       
-      - name: Deploy PR Preview
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload PR Preview Artifact
+        uses: actions/upload-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./webApp/build/distributions
-          destination_dir: pr-${{ github.event.number }}
+          name: pr-preview-${{ github.event.number }}
+          path: ./webApp/build/distributions
+          retention-days: 7
       
-      - name: Comment PR with Preview Link
-        uses: actions/github-script@v6
+      - name: Comment PR with Build Success
+        uses: actions/github-script@v7
         with:
           script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Check if build directory exists before trying to read it
+            const buildPath = './webApp/build/distributions';
+            let buildInfo = '';
+            
+            try {
+              if (fs.existsSync(buildPath)) {
+                const files = fs.readdirSync(buildPath);
+                const jsFiles = files.filter(f => f.endsWith('.js'));
+                const totalSize = files.reduce((sum, file) => {
+                  const filePath = path.join(buildPath, file);
+                  return sum + fs.statSync(filePath).size;
+                }, 0);
+                
+                const sizeInKB = Math.round(totalSize / 1024);
+                
+                buildInfo = `📦 **Build Artifacts:**
+                - Bundle Size: ~${sizeInKB} KB
+                - Files Generated: ${files.length}
+                - JS Bundles: ${jsFiles.length}`;
+              } else {
+                buildInfo = `📦 **Build Status:**
+                - Build completed successfully
+                - Artifacts are being processed`;
+              }
+            } catch (error) {
+              console.log('Error reading build directory:', error.message);
+              buildInfo = `📦 **Build Status:**
+              - Build completed successfully
+              - Artifacts are available for download`;
+            }
+            
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🎉 **Preview deployed!** \n\n📱 Web Preview: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/pr-${{ github.event.number }}/\n\n*This preview will be updated automatically with new commits.*'
+              body: `🎉 **PR Preview Built Successfully!**
+              
+              ${buildInfo}
+              
+              📁 **Download Preview**: Check the workflow artifacts to download the built web application.
+              
+              ℹ️ *Note: GitHub Pages deployment requires additional repository permissions. The build is successful and artifacts are available for download.*`
             })
 
   size-check:
@@ -103,7 +152,7 @@ jobs:
           distribution: 'temurin'
       
       - name: Cache Gradle
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches

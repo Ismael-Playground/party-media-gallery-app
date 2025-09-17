@@ -13,7 +13,11 @@
       "Bash(source:*)",
       "Read(/private/tmp/**)",
       "Read(/tmp/**)",
-      "Bash(GITHUB_RUN_NUMBER=42 ./gradlew versionInfo)"
+      "Bash(GITHUB_RUN_NUMBER=42 ./gradlew versionInfo)",
+      "Bash(CI=true GITHUB_RUN_NUMBER=123 ./gradlew :androidApp:assembleDebug)",
+      "Bash(git tag:*)",
+      "Bash(GITHUB_RUN_NUMBER=100 ./gradlew versionInfo)",
+      "Bash(cat:*)"
     ],
     "defaultMode": "acceptEdits"
   }

@@ -8,7 +8,7 @@ dependencies {
     implementation(compose.desktop.currentOs)
     
     // Koin
-    implementation("io.insert-koin:koin-core:3.5.0")
+    implementation("io.insert-koin:koin-core:${Dependencies.koinVersion}")
 }
 
 compose.desktop {
@@ -23,7 +23,7 @@ compose.desktop {
             )
             
             packageName = "Party Gallery"
-            packageVersion = VersionConfig.getVersionName()
+            packageVersion = VersionConfig.getVersionNameForPackaging()
             description = "The ultimate multiplatform app for capturing and sharing party moments - v${VersionConfig.getVersionName()}"
             copyright = "© 2025 Party Gallery. All rights reserved."
             vendor = "Party Gallery"

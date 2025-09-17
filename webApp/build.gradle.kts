@@ -24,11 +24,11 @@ kotlin {
                 implementation(project(":shared"))
                 
                 // Compose Web
-                implementation(compose.web.core)
+                implementation(compose.html.core)
                 implementation(compose.runtime)
                 
                 // Koin
-                implementation("io.insert-koin:koin-core:3.5.0")
+                implementation("io.insert-koin:koin-core:${Dependencies.koinVersion}")
             }
         }
         

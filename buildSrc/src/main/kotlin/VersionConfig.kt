@@ -44,34 +44,57 @@ object VersionConfig {
     fun getVersionName(): String {
         val props = getVersionProperties()
         val major = props.getProperty("major", "1")
-        val minor = props.getProperty("minor", "0")
-        val patch = getBuildNumberForVersion()
+        val patch = props.getProperty("patch", "0")
+        val buildNum = getBuildNumber()
         
-        return "$major.$minor.$patch"
+        // Minor es ahora el número de build, 0 para local
+        val minor = if (buildNum == "local") "0" else buildNum
+        
+        return when {
+            isReleaseBuild() -> "$major.$minor.$patch"  // Release: X.Y.Z
+            else -> "$major.$minor.$patch-SNAPSHOT"  // Debug: X.Y.Z-SNAPSHOT
+        }
     }
     
-    private fun getBuildNumberForVersion(): String {
+    fun getVersionNameForPackaging(): String {
+        // Para Desktop packaging que requiere formato X.Y.Z estricto
+        val props = getVersionProperties()
+        val major = props.getProperty("major", "1")
+        val patch = props.getProperty("patch", "0")
         val buildNum = getBuildNumber()
-        return if (buildNum == "local") "1" else buildNum
+        
+        // Minor es ahora el número de build, 0 para local
+        val minor = if (buildNum == "local") "0" else buildNum
+        
+        return "$major.$minor.$patch"
     }
     
     fun getVersionCode(): Int {
         val props = getVersionProperties()
         val major = props.getProperty("major", "1").toInt()
-        val minor = props.getProperty("minor", "0").toInt()
-        val patch = getBuildNumberForVersion().toInt()
+        val patch = props.getProperty("patch", "0").toInt()
+        val buildNum = getBuildNumber()
         
-        return if (getBuildNumber() == "local") {
-            // Para builds locales: major * 10000 + minor * 100 + 1
-            major * 10000 + minor * 100 + 1
-        } else {
-            // Para CI/CD: major * 10000 + minor * 100 + buildNumber
-            major * 10000 + minor * 100 + patch
-        }
+        // Minor es ahora el número de build, 0 para local
+        val minor = if (buildNum == "local") 0 else buildNum.toInt()
+        
+        return major * 10000 + minor * 100 + patch
     }
     
     fun isReleaseBuild(): Boolean {
-        return System.getenv("CI") == "true" && getBuildNumber() != "local"
+        // Es un release si hay un tag de Git que comience con 'v'
+        val gitTag = getGitTag()
+        return gitTag.isNotEmpty() && gitTag.startsWith("v")
+    }
+    
+    private fun getGitTag(): String {
+        return try {
+            val runtime = Runtime.getRuntime()
+            val process = runtime.exec("git describe --exact-match --tags HEAD")
+            process.inputStream.bufferedReader().readText().trim()
+        } catch (e: Exception) {
+            ""
+        }
     }
     
     fun getBuildType(): String {

@@ -87,4 +87,4 @@ Relates to #
 
 ---
 
-**⚠️ Note: This is proprietary software. By submitting this PR, you confirm that you have the necessary legal agreements in place and that your contributions will become property of the project maintainer.**
+**⚠️ Note: This is proprietary software. By submitting this PR, you confirm that you have the necessary legal agreements in place and that your contributions will become the property of the project maintainer.**
