@@ -3,10 +3,21 @@ plugins {
     id("org.jetbrains.compose")
 }
 
+kotlin {
+    sourceSets {
+        main {
+            kotlin.srcDirs("src/jvmMain/kotlin")
+            resources.srcDirs("src/jvmMain/resources")
+        }
+    }
+}
+
 dependencies {
     implementation(project(":shared"))
     implementation(compose.desktop.currentOs)
-    
+    implementation(compose.material3)
+    implementation(compose.foundation)
+
     // Koin
     implementation("io.insert-koin:koin-core:${Dependencies.koinVersion}")
 }
