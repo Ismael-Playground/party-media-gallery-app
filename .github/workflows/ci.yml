@@ -151,14 +151,7 @@ jobs:
           cache-read-only: false
 
       - name: Build Desktop
-        run: ./gradlew :desktopApp:packageDistributionForCurrentOS
-
-      - name: Upload Desktop distribution
-        uses: actions/upload-artifact@v4
-        with:
-          name: desktop-distribution
-          path: desktopApp/build/compose/binaries/
-          retention-days: 7
+        run: ./gradlew :desktopApp:jar :desktopApp:compileKotlin
 
   # Build Web
   build-web:
