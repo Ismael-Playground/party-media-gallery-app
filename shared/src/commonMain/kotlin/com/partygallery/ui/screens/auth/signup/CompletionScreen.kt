@@ -41,9 +41,7 @@ import com.partygallery.ui.theme.Theme
  * - CTA to start exploring
  */
 @Composable
-fun CompletionScreen(
-    signUpStore: SignUpStore,
-) {
+fun CompletionScreen(signUpStore: SignUpStore) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -129,11 +127,7 @@ fun CompletionScreen(
 }
 
 @Composable
-private fun ProfileSummary(
-    tagsCount: Int,
-    socialLinksCount: Int,
-    hasAvatar: Boolean,
-) {
+private fun ProfileSummary(tagsCount: Int, socialLinksCount: Int, hasAvatar: Boolean) {
     val colors = Theme.colors
 
     Column(
@@ -174,10 +168,7 @@ private fun ProfileSummary(
 }
 
 @Composable
-private fun SummaryItem(
-    emoji: String,
-    text: String,
-) {
+private fun SummaryItem(emoji: String, text: String) {
     val colors = Theme.colors
 
     Text(

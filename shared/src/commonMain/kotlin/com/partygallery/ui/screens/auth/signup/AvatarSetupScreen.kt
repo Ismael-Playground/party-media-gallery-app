@@ -46,10 +46,7 @@ import com.partygallery.ui.theme.Theme
  * Design: Dark Mode First with amber accent gradient border
  */
 @Composable
-fun AvatarSetupScreen(
-    signUpStore: SignUpStore,
-    onBackPressed: () -> Unit = {},
-) {
+fun AvatarSetupScreen(signUpStore: SignUpStore, onBackPressed: () -> Unit = {}) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -177,12 +174,7 @@ fun AvatarSetupScreen(
  * Avatar preview with gradient border
  */
 @Composable
-private fun AvatarPreview(
-    avatarUri: String?,
-    isUploading: Boolean,
-    firstName: String,
-    onRemove: () -> Unit,
-) {
+private fun AvatarPreview(avatarUri: String?, isUploading: Boolean, firstName: String, onRemove: () -> Unit) {
     val colors = Theme.colors
 
     Box(

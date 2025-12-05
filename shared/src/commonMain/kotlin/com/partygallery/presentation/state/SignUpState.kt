@@ -86,11 +86,11 @@ enum class SignUpStep(val stepNumber: Int, val title: String) {
     CONTACT_SYNC(3, "Find Friends"),
     INTEREST_TAGS(4, "Your Interests"),
     SOCIAL_LINKING(5, "Connect Socials"),
-    COMPLETION(6, "All Set!");
+    COMPLETION(6, "All Set!"),
+    ;
 
     companion object {
-        fun fromNumber(number: Int): SignUpStep =
-            entries.find { it.stepNumber == number } ?: BASIC_INFO
+        fun fromNumber(number: Int): SignUpStep = entries.find { it.stepNumber == number } ?: BASIC_INFO
     }
 }
 

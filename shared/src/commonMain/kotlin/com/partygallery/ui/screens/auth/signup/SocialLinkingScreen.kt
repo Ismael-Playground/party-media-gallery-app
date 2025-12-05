@@ -53,10 +53,7 @@ import com.partygallery.ui.theme.Theme
  * All optional, user can skip
  */
 @Composable
-fun SocialLinkingScreen(
-    signUpStore: SignUpStore,
-    onBackPressed: () -> Unit = {},
-) {
+fun SocialLinkingScreen(signUpStore: SignUpStore, onBackPressed: () -> Unit = {}) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -104,7 +101,11 @@ fun SocialLinkingScreen(
                     isConnecting = state.connectingSocial == SocialPlatform.INSTAGRAM,
                     username = state.socialLinks.instagram,
                     onConnect = { signUpStore.processIntent(SignUpIntent.ConnectSocial(SocialPlatform.INSTAGRAM)) },
-                    onDisconnect = { signUpStore.processIntent(SignUpIntent.DisconnectSocial(SocialPlatform.INSTAGRAM)) },
+                    onDisconnect = {
+                        signUpStore.processIntent(
+                            SignUpIntent.DisconnectSocial(SocialPlatform.INSTAGRAM),
+                        )
+                    },
                 )
 
                 SocialPlatformItem(
@@ -131,7 +132,11 @@ fun SocialLinkingScreen(
                     isConnecting = state.connectingSocial == SocialPlatform.FACEBOOK,
                     username = state.socialLinks.facebook,
                     onConnect = { signUpStore.processIntent(SignUpIntent.ConnectSocial(SocialPlatform.FACEBOOK)) },
-                    onDisconnect = { signUpStore.processIntent(SignUpIntent.DisconnectSocial(SocialPlatform.FACEBOOK)) },
+                    onDisconnect = {
+                        signUpStore.processIntent(
+                            SignUpIntent.DisconnectSocial(SocialPlatform.FACEBOOK),
+                        )
+                    },
                 )
 
                 SocialPlatformItem(
@@ -140,7 +145,11 @@ fun SocialLinkingScreen(
                     isConnecting = state.connectingSocial == SocialPlatform.PINTEREST,
                     username = state.socialLinks.pinterest,
                     onConnect = { signUpStore.processIntent(SignUpIntent.ConnectSocial(SocialPlatform.PINTEREST)) },
-                    onDisconnect = { signUpStore.processIntent(SignUpIntent.DisconnectSocial(SocialPlatform.PINTEREST)) },
+                    onDisconnect = {
+                        signUpStore.processIntent(
+                            SignUpIntent.DisconnectSocial(SocialPlatform.PINTEREST),
+                        )
+                    },
                 )
             }
 

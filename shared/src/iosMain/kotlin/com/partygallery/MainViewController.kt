@@ -1,13 +1,5 @@
 package com.partygallery
 
-import androidx.compose.ui.window.ComposeUIViewController
-import com.partygallery.data.auth.FirebaseAuthService
-import com.partygallery.data.repository.AuthRepositoryImpl
-import com.partygallery.presentation.intent.SignUpIntent
-import com.partygallery.presentation.state.SignUpEvent
-import com.partygallery.presentation.state.SignUpStep
-import com.partygallery.presentation.store.SignUpStore
-import com.partygallery.ui.theme.PartyGalleryTheme
 import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +18,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.ComposeUIViewController
+import com.partygallery.data.auth.FirebaseAuthService
+import com.partygallery.data.repository.AuthRepositoryImpl
+import com.partygallery.presentation.intent.SignUpIntent
+import com.partygallery.presentation.state.SignUpEvent
+import com.partygallery.presentation.state.SignUpStep
+import com.partygallery.presentation.store.SignUpStore
 import com.partygallery.ui.components.PartyButton
 import com.partygallery.ui.components.PartyButtonSize
 import com.partygallery.ui.components.PartyButtonVariant
@@ -33,6 +32,7 @@ import com.partygallery.ui.components.PartyTextField
 import com.partygallery.ui.screens.auth.signup.*
 import com.partygallery.ui.screens.main.MainScreen
 import com.partygallery.ui.theme.*
+import com.partygallery.ui.theme.PartyGalleryTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

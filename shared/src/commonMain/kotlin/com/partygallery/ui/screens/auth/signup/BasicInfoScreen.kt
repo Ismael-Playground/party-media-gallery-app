@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -35,7 +36,6 @@ import com.partygallery.ui.components.PartyTextField
 import com.partygallery.ui.theme.PartyGallerySpacing
 import com.partygallery.ui.theme.PartyGalleryTypography
 import com.partygallery.ui.theme.Theme
-import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOptions
 
 /**
  * Basic Info Screen - Step 1 of SignUp Flow
@@ -52,10 +52,7 @@ import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOption
  * Design: Dark Mode First (#0A0A0A background, #F59E0B accent)
  */
 @Composable
-fun BasicInfoScreen(
-    signUpStore: SignUpStore,
-    onNavigateToLogin: () -> Unit = {},
-) {
+fun BasicInfoScreen(signUpStore: SignUpStore, onNavigateToLogin: () -> Unit = {}) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -281,12 +278,7 @@ fun BasicInfoScreen(
  * Step header with progress indicator
  */
 @Composable
-fun SignUpStepHeader(
-    stepNumber: Int,
-    totalSteps: Int,
-    title: String,
-    subtitle: String,
-) {
+fun SignUpStepHeader(stepNumber: Int, totalSteps: Int, title: String, subtitle: String) {
     val colors = Theme.colors
 
     Column(

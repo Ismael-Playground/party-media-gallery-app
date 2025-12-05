@@ -140,8 +140,12 @@ class HomeStore(
         )
         val hostNames = listOf("Alex M.", "Jordan K.", "Taylor S.", "Morgan B.", "Casey L.")
         val venues = listOf(
-            "Skybar Rooftop", "Club Paradiso", "Beach House",
-            "The Warehouse", "Downtown Loft", "Garden Terrace",
+            "Skybar Rooftop",
+            "Club Paradiso",
+            "Beach House",
+            "The Warehouse",
+            "Downtown Loft",
+            "Garden Terrace",
         )
 
         return (startIndex until startIndex + 10).map { index ->
