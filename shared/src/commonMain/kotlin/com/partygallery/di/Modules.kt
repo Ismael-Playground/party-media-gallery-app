@@ -3,6 +3,7 @@ package com.partygallery.di
 import com.partygallery.data.auth.FirebaseAuthService
 import com.partygallery.data.repository.AuthRepositoryImpl
 import com.partygallery.domain.repository.AuthRepository
+import com.partygallery.presentation.store.LoginStore
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -57,9 +58,11 @@ val dataModule = module {
  * Contains ViewModels/Stores for MVI pattern.
  */
 val presentationModule = module {
-    // State stores will be added here
+    // Login Store (S2-003)
+    factory { LoginStore(get()) }
+
+    // Other stores will be added here
     // Example:
-    // factory { LoginStore(get()) }
     // factory { HomeStore(get(), get()) }
     // factory { ProfileStore(get()) }
 }
