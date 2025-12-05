@@ -2,10 +2,10 @@ package com.partygallery.data.auth
 
 import com.partygallery.domain.repository.AuthResult
 import com.partygallery.domain.repository.AuthState
+import kotlin.js.Date
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlin.js.Date
 
 /**
  * JS/Web Firebase Authentication Service Implementation

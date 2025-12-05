@@ -80,8 +80,7 @@ actual class FirebaseAuthService actual constructor() {
 
     actual suspend fun sendPasswordResetEmail(email: String): Result<Unit> = Result.success(Unit)
 
-    actual suspend fun updatePassword(currentPassword: String, newPassword: String): Result<Unit> =
-        Result.success(Unit)
+    actual suspend fun updatePassword(currentPassword: String, newPassword: String): Result<Unit> = Result.success(Unit)
 
     actual suspend fun getIdToken(forceRefresh: Boolean): Result<String> {
         return if (mockUserId != null) {

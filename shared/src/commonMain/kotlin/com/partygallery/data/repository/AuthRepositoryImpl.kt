@@ -24,14 +24,11 @@ class AuthRepositoryImpl(
     // Authentication State
     // ============================================
 
-    override suspend fun isAuthenticated(): Boolean =
-        firebaseAuthService.isAuthenticated()
+    override suspend fun isAuthenticated(): Boolean = firebaseAuthService.isAuthenticated()
 
-    override fun observeAuthState(): Flow<AuthState> =
-        firebaseAuthService.observeAuthState()
+    override fun observeAuthState(): Flow<AuthState> = firebaseAuthService.observeAuthState()
 
-    override suspend fun getCurrentUserId(): String? =
-        firebaseAuthService.getCurrentUserId()
+    override suspend fun getCurrentUserId(): String? = firebaseAuthService.getCurrentUserId()
 
     // ============================================
     // Sign In Methods
@@ -70,29 +67,23 @@ class AuthRepositoryImpl(
     override suspend fun getIdToken(forceRefresh: Boolean): Result<String> =
         firebaseAuthService.getIdToken(forceRefresh)
 
-    override suspend fun refreshToken(): Result<String> =
-        firebaseAuthService.refreshToken()
+    override suspend fun refreshToken(): Result<String> = firebaseAuthService.refreshToken()
 
     // ============================================
     // Sign Out
     // ============================================
 
-    override suspend fun signOut(): Result<Unit> =
-        firebaseAuthService.signOut()
+    override suspend fun signOut(): Result<Unit> = firebaseAuthService.signOut()
 
-    override suspend fun deleteAccount(): Result<Unit> =
-        firebaseAuthService.deleteAccount()
+    override suspend fun deleteAccount(): Result<Unit> = firebaseAuthService.deleteAccount()
 
     // ============================================
     // Verification
     // ============================================
 
-    override suspend fun sendEmailVerification(): Result<Unit> =
-        firebaseAuthService.sendEmailVerification()
+    override suspend fun sendEmailVerification(): Result<Unit> = firebaseAuthService.sendEmailVerification()
 
-    override suspend fun isEmailVerified(): Boolean =
-        firebaseAuthService.isEmailVerified()
+    override suspend fun isEmailVerified(): Boolean = firebaseAuthService.isEmailVerified()
 
-    override suspend fun reloadUser(): Result<Unit> =
-        firebaseAuthService.reloadUser()
+    override suspend fun reloadUser(): Result<Unit> = firebaseAuthService.reloadUser()
 }

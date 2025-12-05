@@ -55,10 +55,7 @@ import com.partygallery.ui.theme.Theme
  * Design: Dark Mode First
  */
 @Composable
-fun ContactSyncScreen(
-    signUpStore: SignUpStore,
-    onBackPressed: () -> Unit = {},
-) {
+fun ContactSyncScreen(signUpStore: SignUpStore, onBackPressed: () -> Unit = {}) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -180,9 +177,7 @@ fun ContactSyncScreen(
  * Content shown when contacts permission is not granted
  */
 @Composable
-private fun PermissionRequestContent(
-    onRequestPermission: () -> Unit,
-) {
+private fun PermissionRequestContent(onRequestPermission: () -> Unit) {
     val colors = Theme.colors
 
     Column(
@@ -380,11 +375,7 @@ private fun ContactMatchesList(
  * Single contact match item
  */
 @Composable
-private fun ContactMatchItem(
-    contact: ContactMatch,
-    isSelected: Boolean,
-    onToggle: () -> Unit,
-) {
+private fun ContactMatchItem(contact: ContactMatch, isSelected: Boolean, onToggle: () -> Unit) {
     val colors = Theme.colors
 
     Row(
