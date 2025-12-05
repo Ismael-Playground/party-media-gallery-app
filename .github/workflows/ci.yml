@@ -211,7 +211,15 @@ jobs:
           cache-read-only: false
 
       - name: Select Xcode version
-        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+        run: |
+          # Use Xcode 15.4 (default on macos-latest) or fallback to any available 15.x
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app
+          fi
+          xcode-select -p
+          xcodebuild -version
 
       - name: Build iOS Framework
         run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
