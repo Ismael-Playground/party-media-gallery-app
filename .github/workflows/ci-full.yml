@@ -1,13 +1,18 @@
-name: CI
+name: CI Full Build
+
+# Full build runs only on main, release/*, and fix/* branches
+# For PRs and feature branches, use the pr-check.yml workflow instead
 
 on:
   push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main, develop]
+    branches:
+      - main
+      - 'release/*'
+      - 'fix/*'
+  workflow_dispatch:
 
 concurrency:
-  group: build-${{ github.ref }}
+  group: full-build-${{ github.ref }}
   cancel-in-progress: true
 
 env:
