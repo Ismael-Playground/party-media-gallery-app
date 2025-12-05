@@ -17,21 +17,21 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         val jsMain by getting {
             dependencies {
                 implementation(project(":shared"))
-                
+
                 // Compose Web
                 implementation(compose.html.core)
                 implementation(compose.runtime)
-                
+
                 // Koin
                 implementation("io.insert-koin:koin-core:${Dependencies.koinVersion}")
             }
         }
-        
+
         val jsTest by getting {
             dependencies {
                 implementation(kotlin("test-js"))
@@ -43,14 +43,14 @@ kotlin {
 // Generar archivo de versión para la web
 tasks.register("generateVersionFile") {
     doLast {
-        val buildNumber = System.getenv("GITHUB_RUN_NUMBER") 
-            ?: System.getenv("CI_PIPELINE_IID") 
-            ?: System.getenv("BUILD_NUMBER") 
+        val buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+            ?: System.getenv("CI_PIPELINE_IID")
+            ?: System.getenv("BUILD_NUMBER")
             ?: "local"
-            
+
         val versionName = "$version"
         val currentTime = System.currentTimeMillis().toString()
-        
+
         val versionJs = """
             window.APP_VERSION = {
               "version": "$versionName",
@@ -59,7 +59,7 @@ tasks.register("generateVersionFile") {
               "isCiBuild": ${System.getenv("CI") == "true"}
             };
         """.trimIndent()
-        
+
         file("src/jsMain/resources/version.js").writeText(versionJs)
     }
 }
