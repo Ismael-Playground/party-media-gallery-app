@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
 
 /**
  * Home screen MVI store.
@@ -152,7 +153,7 @@ class HomeStore(
             if (index % 3 == 0) {
                 FeedItem.PartyCard(
                     id = "party_$index",
-                    timestamp = System.currentTimeMillis() - (index * 3600000L),
+                    timestamp = Clock.System.now().toEpochMilliseconds() - (index * 3600000L),
                     title = partyNames[index % partyNames.size],
                     hostName = hostNames[index % hostNames.size],
                     hostAvatarUrl = null,
@@ -166,7 +167,7 @@ class HomeStore(
             } else {
                 FeedItem.MediaPost(
                     id = "media_$index",
-                    timestamp = System.currentTimeMillis() - (index * 1800000L),
+                    timestamp = Clock.System.now().toEpochMilliseconds() - (index * 1800000L),
                     partyId = "party_${index / 3}",
                     partyTitle = partyNames[(index / 3) % partyNames.size],
                     userName = hostNames[index % hostNames.size],
