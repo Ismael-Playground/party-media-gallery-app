@@ -275,8 +275,14 @@ fun CompactMediaCard(
  */
 private fun formatCount(count: Int): String {
     return when {
-        count >= 1_000_000 -> String.format("%.1fM", count / 1_000_000.0)
-        count >= 1_000 -> String.format("%.1fK", count / 1_000.0)
+        count >= 1_000_000 -> {
+            val value = count / 1_000_000.0
+            "${(value * 10).toInt() / 10.0}M"
+        }
+        count >= 1_000 -> {
+            val value = count / 1_000.0
+            "${(value * 10).toInt() / 10.0}K"
+        }
         else -> count.toString()
     }
 }

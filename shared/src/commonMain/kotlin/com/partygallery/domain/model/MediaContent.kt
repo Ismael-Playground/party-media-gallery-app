@@ -94,7 +94,7 @@ data class MediaContent(
         get() = metadata.durationSeconds?.let { seconds ->
             val minutes = seconds / 60
             val remainingSeconds = seconds % 60
-            "%d:%02d".format(minutes, remainingSeconds)
+            "$minutes:${remainingSeconds.toString().padStart(2, '0')}"
         }
 }
 
