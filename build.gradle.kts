@@ -109,3 +109,77 @@ tasks.register("versionInfo") {
 // tasks.register("clean", Delete::class) {
 //     delete(rootProject.layout.buildDirectory)
 // }
+
+// ============================================================================
+// iOS Simulator Tasks (Standard KMP Setup)
+// ============================================================================
+
+val iosSimulatorName = project.findProperty("iosSimulator") as? String ?: "iPhone 15 Pro"
+
+tasks.register<Exec>("iosSimulatorBoot") {
+    group = "ios"
+    description = "Boot iOS Simulator"
+    commandLine("xcrun", "simctl", "boot", iosSimulatorName)
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("iosSimulatorList") {
+    group = "ios"
+    description = "List available iOS Simulators"
+    commandLine("xcrun", "simctl", "list", "devices", "available")
+}
+
+tasks.register<Exec>("iosBuildDebug") {
+    group = "ios"
+    description = "Build iOS app for Simulator (Debug)"
+    workingDir = file("iosApp")
+    commandLine(
+        "xcodebuild",
+        "-project", "iosApp.xcodeproj",
+        "-scheme", "iosApp",
+        "-configuration", "Debug",
+        "-sdk", "iphonesimulator",
+        "-destination", "generic/platform=iOS Simulator",
+        "-derivedDataPath", "${project.rootDir}/build/ios",
+        "build"
+    )
+}
+
+tasks.register<Exec>("iosInstallSimulator") {
+    group = "ios"
+    description = "Install iOS app on booted Simulator"
+    dependsOn("iosBuildDebug")
+
+    doFirst {
+        // Find the built app
+        val appPath = fileTree("${project.rootDir}/build/ios") {
+            include("**/Debug-iphonesimulator/iosApp.app")
+        }.files.firstOrNull()
+
+        if (appPath != null) {
+            commandLine("xcrun", "simctl", "install", "booted", appPath.absolutePath)
+        } else {
+            throw GradleException("iOS app not found. Build may have failed.")
+        }
+    }
+}
+
+tasks.register<Exec>("iosLaunchSimulator") {
+    group = "ios"
+    description = "Launch iOS app on Simulator"
+    commandLine("xcrun", "simctl", "launch", "booted", "com.partygallery.iosApp")
+}
+
+tasks.register("iosRun") {
+    group = "ios"
+    description = "Build, install, and run iOS app on Simulator"
+    dependsOn("iosSimulatorBoot", "iosInstallSimulator")
+
+    doLast {
+        exec {
+            commandLine("xcrun", "simctl", "launch", "booted", "com.partygallery.iosApp")
+        }
+        println("\n✅ iOS app launched on Simulator!")
+        println("📱 Simulator: $iosSimulatorName")
+    }
+}
