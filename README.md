@@ -3,14 +3,14 @@
 **The ultimate multiplatform app for capturing, sharing, and reliving your party moments**
 
 <!-- CI/CD Status Badges -->
-[![CI](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml)
-[![Quality](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/quality.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/quality.yml)
+[![CI Full](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![PR Check](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/pr-check.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/pr-check.yml)
 
 <!-- Platform Build Badges -->
-[![Android Build](https://img.shields.io/badge/Android-Build_Passing-3DDC84?logo=android&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml)
-[![iOS Build](https://img.shields.io/badge/iOS-Build_Passing-000000?logo=apple&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml)
-[![Desktop Build](https://img.shields.io/badge/Desktop-Build_Passing-0078D4?logo=windows&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml)
-[![Web Build](https://img.shields.io/badge/Web-Build_Passing-F7DF1E?logo=javascript&logoColor=black)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci.yml)
+[![Android Build](https://img.shields.io/badge/Android-Build_Passing-3DDC84?logo=android&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![iOS Build](https://img.shields.io/badge/iOS-Build_Passing-000000?logo=apple&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![Desktop Build](https://img.shields.io/badge/Desktop-Build_Passing-0078D4?logo=windows&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![Web Build](https://img.shields.io/badge/Web-Build_Passing-F7DF1E?logo=javascript&logoColor=black)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
 
 <!-- Technology Stack Badges -->
 [![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF.svg?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
