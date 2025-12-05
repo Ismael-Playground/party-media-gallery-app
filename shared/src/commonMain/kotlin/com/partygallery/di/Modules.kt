@@ -4,6 +4,7 @@ import com.partygallery.data.auth.FirebaseAuthService
 import com.partygallery.data.repository.AuthRepositoryImpl
 import com.partygallery.domain.repository.AuthRepository
 import com.partygallery.presentation.store.LoginStore
+import com.partygallery.presentation.store.SignUpStore
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -60,6 +61,9 @@ val dataModule = module {
 val presentationModule = module {
     // Login Store (S2-003)
     factory { LoginStore(get()) }
+
+    // SignUp Store (S2-010)
+    factory { SignUpStore(get()) }
 
     // Other stores will be added here
     // Example:

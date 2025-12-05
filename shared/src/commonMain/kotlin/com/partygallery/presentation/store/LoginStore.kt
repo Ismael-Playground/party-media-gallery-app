@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 class LoginStore(
     private val authRepository: AuthRepository,
 ) {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state.asStateFlow()
