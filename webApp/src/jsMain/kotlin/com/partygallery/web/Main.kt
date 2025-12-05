@@ -1,9 +1,9 @@
 package com.partygallery.web
 
 import androidx.compose.runtime.*
+import com.partygallery.Greeting
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
-import com.partygallery.Greeting
 
 fun main() {
     renderComposable(rootElementId = "root") {

@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,8 +23,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.partygallery.ui.theme.PartyGalleryShapes
 import com.partygallery.ui.theme.PartyGallerySpacing
@@ -43,23 +39,23 @@ object MediaCardGradients {
         colors = listOf(
             Color.Transparent,
             Color(0x99000000),
-            Color(0xF0000000)
-        )
+            Color(0xF0000000),
+        ),
     )
 
     val darkFadeTop = Brush.verticalGradient(
         colors = listOf(
             Color(0xF0000000),
             Color(0x99000000),
-            Color.Transparent
-        )
+            Color.Transparent,
+        ),
     )
 
     val scrim = Brush.verticalGradient(
         colors = listOf(
             Color(0x00000000),
-            Color(0xCC000000)
-        )
+            Color(0xCC000000),
+        ),
     )
 }
 
@@ -86,7 +82,7 @@ fun FeaturedMediaCard(
     aspectRatio: Float = 16f / 10f,
     onClick: (() -> Unit)? = null,
     content: @Composable BoxScope.() -> Unit,
-    overlayContent: @Composable (BoxScope.() -> Unit)? = null
+    overlayContent: @Composable (BoxScope.() -> Unit)? = null,
 ) {
     val clickModifier = if (onClick != null) {
         Modifier.clickable(onClick = onClick)
@@ -100,7 +96,7 @@ fun FeaturedMediaCard(
             .aspectRatio(aspectRatio)
             .clip(PartyGalleryShapes.mediaCard)
             .background(Theme.colors.surfaceVariant)
-            .then(clickModifier)
+            .then(clickModifier),
     ) {
         // Background content (image/video)
         content()
@@ -112,7 +108,7 @@ fun FeaturedMediaCard(
                     .fillMaxWidth()
                     .fillMaxHeight(0.5f)
                     .align(Alignment.BottomCenter)
-                    .background(MediaCardGradients.darkFadeBottom)
+                    .background(MediaCardGradients.darkFadeBottom),
             )
 
             // Overlay content
@@ -151,7 +147,7 @@ fun MediaCardWithInfo(
     avatarContent: @Composable (() -> Unit)? = null,
     likeIcon: ImageVector? = null,
     commentIcon: ImageVector? = null,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     FeaturedMediaCard(
         modifier = modifier,
@@ -165,11 +161,11 @@ fun MediaCardWithInfo(
                     .align(Alignment.BottomCenter)
                     .padding(PartyGallerySpacing.sm),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Bottom
+                verticalAlignment = Alignment.Bottom,
             ) {
                 // User info (left side)
                 Row(
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Avatar
                     if (avatarContent != null) {
@@ -181,12 +177,12 @@ fun MediaCardWithInfo(
                         Text(
                             text = userName,
                             style = Theme.typography.labelMedium,
-                            color = Color.White
+                            color = Color.White,
                         )
                         Text(
                             text = timestamp,
                             style = Theme.typography.bodySmall,
-                            color = Theme.colors.onBackgroundVariant
+                            color = Theme.colors.onBackgroundVariant,
                         )
                     }
                 }
@@ -194,7 +190,7 @@ fun MediaCardWithInfo(
                 // Engagement metrics (right side)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.sm),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Likes
                     if (likeIcon != null) {
@@ -205,18 +201,18 @@ fun MediaCardWithInfo(
                                 Modifier
                             },
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             Icon(
                                 imageVector = likeIcon,
                                 contentDescription = "Like",
                                 modifier = Modifier.size(18.dp),
-                                tint = if (isLiked) Theme.colors.error else Color.White
+                                tint = if (isLiked) Theme.colors.error else Color.White,
                             )
                             Text(
                                 text = formatCount(likeCount),
                                 style = Theme.typography.counter,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
                     }
@@ -225,24 +221,24 @@ fun MediaCardWithInfo(
                     if (commentIcon != null && commentCount > 0) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(4.dp)
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
                         ) {
                             Icon(
                                 imageVector = commentIcon,
                                 contentDescription = "Comments",
                                 modifier = Modifier.size(18.dp),
-                                tint = Color.White
+                                tint = Color.White,
                             )
                             Text(
                                 text = formatCount(commentCount),
                                 style = Theme.typography.counter,
-                                color = Color.White
+                                color = Color.White,
                             )
                         }
                     }
                 }
             }
-        }
+        },
     )
 }
 
@@ -256,7 +252,7 @@ fun CompactMediaCard(
     modifier: Modifier = Modifier,
     aspectRatio: Float = 1f,
     onClick: (() -> Unit)? = null,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val clickModifier = if (onClick != null) {
         Modifier.clickable(onClick = onClick)
@@ -270,7 +266,7 @@ fun CompactMediaCard(
             .clip(PartyGalleryShapes.mediaCard)
             .background(Theme.colors.surfaceVariant)
             .then(clickModifier),
-        content = content
+        content = content,
     )
 }
 

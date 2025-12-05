@@ -36,19 +36,16 @@ import com.partygallery.ui.theme.Theme
  * @param showText Whether to show "LIVE" text
  */
 @Composable
-fun LiveBadge(
-    modifier: Modifier = Modifier,
-    showText: Boolean = true
-) {
+fun LiveBadge(modifier: Modifier = Modifier, showText: Boolean = true) {
     val infiniteTransition = rememberInfiniteTransition(label = "livePulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 0.5f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 800),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulseAlpha"
+        label = "pulseAlpha",
     )
 
     Row(
@@ -57,10 +54,10 @@ fun LiveBadge(
             .background(PartyGalleryColors.Error.copy(alpha = 0.2f))
             .padding(
                 horizontal = PartyGallerySpacing.xs,
-                vertical = PartyGallerySpacing.xxs
+                vertical = PartyGallerySpacing.xxs,
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Pulsating dot
         Box(
@@ -68,14 +65,14 @@ fun LiveBadge(
                 .size(8.dp)
                 .alpha(alpha)
                 .clip(CircleShape)
-                .background(PartyGalleryColors.Error)
+                .background(PartyGalleryColors.Error),
         )
 
         if (showText) {
             Text(
                 text = "LIVE",
                 style = Theme.typography.labelSmall,
-                color = PartyGalleryColors.Error
+                color = PartyGalleryColors.Error,
             )
         }
     }
@@ -87,18 +84,16 @@ fun LiveBadge(
  * Just the pulsating dot, for compact spaces.
  */
 @Composable
-fun LiveIndicator(
-    modifier: Modifier = Modifier
-) {
+fun LiveIndicator(modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "livePulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 0.4f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 800),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulseAlpha"
+        label = "pulseAlpha",
     )
 
     Box(
@@ -106,7 +101,7 @@ fun LiveIndicator(
             .size(10.dp)
             .alpha(alpha)
             .clip(CircleShape)
-            .background(PartyGalleryColors.Error)
+            .background(PartyGalleryColors.Error),
     )
 }
 
@@ -116,19 +111,16 @@ fun LiveIndicator(
  * Shows live indicator plus number of viewers.
  */
 @Composable
-fun LiveBadgeWithCount(
-    viewerCount: Int,
-    modifier: Modifier = Modifier
-) {
+fun LiveBadgeWithCount(viewerCount: Int, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "livePulse")
     val alpha by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 0.5f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 800),
-            repeatMode = RepeatMode.Reverse
+            repeatMode = RepeatMode.Reverse,
         ),
-        label = "pulseAlpha"
+        label = "pulseAlpha",
     )
 
     Row(
@@ -137,10 +129,10 @@ fun LiveBadgeWithCount(
             .background(PartyGalleryColors.Error.copy(alpha = 0.2f))
             .padding(
                 horizontal = PartyGallerySpacing.xs,
-                vertical = PartyGallerySpacing.xxs
+                vertical = PartyGallerySpacing.xxs,
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         // Pulsating dot
         Box(
@@ -148,27 +140,27 @@ fun LiveBadgeWithCount(
                 .size(8.dp)
                 .alpha(alpha)
                 .clip(CircleShape)
-                .background(PartyGalleryColors.Error)
+                .background(PartyGalleryColors.Error),
         )
 
         Text(
             text = "LIVE",
             style = Theme.typography.labelSmall,
-            color = PartyGalleryColors.Error
+            color = PartyGalleryColors.Error,
         )
 
         // Separator
         Text(
             text = "•",
             style = Theme.typography.labelSmall,
-            color = PartyGalleryColors.Error.copy(alpha = 0.5f)
+            color = PartyGalleryColors.Error.copy(alpha = 0.5f),
         )
 
         // Viewer count
         Text(
             text = formatViewerCount(viewerCount),
             style = Theme.typography.labelSmall,
-            color = Color.White
+            color = Color.White,
         )
     }
 }
@@ -177,31 +169,29 @@ fun LiveBadgeWithCount(
  * Recording indicator (non-pulsating, solid)
  */
 @Composable
-fun RecordingIndicator(
-    modifier: Modifier = Modifier
-) {
+fun RecordingIndicator(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(PartyGalleryShapes.chip)
             .background(PartyGalleryColors.Error)
             .padding(
                 horizontal = PartyGallerySpacing.xs,
-                vertical = PartyGallerySpacing.xxs
+                vertical = PartyGallerySpacing.xxs,
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
             modifier = Modifier
                 .size(8.dp)
                 .clip(CircleShape)
-                .background(Color.White)
+                .background(Color.White),
         )
 
         Text(
             text = "REC",
             style = Theme.typography.labelSmall,
-            color = Color.White
+            color = Color.White,
         )
     }
 }

@@ -35,23 +35,18 @@ import com.partygallery.ui.theme.Theme
  * @param modifier Modifier
  */
 @Composable
-fun PillTabs(
-    tabs: List<String>,
-    selectedIndex: Int,
-    onTabSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
+fun PillTabs(tabs: List<String>, selectedIndex: Int, onTabSelected: (Int) -> Unit, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = PartyGallerySpacing.md),
-        horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.xs)
+        horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.xs),
     ) {
         tabs.forEachIndexed { index, tab ->
             PillTab(
                 text = tab,
                 isSelected = index == selectedIndex,
-                onClick = { onTabSelected(index) }
+                onClick = { onTabSelected(index) },
             )
         }
     }
@@ -61,19 +56,14 @@ fun PillTabs(
  * Single Pill Tab Item
  */
 @Composable
-private fun PillTab(
-    text: String,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
+private fun PillTab(text: String, isSelected: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
             Theme.colors.surfaceVariant
         } else {
             Color.Transparent
         },
-        label = "tabBackground"
+        label = "tabBackground",
     )
 
     val textColor by animateColorAsState(
@@ -82,7 +72,7 @@ private fun PillTab(
         } else {
             Theme.colors.onBackgroundVariant
         },
-        label = "tabText"
+        label = "tabText",
     )
 
     val shape = RoundedCornerShape(20.dp)
@@ -95,24 +85,24 @@ private fun PillTab(
                     Modifier.border(
                         width = 1.dp,
                         color = Theme.colors.border,
-                        shape = shape
+                        shape = shape,
                     )
                 } else {
                     Modifier
-                }
+                },
             )
             .background(backgroundColor)
             .clickable(onClick = onClick)
             .padding(
                 horizontal = PartyGallerySpacing.md,
-                vertical = PartyGallerySpacing.xs
+                vertical = PartyGallerySpacing.xs,
             ),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = Theme.typography.labelMedium,
-            color = textColor
+            color = textColor,
         )
     }
 }
@@ -127,20 +117,20 @@ fun ScrollablePillTabs(
     tabs: List<String>,
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     androidx.compose.foundation.lazy.LazyRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.xs),
         contentPadding = androidx.compose.foundation.layout.PaddingValues(
-            horizontal = PartyGallerySpacing.md
-        )
+            horizontal = PartyGallerySpacing.md,
+        ),
     ) {
         items(tabs.size) { index ->
             PillTab(
                 text = tabs[index],
                 isSelected = index == selectedIndex,
-                onClick = { onTabSelected(index) }
+                onClick = { onTabSelected(index) },
             )
         }
     }
@@ -156,19 +146,19 @@ fun IconPillTabs(
     icons: List<@Composable () -> Unit>,
     selectedIndex: Int,
     onTabSelected: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = PartyGallerySpacing.md),
-        horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.xs)
+        horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.xs),
     ) {
         icons.forEachIndexed { index, icon ->
             IconPillTab(
                 icon = icon,
                 isSelected = index == selectedIndex,
-                onClick = { onTabSelected(index) }
+                onClick = { onTabSelected(index) },
             )
         }
     }
@@ -179,7 +169,7 @@ private fun IconPillTab(
     icon: @Composable () -> Unit,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val backgroundColor by animateColorAsState(
         targetValue = if (isSelected) {
@@ -187,7 +177,7 @@ private fun IconPillTab(
         } else {
             Color.Transparent
         },
-        label = "tabBackground"
+        label = "tabBackground",
     )
 
     val shape = RoundedCornerShape(20.dp)
@@ -200,16 +190,16 @@ private fun IconPillTab(
                     Modifier.border(
                         width = 1.dp,
                         color = Theme.colors.border,
-                        shape = shape
+                        shape = shape,
                     )
                 } else {
                     Modifier
-                }
+                },
             )
             .background(backgroundColor)
             .clickable(onClick = onClick)
             .padding(PartyGallerySpacing.xs),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         icon()
     }

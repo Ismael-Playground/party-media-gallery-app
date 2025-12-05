@@ -61,7 +61,7 @@ val presentationModule = module {
 fun commonModules(): List<Module> = listOf(
     domainModule,
     dataModule,
-    presentationModule
+    presentationModule,
 )
 
 /**
@@ -71,13 +71,10 @@ fun commonModules(): List<Module> = listOf(
  * @param platformModule Platform-specific Koin module
  * @param appDeclaration Optional Koin app configuration
  */
-fun initKoin(
-    platformModule: Module = module { },
-    appDeclaration: KoinAppDeclaration = { }
-) = startKoin {
+fun initKoin(platformModule: Module = module { }, appDeclaration: KoinAppDeclaration = { }) = startKoin {
     appDeclaration()
     modules(
-        commonModules() + platformModule
+        commonModules() + platformModule,
     )
 }
 

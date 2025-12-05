@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.partygallery.ui.theme.PartyGalleryColors
-import com.partygallery.ui.theme.PartyGalleryShapes
 import com.partygallery.ui.theme.Theme
 
 /**
@@ -41,7 +40,7 @@ enum class AvatarSize(val size: Dp, val borderWidth: Dp) {
     XL(size = 80.dp, borderWidth = 3.dp),
 
     /** XXL - for large profile display */
-    XXL(size = 120.dp, borderWidth = 4.dp)
+    XXL(size = 120.dp, borderWidth = 4.dp),
 }
 
 /**
@@ -50,19 +49,21 @@ enum class AvatarSize(val size: Dp, val borderWidth: Dp) {
  * Amber gradient following brand colors.
  */
 object AvatarGradients {
+    // Amber gradient: #F59E0B -> #FCD34D -> Orange 400
     val amberBorder = Brush.linearGradient(
         colors = listOf(
-            PartyGalleryColors.Primary,      // #F59E0B
-            PartyGalleryColors.Tertiary,     // #FCD34D
-            Color(0xFFFB923C)                // Orange 400
-        )
+            PartyGalleryColors.Primary,
+            PartyGalleryColors.Tertiary,
+            Color(0xFFFB923C),
+        ),
     )
 
+    // Live gradient: #EF4444 -> Pink 500
     val liveBorder = Brush.linearGradient(
         colors = listOf(
-            PartyGalleryColors.Error,        // #EF4444
-            Color(0xFFEC4899)                // Pink 500
-        )
+            PartyGalleryColors.Error,
+            Color(0xFFEC4899),
+        ),
     )
 }
 
@@ -86,7 +87,7 @@ fun Avatar(
     showBorder: Boolean = false,
     isLive: Boolean = false,
     onClick: (() -> Unit)? = null,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val totalSize = if (showBorder) {
         size.size + (size.borderWidth * 2)
@@ -110,7 +111,7 @@ fun Avatar(
         modifier = modifier
             .size(totalSize)
             .then(clickModifier),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         // Gradient border background
         if (showBorder && gradient != null) {
@@ -118,7 +119,7 @@ fun Avatar(
                 modifier = Modifier
                     .size(totalSize)
                     .clip(CircleShape)
-                    .background(gradient)
+                    .background(gradient),
             )
         }
 
@@ -129,7 +130,7 @@ fun Avatar(
                 .clip(CircleShape)
                 .background(Theme.colors.surfaceVariant),
             contentAlignment = Alignment.Center,
-            content = content
+            content = content,
         )
     }
 }
@@ -155,14 +156,14 @@ fun AvatarWithInitials(
     showBorder: Boolean = false,
     isLive: Boolean = false,
     onClick: (() -> Unit)? = null,
-    imageContent: (@Composable BoxScope.() -> Unit)? = null
+    imageContent: (@Composable BoxScope.() -> Unit)? = null,
 ) {
     Avatar(
         modifier = modifier,
         size = size,
         showBorder = showBorder,
         isLive = isLive,
-        onClick = onClick
+        onClick = onClick,
     ) {
         if (imageContent != null) {
             imageContent()
@@ -178,7 +179,7 @@ fun AvatarWithInitials(
                     AvatarSize.XL -> Theme.typography.titleLarge
                     AvatarSize.XXL -> Theme.typography.headlineMedium
                 },
-                color = Theme.colors.onBackground
+                color = Theme.colors.onBackground,
             )
         }
     }
@@ -195,7 +196,7 @@ fun StoryAvatar(
     size: AvatarSize = AvatarSize.LARGE,
     hasNewStory: Boolean = true,
     onClick: (() -> Unit)? = null,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val ringSize = size.size + 8.dp
     val ringColor = if (hasNewStory) {
@@ -204,8 +205,8 @@ fun StoryAvatar(
         Brush.linearGradient(
             colors = listOf(
                 Theme.colors.border,
-                Theme.colors.border
-            )
+                Theme.colors.border,
+            ),
         )
     }
 
@@ -219,14 +220,14 @@ fun StoryAvatar(
         modifier = modifier
             .size(ringSize)
             .then(clickModifier),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         // Ring
         Box(
             modifier = Modifier
                 .size(ringSize)
                 .clip(CircleShape)
-                .background(ringColor)
+                .background(ringColor),
         )
 
         // Gap (background color)
@@ -234,7 +235,7 @@ fun StoryAvatar(
             modifier = Modifier
                 .size(size.size + 4.dp)
                 .clip(CircleShape)
-                .background(Theme.colors.background)
+                .background(Theme.colors.background),
         )
 
         // Avatar
@@ -244,7 +245,7 @@ fun StoryAvatar(
                 .clip(CircleShape)
                 .background(Theme.colors.surfaceVariant),
             contentAlignment = Alignment.Center,
-            content = content
+            content = content,
         )
     }
 }
@@ -263,7 +264,7 @@ fun AvatarGroup(
     maxVisible: Int = 3,
     size: AvatarSize = AvatarSize.SMALL,
     modifier: Modifier = Modifier,
-    avatarContents: List<@Composable BoxScope.() -> Unit>
+    avatarContents: List<@Composable BoxScope.() -> Unit>,
 ) {
     val visibleCount = minOf(count, maxVisible)
     val remainingCount = count - visibleCount
@@ -273,16 +274,16 @@ fun AvatarGroup(
         // Visible avatars
         avatarContents.take(visibleCount).forEachIndexed { index, content ->
             Box(
-                modifier = Modifier.padding(start = overlapOffset * index)
+                modifier = Modifier.padding(start = overlapOffset * index),
             ) {
                 Avatar(
                     size = size,
                     modifier = Modifier.border(
                         width = 2.dp,
                         color = Theme.colors.background,
-                        shape = CircleShape
+                        shape = CircleShape,
                     ),
-                    content = content
+                    content = content,
                 )
             }
         }
@@ -298,14 +299,14 @@ fun AvatarGroup(
                     .border(
                         width = 2.dp,
                         color = Theme.colors.background,
-                        shape = CircleShape
+                        shape = CircleShape,
                     ),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = "+$remainingCount",
                     style = Theme.typography.labelSmall,
-                    color = Theme.colors.onPrimary
+                    color = Theme.colors.onPrimary,
                 )
             }
         }

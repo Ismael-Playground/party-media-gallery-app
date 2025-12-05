@@ -1,7 +1,7 @@
 package com.partygallery.domain.repository
 
-import com.partygallery.domain.model.ChatRoom
 import com.partygallery.domain.model.ChatMessage
+import com.partygallery.domain.model.ChatRoom
 import com.partygallery.domain.model.MessageType
 import com.partygallery.domain.model.UserSummary
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +21,7 @@ interface ChatRepository {
     suspend fun createChatRoom(
         partyId: String? = null,
         participants: List<String>,
-        isEventChat: Boolean = false
+        isEventChat: Boolean = false,
     ): Result<ChatRoom>
 
     suspend fun getChatRoomById(roomId: String): Result<ChatRoom?>
@@ -40,14 +40,10 @@ interface ChatRepository {
         content: String,
         type: MessageType = MessageType.TEXT,
         mediaUrl: String? = null,
-        replyToId: String? = null
+        replyToId: String? = null,
     ): Result<ChatMessage>
 
-    suspend fun getMessages(
-        roomId: String,
-        limit: Int = 50,
-        before: Instant? = null
-    ): Result<List<ChatMessage>>
+    suspend fun getMessages(roomId: String, limit: Int = 50, before: Instant? = null): Result<List<ChatMessage>>
 
     suspend fun getMessage(messageId: String): Result<ChatMessage?>
     suspend fun deleteMessage(messageId: String): Result<Unit>

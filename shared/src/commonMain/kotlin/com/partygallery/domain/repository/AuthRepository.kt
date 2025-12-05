@@ -1,6 +1,5 @@
 package com.partygallery.domain.repository
 
-import com.partygallery.domain.model.User
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -79,5 +78,5 @@ data class AuthResult(
     val email: String,
     val isNewUser: Boolean,
     val isEmailVerified: Boolean,
-    val idToken: String
+    val idToken: String,
 )

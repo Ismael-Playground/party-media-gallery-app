@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>WildcardImport:PartyGalleryApplicationTest.kt$import org.junit.Assert.*</ID>
+    <ID>WildcardImport:PartyNotificationServiceTest.kt$import org.junit.Assert.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

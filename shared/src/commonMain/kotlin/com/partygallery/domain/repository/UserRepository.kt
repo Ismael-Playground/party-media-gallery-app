@@ -1,8 +1,8 @@
 package com.partygallery.domain.repository
 
+import com.partygallery.domain.model.SocialLinks
 import com.partygallery.domain.model.User
 import com.partygallery.domain.model.UserSummary
-import com.partygallery.domain.model.SocialLinks
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -75,7 +75,7 @@ data class ProfileCompletionData(
     val bio: String? = null,
     val avatarUrl: String? = null,
     val tags: List<String> = emptyList(),
-    val socialLinks: SocialLinks = SocialLinks()
+    val socialLinks: SocialLinks = SocialLinks(),
 )
 
 /**
@@ -95,5 +95,5 @@ sealed class UsernameValidationResult {
  */
 data class FollowCounts(
     val followers: Int,
-    val following: Int
+    val following: Int,
 )

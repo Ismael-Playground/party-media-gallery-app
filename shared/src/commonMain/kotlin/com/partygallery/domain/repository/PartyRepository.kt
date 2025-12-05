@@ -2,7 +2,6 @@ package com.partygallery.domain.repository
 
 import com.partygallery.domain.model.PartyEvent
 import com.partygallery.domain.model.PartyStatus
-import com.partygallery.domain.model.PartyPrivacy
 import com.partygallery.domain.model.UserSummary
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.Instant
@@ -37,7 +36,7 @@ interface PartyRepository {
         latitude: Double,
         longitude: Double,
         radiusKm: Double = 10.0,
-        limit: Int = 20
+        limit: Int = 20,
     ): Result<List<PartyEvent>>
 
     // ============================================
@@ -84,7 +83,7 @@ enum class RsvpStatus {
     GOING,
     MAYBE,
     NOT_GOING,
-    INVITED
+    INVITED,
 }
 
 /**
@@ -94,5 +93,5 @@ data class PartyAttendee(
     val user: UserSummary,
     val rsvpStatus: RsvpStatus,
     val respondedAt: Instant,
-    val checkedInAt: Instant? = null
+    val checkedInAt: Instant? = null,
 )
