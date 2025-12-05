@@ -9,7 +9,7 @@ enum class PartyStatus {
     PLANNED,
     LIVE,
     ENDED,
-    CANCELLED
+    CANCELLED,
 }
 
 /**
@@ -19,7 +19,7 @@ enum class PartyPrivacy {
     PUBLIC,
     FRIENDS_ONLY,
     INVITE_ONLY,
-    PRIVATE
+    PRIVATE,
 }
 
 /**
@@ -34,7 +34,7 @@ data class Venue(
     val country: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val placeId: String? = null
+    val placeId: String? = null,
 ) {
     val hasCoordinates: Boolean
         get() = latitude != null && longitude != null
@@ -69,7 +69,7 @@ data class PartyEvent(
     val isUserAttending: Boolean = false,
     val isUserHost: Boolean = false,
     val createdAt: Instant,
-    val updatedAt: Instant? = null
+    val updatedAt: Instant? = null,
 ) {
     val isLive: Boolean
         get() = status == PartyStatus.LIVE
@@ -95,7 +95,7 @@ data class PartyEventSummary(
     val startsAt: Instant,
     val status: PartyStatus,
     val attendeesCount: Int,
-    val isLive: Boolean
+    val isLive: Boolean,
 )
 
 /**
@@ -109,5 +109,5 @@ fun PartyEvent.toSummary(): PartyEventSummary = PartyEventSummary(
     startsAt = startsAt,
     status = status,
     attendeesCount = attendeesCount,
-    isLive = isLive
+    isLive = isLive,
 )

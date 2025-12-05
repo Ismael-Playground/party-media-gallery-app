@@ -11,7 +11,7 @@ enum class MessageType {
     VIDEO,
     AUDIO,
     SYSTEM,
-    PARTY_MOMENT
+    PARTY_MOMENT,
 }
 
 /**
@@ -20,7 +20,7 @@ enum class MessageType {
 data class MessageReaction(
     val emoji: String,
     val userId: String,
-    val createdAt: Instant
+    val createdAt: Instant,
 )
 
 /**
@@ -42,7 +42,7 @@ data class ChatRoom(
     val unreadCount: Int = 0,
     val isMuted: Boolean = false,
     val createdAt: Instant,
-    val updatedAt: Instant? = null
+    val updatedAt: Instant? = null,
 ) {
     val displayName: String
         get() = name ?: partyEvent?.title ?: participants.joinToString(", ") { it.displayName }
@@ -73,7 +73,7 @@ data class ChatMessage(
     val isEdited: Boolean = false,
     val isDeleted: Boolean = false,
     val createdAt: Instant,
-    val updatedAt: Instant? = null
+    val updatedAt: Instant? = null,
 ) {
     val isFromCurrentUser: Boolean
         get() = false // Will be set by UI layer based on current user
@@ -108,7 +108,7 @@ data class ChatRoomSummary(
     val lastMessageContent: String?,
     val lastMessageTime: Instant?,
     val unreadCount: Int,
-    val isEventChat: Boolean
+    val isEventChat: Boolean,
 )
 
 /**
@@ -121,5 +121,5 @@ fun ChatRoom.toSummary(): ChatRoomSummary = ChatRoomSummary(
     lastMessageContent = lastMessage?.displayContent,
     lastMessageTime = lastMessage?.createdAt,
     unreadCount = unreadCount,
-    isEventChat = isEventChat
+    isEventChat = isEventChat,
 )

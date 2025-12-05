@@ -1,5 +1,10 @@
 package com.partygallery.di
 
+import com.partygallery.data.auth.FirebaseAuthService
+import com.partygallery.data.repository.AuthRepositoryImpl
+import com.partygallery.domain.repository.AuthRepository
+import com.partygallery.presentation.store.LoginStore
+import com.partygallery.presentation.store.SignUpStore
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -33,7 +38,13 @@ val domainModule = module {
  * Contains repositories and data sources.
  */
 val dataModule = module {
-    // Repository implementations will be added here
+    // Firebase Auth Service (S2-001)
+    single { FirebaseAuthService() }
+
+    // Auth Repository (S2-002)
+    single<AuthRepository> { AuthRepositoryImpl(get()) }
+
+    // Other repository implementations will be added here
     // Example:
     // single<UserRepository> { UserRepositoryImpl(get(), get()) }
     // single<PartyEventRepository> { PartyEventRepositoryImpl(get()) }
@@ -48,9 +59,14 @@ val dataModule = module {
  * Contains ViewModels/Stores for MVI pattern.
  */
 val presentationModule = module {
-    // State stores will be added here
+    // Login Store (S2-003)
+    factory { LoginStore(get()) }
+
+    // SignUp Store (S2-010)
+    factory { SignUpStore(get()) }
+
+    // Other stores will be added here
     // Example:
-    // factory { LoginStore(get()) }
     // factory { HomeStore(get(), get()) }
     // factory { ProfileStore(get()) }
 }
@@ -61,7 +77,7 @@ val presentationModule = module {
 fun commonModules(): List<Module> = listOf(
     domainModule,
     dataModule,
-    presentationModule
+    presentationModule,
 )
 
 /**
@@ -71,13 +87,10 @@ fun commonModules(): List<Module> = listOf(
  * @param platformModule Platform-specific Koin module
  * @param appDeclaration Optional Koin app configuration
  */
-fun initKoin(
-    platformModule: Module = module { },
-    appDeclaration: KoinAppDeclaration = { }
-) = startKoin {
+fun initKoin(platformModule: Module = module { }, appDeclaration: KoinAppDeclaration = { }) = startKoin {
     appDeclaration()
     modules(
-        commonModules() + platformModule
+        commonModules() + platformModule,
     )
 }
 

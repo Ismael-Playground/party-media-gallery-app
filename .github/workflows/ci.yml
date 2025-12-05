@@ -1,45 +1,220 @@
 name: CI
-on: 
+
+on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main, develop]
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
 
 jobs:
-  test:
+  # Code Quality Checks
+  quality:
+    name: Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Setup JDK
+
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-      
-      - name: Cache Gradle
-        uses: actions/cache@v4
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
-      
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-      
-      - name: Show Version Info
-        run: ./gradlew projects | head -10
-      
-      - name: Run Tests
-        run: ./gradlew check
-      
-      - name: Upload Test Results
+          cache-read-only: false
+
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck --continue
+
+      - name: Run detekt
+        run: ./gradlew detekt --continue
+
+      - name: Upload detekt reports
+        if: always()
         uses: actions/upload-artifact@v4
-        if: failure()
         with:
-          name: test-results
-          path: |
-            **/build/reports/tests/
-            **/build/test-results/
+          name: detekt-reports
+          path: '**/build/reports/detekt/'
+          retention-days: 7
+
+  # Build Shared Module
+  build-shared:
+    name: Build Shared Module
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build shared module
+        run: ./gradlew :shared:build
+
+      - name: Run shared tests
+        run: ./gradlew :shared:allTests
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-test-reports
+          path: 'shared/build/reports/tests/'
+          retention-days: 7
+
+  # Build Android
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    needs: build-shared
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Create mock google-services.json
+        run: |
+          mkdir -p androidApp/src/debug
+          cat > androidApp/google-services.json << 'EOF'
+          {"project_info":{"project_number":"0","project_id":"mock","storage_bucket":"mock.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:0:android:mock","android_client_info":{"package_name":"com.partygallery.android"}},"oauth_client":[],"api_key":[{"current_key":"mock"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}
+          EOF
+
+      - name: Build Android Debug
+        run: ./gradlew :androidApp:assembleDebug
+
+      - name: Run Android Unit Tests
+        run: ./gradlew :androidApp:testDebugUnitTest
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-debug-apk
+          path: androidApp/build/outputs/apk/debug/*.apk
+          retention-days: 7
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-test-reports
+          path: 'androidApp/build/reports/tests/'
+          retention-days: 7
+
+  # Build Desktop
+  build-desktop:
+    name: Build Desktop
+    runs-on: ubuntu-latest
+    needs: build-shared
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build Desktop
+        run: ./gradlew :desktopApp:packageDistributionForCurrentOS
+
+      - name: Upload Desktop distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-distribution
+          path: desktopApp/build/compose/binaries/
+          retention-days: 7
+
+  # Build Web
+  build-web:
+    name: Build Web
+    runs-on: ubuntu-latest
+    needs: build-shared
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build Web
+        run: ./gradlew :webApp:jsBrowserProductionWebpack
+
+      - name: Upload Web distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-distribution
+          path: webApp/build/dist/js/productionExecutable/
+          retention-days: 7
+
+  # Build iOS (macOS runner required)
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
+    needs: build-shared
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_15.2.app
+
+      - name: Build iOS Framework
+        run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+
+      - name: Run iOS Tests
+        run: ./gradlew :shared:iosSimulatorArm64Test

@@ -39,7 +39,7 @@ data class PartyGalleryColorScheme(
     val border: Color,
     val divider: Color,
     val scrim: Color,
-    val isDark: Boolean
+    val isDark: Boolean,
 )
 
 val DarkColorScheme = PartyGalleryColorScheme(
@@ -63,7 +63,7 @@ val DarkColorScheme = PartyGalleryColorScheme(
     border = PartyGalleryColors.DarkBorder,
     divider = PartyGalleryColors.DarkDivider,
     scrim = PartyGalleryColors.Scrim,
-    isDark = true
+    isDark = true,
 )
 
 val LightColorScheme = PartyGalleryColorScheme(
@@ -87,7 +87,7 @@ val LightColorScheme = PartyGalleryColorScheme(
     border = PartyGalleryColors.LightBorder,
     divider = PartyGalleryColors.LightDivider,
     scrim = PartyGalleryColors.ScrimLight,
-    isDark = false
+    isDark = false,
 )
 
 // ============================================
@@ -110,10 +110,7 @@ val LocalPartyGallerySpacing = staticCompositionLocalOf { PartyGallerySpacing }
  * @param content The content to be themed.
  */
 @Composable
-fun PartyGalleryTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
+fun PartyGalleryTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
     CompositionLocalProvider(
@@ -121,7 +118,7 @@ fun PartyGalleryTheme(
         LocalPartyGalleryTypography provides PartyGalleryTypography,
         LocalPartyGalleryShapes provides PartyGalleryShapes,
         LocalPartyGallerySpacing provides PartyGallerySpacing,
-        content = content
+        content = content,
     )
 }
 

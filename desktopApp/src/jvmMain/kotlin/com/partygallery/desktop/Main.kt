@@ -1,322 +1,478 @@
 package com.partygallery.desktop
 
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.partygallery.data.auth.FirebaseAuthService
+import com.partygallery.data.repository.AuthRepositoryImpl
+import com.partygallery.presentation.store.SignUpStore
+import com.partygallery.presentation.state.SignUpStep
+import com.partygallery.ui.components.PartyButton
+import com.partygallery.ui.components.PartyButtonSize
+import com.partygallery.ui.components.PartyButtonVariant
+import com.partygallery.ui.components.PartyTextField
+import com.partygallery.ui.screens.auth.signup.*
+import com.partygallery.ui.screens.main.MainScreen
 import com.partygallery.ui.theme.*
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+
+/**
+ * Demo Application
+ *
+ * Party Gallery Desktop Demo with Login and SignUp Flow
+ * Uses mock data for testing all screens
+ */
+
+enum class Screen {
+    LOGIN,
+    SIGNUP,
+    HOME
+}
 
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = "Party Gallery - Design System Preview",
-        state = rememberWindowState(width = 420.dp, height = 800.dp)
+        title = "Party Gallery",
+        state = rememberWindowState(width = 420.dp, height = 850.dp),
     ) {
         PartyGalleryTheme(darkTheme = true) {
-            DesignSystemPreview()
+            PartyGalleryApp()
         }
     }
 }
 
 @Composable
-fun DesignSystemPreview() {
-    val colors = Theme.colors
-    val scrollState = rememberScrollState()
+fun PartyGalleryApp() {
+    var currentScreen by remember { mutableStateOf(Screen.LOGIN) }
+    var loggedInEmail by remember { mutableStateOf<String?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(colors.background)
-            .verticalScroll(scrollState)
-            .padding(PartyGallerySpacing.screenHorizontal)
-    ) {
-        // Header
-        Text(
-            text = "Party Gallery",
-            style = PartyGalleryTypography.displaySmall,
-            color = colors.primary
-        )
+    // Create mock auth and signup store
+    val authRepository = remember { AuthRepositoryImpl(FirebaseAuthService()) }
+    val signUpStore = remember { SignUpStore(authRepository) }
+    val signUpState by signUpStore.state.collectAsState()
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = "Dark Mode First Design System",
-            style = PartyGalleryTypography.bodyMedium,
-            color = colors.onBackgroundVariant
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Color Palette Section
-        SectionTitle("Color Palette")
-
-        ColorRow("Background", colors.background, "#0A0A0A")
-        ColorRow("Surface", colors.surface, "#141414")
-        ColorRow("Surface Variant", colors.surfaceVariant, "#1E1E1E")
-        ColorRow("Primary (Amber)", colors.primary, "#F59E0B")
-        ColorRow("Secondary", colors.secondary, "#FBBF24")
-        ColorRow("Error", colors.error, "#EF4444")
-        ColorRow("Success", colors.success, "#22C55E")
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Mood Colors
-        SectionTitle("Mood Colors")
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            MoodChip("HYPE", PartyGalleryColors.MoodHype)
-            MoodChip("CHILL", PartyGalleryColors.MoodChill)
-            MoodChip("WILD", PartyGalleryColors.MoodWild)
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            MoodChip("ROMANTIC", PartyGalleryColors.MoodRomantic)
-            MoodChip("CRAZY", PartyGalleryColors.MoodCrazy)
-            MoodChip("ELEGANT", PartyGalleryColors.MoodElegant)
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Typography Section
-        SectionTitle("Typography")
-
-        Text(
-            text = "Display Large",
-            style = PartyGalleryTypography.displayLarge,
-            color = colors.onBackground
-        )
-        Text(
-            text = "Headline Medium",
-            style = PartyGalleryTypography.headlineMedium,
-            color = colors.onBackground
-        )
-        Text(
-            text = "Title Large",
-            style = PartyGalleryTypography.titleLarge,
-            color = colors.onBackground
-        )
-        Text(
-            text = "Body Large - Main content text",
-            style = PartyGalleryTypography.bodyLarge,
-            color = colors.onBackground
-        )
-        Text(
-            text = "Body Medium - Secondary text",
-            style = PartyGalleryTypography.bodyMedium,
-            color = colors.onBackgroundVariant
-        )
-        Text(
-            text = "Label Small - Metadata",
-            style = PartyGalleryTypography.labelSmall,
-            color = colors.onBackgroundDisabled
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Cards Section
-        SectionTitle("Cards")
-
-        // Simulated Party Card
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .clip(PartyGalleryShapes.mediaCard)
-                .background(colors.surfaceVariant)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Top row
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Avatar placeholder
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .background(colors.primary)
-                    )
-
-                    // Live badge
-                    Box(
-                        modifier = Modifier
-                            .clip(PartyGalleryShapes.chip)
-                            .background(colors.error)
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                    ) {
-                        Text(
-                            text = "● LIVE",
-                            style = PartyGalleryTypography.labelSmall,
-                            color = androidx.compose.ui.graphics.Color.White
-                        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        when (currentScreen) {
+            Screen.LOGIN -> {
+                SimpleLoginScreen(
+                    onLoginSuccess = { email ->
+                        loggedInEmail = email
+                        currentScreen = Screen.HOME
+                    },
+                    onNavigateToSignUp = {
+                        currentScreen = Screen.SIGNUP
                     }
+                )
+            }
+            Screen.SIGNUP -> {
+                SignUpFlowScreen(
+                    signUpStore = signUpStore,
+                    currentStep = signUpState.currentStep,
+                    onBackToLogin = {
+                        currentScreen = Screen.LOGIN
+                    },
+                    onSignUpComplete = {
+                        loggedInEmail = signUpState.email
+                        currentScreen = Screen.HOME
+                    }
+                )
+            }
+            Screen.HOME -> {
+                // Extract name from email if no firstName from SignUp
+                val displayName = signUpState.firstName.ifEmpty {
+                    loggedInEmail?.substringBefore("@")
+                        ?.replaceFirstChar { it.uppercase() }
+                        ?: "User"
                 }
-
-                // Bottom content
-                Column {
-                    Text(
-                        text = "Summer Rooftop Party",
-                        style = PartyGalleryTypography.partyTitle,
-                        color = colors.onBackground
-                    )
-                    Spacer(modifier = Modifier.height(4.dp))
-                    Text(
-                        text = "Downtown • 127 guests",
-                        style = PartyGalleryTypography.bodySmall,
-                        color = colors.onBackgroundVariant
-                    )
-                }
+                MainScreen(
+                    userFirstName = displayName,
+                    userEmail = loggedInEmail ?: "",
+                    onLogout = {
+                        currentScreen = Screen.LOGIN
+                        loggedInEmail = null
+                        signUpStore.processIntent(com.partygallery.presentation.intent.SignUpIntent.ResetFlow)
+                    }
+                )
             }
         }
+    }
+}
 
-        Spacer(modifier = Modifier.height(24.dp))
+/**
+ * SignUp Flow Container - Shows current step
+ */
+@Composable
+fun SignUpFlowScreen(
+    signUpStore: SignUpStore,
+    currentStep: SignUpStep,
+    onBackToLogin: () -> Unit,
+    onSignUpComplete: () -> Unit,
+) {
+    val state by signUpStore.state.collectAsState()
 
-        // Buttons Section
-        SectionTitle("Buttons")
+    // Watch for completion
+    LaunchedEffect(currentStep) {
+        if (currentStep == SignUpStep.COMPLETION) {
+            // Auto-navigate after completion screen button click
+        }
+    }
 
-        // Primary Button
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(PartyGalleryShapes.button)
-                .background(colors.primary)
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Join Party",
-                style = PartyGalleryTypography.labelLarge,
-                color = colors.onPrimary
+    // Collect events
+    LaunchedEffect(Unit) {
+        signUpStore.events.collect { event ->
+            when (event) {
+                is com.partygallery.presentation.state.SignUpEvent.NavigateToHome -> {
+                    onSignUpComplete()
+                }
+                else -> { /* Handle other events */ }
+            }
+        }
+    }
+
+    AnimatedContent(
+        targetState = currentStep,
+        transitionSpec = {
+            slideInHorizontally { width -> width } + fadeIn() togetherWith
+                slideOutHorizontally { width -> -width } + fadeOut()
+        }
+    ) { step ->
+        when (step) {
+            SignUpStep.BASIC_INFO -> BasicInfoScreen(
+                signUpStore = signUpStore,
+                onNavigateToLogin = onBackToLogin,
+            )
+            SignUpStep.AVATAR_SETUP -> AvatarSetupScreen(
+                signUpStore = signUpStore,
+                onBackPressed = {},
+            )
+            SignUpStep.CONTACT_SYNC -> ContactSyncScreen(
+                signUpStore = signUpStore,
+                onBackPressed = {},
+            )
+            SignUpStep.INTEREST_TAGS -> InterestTagsScreen(
+                signUpStore = signUpStore,
+                onBackPressed = {},
+            )
+            SignUpStep.SOCIAL_LINKING -> SocialLinkingScreen(
+                signUpStore = signUpStore,
+                onBackPressed = {},
+            )
+            SignUpStep.COMPLETION -> CompletionScreen(
+                signUpStore = signUpStore,
             )
         }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        // Secondary Button
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(PartyGalleryShapes.button)
-                .background(colors.surfaceVariant)
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Browse Events",
-                style = PartyGalleryTypography.labelLarge,
-                color = colors.primary
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Input Field
-        SectionTitle("Input Field")
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(PartyGalleryShapes.searchBar)
-                .background(colors.surfaceVariant)
-                .padding(16.dp)
-        ) {
-            Text(
-                text = "🔍  Search parties, venues...",
-                style = PartyGalleryTypography.bodyMedium,
-                color = colors.onBackgroundDisabled
-            )
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // Footer
-        Text(
-            text = "Design System v1.0",
-            style = PartyGalleryTypography.labelSmall,
-            color = colors.onBackgroundDisabled,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
 @Composable
-fun SectionTitle(title: String) {
-    Text(
-        text = title,
-        style = PartyGalleryTypography.titleMedium,
-        color = Theme.colors.primary
-    )
-    Spacer(modifier = Modifier.height(12.dp))
-}
+fun SimpleLoginScreen(
+    onLoginSuccess: (String) -> Unit,
+    onNavigateToSignUp: () -> Unit,
+) {
+    val colors = Theme.colors
+    val scope = rememberCoroutineScope()
 
-@Composable
-fun ColorRow(name: String, color: androidx.compose.ui.graphics.Color, hex: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .clip(PartyGalleryShapes.small)
-                .background(color)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = name,
-            style = PartyGalleryTypography.bodyMedium,
-            color = Theme.colors.onBackground,
-            modifier = Modifier.weight(1f)
-        )
-        Text(
-            text = hex,
-            style = PartyGalleryTypography.labelSmall,
-            color = Theme.colors.onBackgroundVariant
-        )
+    // Local state
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var isPasswordVisible by remember { mutableStateOf(false) }
+    var rememberMe by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
+    var emailError by remember { mutableStateOf<String?>(null) }
+    var passwordError by remember { mutableStateOf<String?>(null) }
+    var successMessage by remember { mutableStateOf<String?>(null) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+
+    // Validation
+    fun validateEmail(e: String): Boolean {
+        val regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".toRegex()
+        return e.matches(regex)
     }
-}
 
-@Composable
-fun MoodChip(mood: String, color: androidx.compose.ui.graphics.Color) {
+    fun validatePassword(p: String): Boolean = p.length >= 6
+
+    // Sign in action
+    fun signIn() {
+        emailError = null
+        passwordError = null
+        errorMessage = null
+        successMessage = null
+
+        if (!validateEmail(email)) {
+            emailError = "Please enter a valid email"
+            return
+        }
+        if (!validatePassword(password)) {
+            passwordError = "Password must be at least 6 characters"
+            return
+        }
+
+        isLoading = true
+
+        scope.launch {
+            delay(1500) // Simulate network delay
+            isLoading = false
+            successMessage = "Welcome! Login successful"
+            delay(800)
+            onLoginSuccess(email)
+        }
+    }
+
     Box(
         modifier = Modifier
-            .clip(PartyGalleryShapes.moodBadge)
-            .background(color.copy(alpha = 0.2f))
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .fillMaxSize()
+            .background(colors.background),
     ) {
-        Text(
-            text = mood,
-            style = PartyGalleryTypography.labelSmall,
-            color = color
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = PartyGallerySpacing.lg),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(60.dp))
+
+            // Logo
+            Text(
+                text = "Party",
+                style = PartyGalleryTypography.displayLarge,
+                color = colors.primary,
+            )
+            Text(
+                text = "Gallery",
+                style = PartyGalleryTypography.displayMedium,
+                color = colors.onBackground,
+            )
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.md))
+
+            Text(
+                text = "Capture and share party moments",
+                style = PartyGalleryTypography.bodyLarge,
+                color = colors.onBackgroundVariant,
+                textAlign = TextAlign.Center,
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            // Success message
+            if (successMessage != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colors.success.copy(alpha = 0.2f))
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = successMessage!!,
+                        style = PartyGalleryTypography.bodyMedium,
+                        color = colors.success,
+                    )
+                }
+                Spacer(modifier = Modifier.height(PartyGallerySpacing.md))
+            }
+
+            // Error message
+            if (errorMessage != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(colors.error.copy(alpha = 0.2f))
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = errorMessage!!,
+                        style = PartyGalleryTypography.bodyMedium,
+                        color = colors.error,
+                    )
+                }
+                Spacer(modifier = Modifier.height(PartyGallerySpacing.md))
+            }
+
+            // Email Field
+            PartyTextField(
+                value = email,
+                onValueChange = {
+                    email = it
+                    emailError = null
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Email",
+                placeholder = "Enter your email",
+                isError = emailError != null,
+                errorMessage = emailError,
+            )
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.md))
+
+            // Password Field
+            PartyTextField(
+                value = password,
+                onValueChange = {
+                    password = it
+                    passwordError = null
+                },
+                modifier = Modifier.fillMaxWidth(),
+                label = "Password",
+                placeholder = "Enter your password",
+                isError = passwordError != null,
+                errorMessage = passwordError,
+                visualTransformation = if (isPasswordVisible) {
+                    VisualTransformation.None
+                } else {
+                    PasswordVisualTransformation()
+                },
+                trailingIcon = {
+                    Text(
+                        text = if (isPasswordVisible) "Hide" else "Show",
+                        style = PartyGalleryTypography.labelSmall,
+                        color = colors.primary,
+                        modifier = Modifier.clickable { isPasswordVisible = !isPasswordVisible },
+                    )
+                },
+            )
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.sm))
+
+            // Remember me & Forgot password
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = rememberMe,
+                        onCheckedChange = { rememberMe = it },
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = colors.primary,
+                            uncheckedColor = colors.onBackgroundVariant,
+                            checkmarkColor = colors.onPrimary,
+                        ),
+                    )
+                    Text(
+                        text = "Remember me",
+                        style = PartyGalleryTypography.bodyMedium,
+                        color = colors.onBackgroundVariant,
+                    )
+                }
+
+                Text(
+                    text = "Forgot password?",
+                    style = PartyGalleryTypography.bodyMedium,
+                    color = colors.primary,
+                    modifier = Modifier.clickable {
+                        errorMessage = "Forgot password flow not implemented yet"
+                    },
+                )
+            }
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.xl))
+
+            // Login Button
+            PartyButton(
+                text = if (isLoading) "Signing in..." else "Sign In",
+                onClick = { signIn() },
+                modifier = Modifier.fillMaxWidth(),
+                variant = PartyButtonVariant.PRIMARY,
+                size = PartyButtonSize.LARGE,
+                enabled = !isLoading,
+                leadingIcon = if (isLoading) {
+                    {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            color = colors.onPrimary,
+                            strokeWidth = 2.dp,
+                        )
+                    }
+                } else {
+                    null
+                },
+            )
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.xl))
+
+            // Divider
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                @Suppress("DEPRECATION")
+                Divider(modifier = Modifier.weight(1f), color = colors.divider)
+                Text(
+                    text = "  or continue with  ",
+                    style = PartyGalleryTypography.bodySmall,
+                    color = colors.onBackgroundVariant,
+                )
+                @Suppress("DEPRECATION")
+                Divider(modifier = Modifier.weight(1f), color = colors.divider)
+            }
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.xl))
+
+            // Social buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(PartyGallerySpacing.md),
+            ) {
+                PartyButton(
+                    text = "Google",
+                    onClick = { errorMessage = "Google Sign-In coming soon" },
+                    modifier = Modifier.weight(1f),
+                    variant = PartyButtonVariant.SECONDARY,
+                    size = PartyButtonSize.MEDIUM,
+                    enabled = !isLoading,
+                )
+                PartyButton(
+                    text = "Apple",
+                    onClick = { errorMessage = "Apple Sign-In coming soon" },
+                    modifier = Modifier.weight(1f),
+                    variant = PartyButtonVariant.SECONDARY,
+                    size = PartyButtonSize.MEDIUM,
+                    enabled = !isLoading,
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Sign Up link
+            Row(
+                modifier = Modifier.padding(vertical = PartyGallerySpacing.xl),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    text = "Don't have an account? ",
+                    style = PartyGalleryTypography.bodyMedium,
+                    color = colors.onBackgroundVariant,
+                )
+                Text(
+                    text = "Sign Up",
+                    style = PartyGalleryTypography.labelMedium,
+                    color = colors.primary,
+                    modifier = Modifier.clickable { onNavigateToSignUp() },
+                )
+            }
+
+            Spacer(modifier = Modifier.height(PartyGallerySpacing.md))
+        }
     }
 }
