@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -65,6 +64,7 @@ fun HomeScreen(
     store: HomeStore = remember { HomeStore() },
     onPartyClick: (String) -> Unit = {},
     onProfileClick: (String) -> Unit = {},
+    statusBarPadding: androidx.compose.ui.unit.Dp = 0.dp,
 ) {
     val state by store.state.collectAsState()
 
@@ -74,7 +74,7 @@ fun HomeScreen(
             .background(PartyGalleryColors.DarkBackground),
     ) {
         // Header
-        HomeHeader()
+        HomeHeader(topPadding = statusBarPadding)
 
         // Filter tabs
         FilterTabs(
@@ -117,11 +117,16 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeHeader() {
+private fun HomeHeader(topPadding: androidx.compose.ui.unit.Dp = 0.dp) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(PartyGallerySpacing.md),
+            .padding(
+                top = topPadding + PartyGallerySpacing.md,
+                start = PartyGallerySpacing.md,
+                end = PartyGallerySpacing.md,
+                bottom = PartyGallerySpacing.md,
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -142,10 +147,7 @@ private fun HomeHeader() {
 }
 
 @Composable
-private fun FilterTabs(
-    selectedFilter: FeedFilter,
-    onFilterSelected: (FeedFilter) -> Unit,
-) {
+private fun FilterTabs(selectedFilter: FeedFilter, onFilterSelected: (FeedFilter) -> Unit) {
     val filters = FeedFilter.entries
     val selectedIndex = filters.indexOf(selectedFilter)
 
@@ -171,10 +173,7 @@ private fun LoadingContent() {
 }
 
 @Composable
-private fun ErrorContent(
-    error: String,
-    onRetry: () -> Unit,
-) {
+private fun ErrorContent(error: String, onRetry: () -> Unit) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
@@ -274,10 +273,7 @@ private fun FeedContent(
 }
 
 @Composable
-private fun PartyCardItem(
-    item: FeedItem.PartyCard,
-    onClick: () -> Unit,
-) {
+private fun PartyCardItem(item: FeedItem.PartyCard, onClick: () -> Unit) {
     FeaturedMediaCard(
         onClick = onClick,
         content = {
@@ -382,11 +378,7 @@ private fun PartyCardItem(
 }
 
 @Composable
-private fun MediaPostItem(
-    item: FeedItem.MediaPost,
-    onLikeClick: () -> Unit,
-    onClick: () -> Unit,
-) {
+private fun MediaPostItem(item: FeedItem.MediaPost, onLikeClick: () -> Unit, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

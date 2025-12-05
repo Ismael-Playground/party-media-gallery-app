@@ -26,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.partygallery.presentation.intent.SignUpIntent
 import com.partygallery.presentation.state.PartyTag
@@ -53,10 +52,7 @@ import com.partygallery.ui.theme.Theme
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun InterestTagsScreen(
-    signUpStore: SignUpStore,
-    onBackPressed: () -> Unit = {},
-) {
+fun InterestTagsScreen(signUpStore: SignUpStore, onBackPressed: () -> Unit = {}) {
     val state by signUpStore.state.collectAsState()
     val colors = Theme.colors
 
@@ -193,11 +189,7 @@ private fun TagCategorySection(
 }
 
 @Composable
-private fun TagChip(
-    tag: PartyTag,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-) {
+private fun TagChip(tag: PartyTag, isSelected: Boolean, onClick: () -> Unit) {
     val colors = Theme.colors
 
     Box(
