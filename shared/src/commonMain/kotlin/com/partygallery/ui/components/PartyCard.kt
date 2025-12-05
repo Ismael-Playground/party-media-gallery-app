@@ -92,11 +92,13 @@ fun PartyCard(
  * Media Card - Specialized card for displaying media content
  *
  * No padding, designed for images/videos to fill the entire card.
+ * Includes optional gradient overlay for text visibility.
  */
 @Composable
 fun MediaCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    showGradientOverlay: Boolean = false,
     content: @Composable BoxScope.() -> Unit
 ) {
     val colors = Theme.colors
