@@ -9,7 +9,7 @@ enum class MediaType {
     PHOTO,
     VIDEO,
     AUDIO,
-    DOCUMENT
+    DOCUMENT,
 }
 
 /**
@@ -19,12 +19,12 @@ enum class MediaType {
  * S1-009: Modelo MediaContent (domain)
  */
 enum class PartyMood(val displayName: String, val emoji: String) {
-    HYPE("Hype", "\uD83D\uDD25"),      // Fire emoji
-    CHILL("Chill", "\uD83D\uDE0E"),    // Cool emoji
-    WILD("Wild", "\uD83E\uDD2A"),      // Crazy face
+    HYPE("Hype", "\uD83D\uDD25"), // Fire emoji
+    CHILL("Chill", "\uD83D\uDE0E"), // Cool emoji
+    WILD("Wild", "\uD83E\uDD2A"), // Crazy face
     ROMANTIC("Romantic", "\u2764\uFE0F"), // Red heart
-    CRAZY("Crazy", "\uD83C\uDF89"),    // Party popper
-    ELEGANT("Elegant", "\u2728")        // Sparkles
+    CRAZY("Crazy", "\uD83C\uDF89"), // Party popper
+    ELEGANT("Elegant", "\u2728"), // Sparkles
 }
 
 /**
@@ -35,7 +35,7 @@ data class MediaMetadata(
     val height: Int? = null,
     val durationSeconds: Int? = null,
     val mimeType: String? = null,
-    val sizeBytes: Long? = null
+    val sizeBytes: Long? = null,
 )
 
 /**
@@ -47,7 +47,7 @@ data class MediaSocialMetrics(
     val sharesCount: Int = 0,
     val viewsCount: Int = 0,
     val isLikedByUser: Boolean = false,
-    val isSavedByUser: Boolean = false
+    val isSavedByUser: Boolean = false,
 )
 
 /**
@@ -72,7 +72,7 @@ data class MediaContent(
     val isFeatured: Boolean = false,
     val capturedAt: Instant? = null,
     val createdAt: Instant,
-    val updatedAt: Instant? = null
+    val updatedAt: Instant? = null,
 ) {
     val isVideo: Boolean
         get() = type == MediaType.VIDEO
@@ -86,7 +86,9 @@ data class MediaContent(
     val aspectRatio: Float?
         get() = if (metadata.width != null && metadata.height != null && metadata.height > 0) {
             metadata.width.toFloat() / metadata.height.toFloat()
-        } else null
+        } else {
+            null
+        }
 
     val durationFormatted: String?
         get() = metadata.durationSeconds?.let { seconds ->
@@ -105,7 +107,7 @@ data class MediaContentThumbnail(
     val type: MediaType,
     val mood: PartyMood?,
     val isVideo: Boolean,
-    val durationSeconds: Int?
+    val durationSeconds: Int?,
 )
 
 /**
@@ -117,5 +119,5 @@ fun MediaContent.toThumbnail(): MediaContentThumbnail = MediaContentThumbnail(
     type = type,
     mood = mood,
     isVideo = isVideo,
-    durationSeconds = metadata.durationSeconds
+    durationSeconds = metadata.durationSeconds,
 )

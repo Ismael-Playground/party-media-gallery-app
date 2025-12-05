@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.partygallery.ui.theme.PartyGalleryShapes
@@ -22,12 +21,15 @@ import com.partygallery.ui.theme.Theme
 enum class PartyCardElevation {
     /** Flat - same as background */
     FLAT,
+
     /** Low - surfaceVariant */
     LOW,
+
     /** Medium - surfaceContainer */
     MEDIUM,
+
     /** High - surfaceContainerHigh */
-    HIGH
+    HIGH,
 }
 
 /**
@@ -50,7 +52,7 @@ fun PartyCard(
     padding: Dp = PartyGallerySpacing.cardPadding,
     onClick: (() -> Unit)? = null,
     showBorder: Boolean = false,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val colors = Theme.colors
 
@@ -65,7 +67,7 @@ fun PartyCard(
         Modifier.border(
             width = 1.dp,
             color = colors.border,
-            shape = PartyGalleryShapes.mediaCard
+            shape = PartyGalleryShapes.mediaCard,
         )
     } else {
         Modifier
@@ -84,7 +86,7 @@ fun PartyCard(
             .background(backgroundColor)
             .then(clickModifier)
             .padding(padding),
-        content = content
+        content = content,
     )
 }
 
@@ -99,7 +101,7 @@ fun MediaCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     showGradientOverlay: Boolean = false,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.() -> Unit,
 ) {
     val colors = Theme.colors
 
@@ -114,6 +116,6 @@ fun MediaCard(
             .clip(PartyGalleryShapes.mediaCard)
             .background(colors.surfaceVariant)
             .then(clickModifier),
-        content = content
+        content = content,
     )
 }

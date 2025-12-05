@@ -41,13 +41,10 @@ interface MediaRepository {
         localPath: String,
         type: MediaType,
         mood: PartyMood? = null,
-        caption: String? = null
+        caption: String? = null,
     ): Result<MediaContent>
 
-    suspend fun uploadMultipleMedia(
-        partyId: String,
-        items: List<MediaUploadItem>
-    ): Result<List<MediaContent>>
+    suspend fun uploadMultipleMedia(partyId: String, items: List<MediaUploadItem>): Result<List<MediaContent>>
 
     fun observeUploadProgress(uploadId: String): Flow<UploadProgress>
 
@@ -84,7 +81,7 @@ data class MediaUploadItem(
     val localPath: String,
     val type: MediaType,
     val mood: PartyMood? = null,
-    val caption: String? = null
+    val caption: String? = null,
 )
 
 /**

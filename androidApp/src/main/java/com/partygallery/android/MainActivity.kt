@@ -3,15 +3,15 @@ package com.partygallery.android
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.partygallery.Greeting
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             PartyGalleryTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    color = MaterialTheme.colorScheme.background,
                 ) {
                     Column {
                         GreetingView(Greeting().greet())
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 fun GreetingView(text: String, modifier: Modifier = Modifier) {
     Text(
         text = text,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -47,17 +47,17 @@ fun VersionInfo(modifier: Modifier = Modifier) {
         Text(
             text = "v${BuildConfig.VERSION_NAME}",
             style = MaterialTheme.typography.bodySmall,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
         Text(
             text = "Build: ${BuildConfig.BUILD_NUMBER}",
-            style = MaterialTheme.typography.bodySmall
+            style = MaterialTheme.typography.bodySmall,
         )
         if (BuildConfig.IS_CI_BUILD) {
             Text(
                 text = "CI Build ✅",
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         }
     }

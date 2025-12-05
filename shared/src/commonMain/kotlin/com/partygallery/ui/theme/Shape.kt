@@ -57,7 +57,7 @@ object PartyGalleryShapes {
         topStart = 20.dp,
         topEnd = 20.dp,
         bottomStart = 0.dp,
-        bottomEnd = 0.dp
+        bottomEnd = 0.dp,
     )
 
     /** Modal dialog shape */
@@ -71,7 +71,7 @@ object PartyGalleryShapes {
         topStart = 4.dp,
         topEnd = 4.dp,
         bottomStart = 0.dp,
-        bottomEnd = 0.dp
+        bottomEnd = 0.dp,
     )
 
     /** Search bar shape */

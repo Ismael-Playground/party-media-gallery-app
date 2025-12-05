@@ -67,7 +67,7 @@ fun PartyTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val colors = Theme.colors
     val interactionSource = remember { MutableInteractionSource() }
@@ -87,7 +87,7 @@ fun PartyTextField(
             Text(
                 text = label,
                 style = PartyGalleryTypography.labelMedium,
-                color = if (isError) colors.error else colors.onBackgroundVariant
+                color = if (isError) colors.error else colors.onBackgroundVariant,
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -101,12 +101,12 @@ fun PartyTextField(
                 .border(
                     width = 1.dp,
                     color = borderColor,
-                    shape = PartyGalleryShapes.inputField
+                    shape = PartyGalleryShapes.inputField,
                 )
-                .padding(PartyGallerySpacing.inputPadding)
+                .padding(PartyGallerySpacing.inputPadding),
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 // Leading icon
                 if (leadingIcon != null) {
@@ -116,14 +116,14 @@ fun PartyTextField(
 
                 // Text input
                 Box(
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
                 ) {
                     // Placeholder
                     if (value.isEmpty() && placeholder != null) {
                         Text(
                             text = placeholder,
                             style = PartyGalleryTypography.bodyLarge,
-                            color = colors.onBackgroundDisabled
+                            color = colors.onBackgroundDisabled,
                         )
                     }
 
@@ -133,7 +133,7 @@ fun PartyTextField(
                         modifier = Modifier.fillMaxWidth(),
                         enabled = enabled,
                         textStyle = PartyGalleryTypography.bodyLarge.copy(
-                            color = colors.onBackground
+                            color = colors.onBackground,
                         ),
                         singleLine = singleLine,
                         maxLines = maxLines,
@@ -141,7 +141,7 @@ fun PartyTextField(
                         keyboardActions = keyboardActions,
                         visualTransformation = visualTransformation,
                         interactionSource = interactionSource,
-                        cursorBrush = SolidColor(colors.primary)
+                        cursorBrush = SolidColor(colors.primary),
                     )
                 }
 
@@ -159,7 +159,7 @@ fun PartyTextField(
             Text(
                 text = errorMessage,
                 style = PartyGalleryTypography.labelSmall,
-                color = colors.error
+                color = colors.error,
             )
         }
     }
@@ -175,7 +175,7 @@ fun PartySearchField(
     modifier: Modifier = Modifier,
     placeholder: String = "Search...",
     onClear: () -> Unit = { onValueChange("") },
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     val colors = Theme.colors
 
@@ -184,16 +184,16 @@ fun PartySearchField(
             .fillMaxWidth()
             .clip(PartyGalleryShapes.searchBar)
             .background(colors.surfaceVariant)
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             // Search icon placeholder (would be an actual icon in production)
             Text(
                 text = "🔍",
                 style = PartyGalleryTypography.bodyMedium,
-                color = colors.onBackgroundVariant
+                color = colors.onBackgroundVariant,
             )
 
             Spacer(modifier = Modifier.width(12.dp))
@@ -203,7 +203,7 @@ fun PartySearchField(
                     Text(
                         text = placeholder,
                         style = PartyGalleryTypography.bodyMedium,
-                        color = colors.onBackgroundDisabled
+                        color = colors.onBackgroundDisabled,
                     )
                 }
 
@@ -213,10 +213,10 @@ fun PartySearchField(
                     modifier = Modifier.fillMaxWidth(),
                     enabled = enabled,
                     textStyle = PartyGalleryTypography.bodyMedium.copy(
-                        color = colors.onBackground
+                        color = colors.onBackground,
                     ),
                     singleLine = true,
-                    cursorBrush = SolidColor(colors.primary)
+                    cursorBrush = SolidColor(colors.primary),
                 )
             }
 
@@ -229,7 +229,7 @@ fun PartySearchField(
                     color = colors.onBackgroundVariant,
                     modifier = Modifier
                         .clip(PartyGalleryShapes.full)
-                        .padding(4.dp)
+                        .padding(4.dp),
                 )
             }
         }

@@ -20,7 +20,7 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         title = "Party Gallery - Design System Preview",
-        state = rememberWindowState(width = 420.dp, height = 800.dp)
+        state = rememberWindowState(width = 420.dp, height = 800.dp),
     ) {
         PartyGalleryTheme(darkTheme = true) {
             DesignSystemPreview()
@@ -38,13 +38,13 @@ fun DesignSystemPreview() {
             .fillMaxSize()
             .background(colors.background)
             .verticalScroll(scrollState)
-            .padding(PartyGallerySpacing.screenHorizontal)
+            .padding(PartyGallerySpacing.screenHorizontal),
     ) {
         // Header
         Text(
             text = "Party Gallery",
             style = PartyGalleryTypography.displaySmall,
-            color = colors.primary
+            color = colors.primary,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -52,7 +52,7 @@ fun DesignSystemPreview() {
         Text(
             text = "Dark Mode First Design System",
             style = PartyGalleryTypography.bodyMedium,
-            color = colors.onBackgroundVariant
+            color = colors.onBackgroundVariant,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -75,7 +75,7 @@ fun DesignSystemPreview() {
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             MoodChip("HYPE", PartyGalleryColors.MoodHype)
             MoodChip("CHILL", PartyGalleryColors.MoodChill)
@@ -86,7 +86,7 @@ fun DesignSystemPreview() {
 
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             MoodChip("ROMANTIC", PartyGalleryColors.MoodRomantic)
             MoodChip("CRAZY", PartyGalleryColors.MoodCrazy)
@@ -101,32 +101,32 @@ fun DesignSystemPreview() {
         Text(
             text = "Display Large",
             style = PartyGalleryTypography.displayLarge,
-            color = colors.onBackground
+            color = colors.onBackground,
         )
         Text(
             text = "Headline Medium",
             style = PartyGalleryTypography.headlineMedium,
-            color = colors.onBackground
+            color = colors.onBackground,
         )
         Text(
             text = "Title Large",
             style = PartyGalleryTypography.titleLarge,
-            color = colors.onBackground
+            color = colors.onBackground,
         )
         Text(
             text = "Body Large - Main content text",
             style = PartyGalleryTypography.bodyLarge,
-            color = colors.onBackground
+            color = colors.onBackground,
         )
         Text(
             text = "Body Medium - Secondary text",
             style = PartyGalleryTypography.bodyMedium,
-            color = colors.onBackgroundVariant
+            color = colors.onBackgroundVariant,
         )
         Text(
             text = "Label Small - Metadata",
             style = PartyGalleryTypography.labelSmall,
-            color = colors.onBackgroundDisabled
+            color = colors.onBackgroundDisabled,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -140,26 +140,26 @@ fun DesignSystemPreview() {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clip(PartyGalleryShapes.mediaCard)
-                .background(colors.surfaceVariant)
+                .background(colors.surfaceVariant),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceBetween,
             ) {
                 // Top row
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // Avatar placeholder
                     Box(
                         modifier = Modifier
                             .size(40.dp)
                             .clip(CircleShape)
-                            .background(colors.primary)
+                            .background(colors.primary),
                     )
 
                     // Live badge
@@ -167,12 +167,12 @@ fun DesignSystemPreview() {
                         modifier = Modifier
                             .clip(PartyGalleryShapes.chip)
                             .background(colors.error)
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
                     ) {
                         Text(
                             text = "● LIVE",
                             style = PartyGalleryTypography.labelSmall,
-                            color = androidx.compose.ui.graphics.Color.White
+                            color = androidx.compose.ui.graphics.Color.White,
                         )
                     }
                 }
@@ -182,13 +182,13 @@ fun DesignSystemPreview() {
                     Text(
                         text = "Summer Rooftop Party",
                         style = PartyGalleryTypography.partyTitle,
-                        color = colors.onBackground
+                        color = colors.onBackground,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Downtown • 127 guests",
                         style = PartyGalleryTypography.bodySmall,
-                        color = colors.onBackgroundVariant
+                        color = colors.onBackgroundVariant,
                     )
                 }
             }
@@ -206,12 +206,12 @@ fun DesignSystemPreview() {
                 .clip(PartyGalleryShapes.button)
                 .background(colors.primary)
                 .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "Join Party",
                 style = PartyGalleryTypography.labelLarge,
-                color = colors.onPrimary
+                color = colors.onPrimary,
             )
         }
 
@@ -224,12 +224,12 @@ fun DesignSystemPreview() {
                 .clip(PartyGalleryShapes.button)
                 .background(colors.surfaceVariant)
                 .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "Browse Events",
                 style = PartyGalleryTypography.labelLarge,
-                color = colors.primary
+                color = colors.primary,
             )
         }
 
@@ -243,12 +243,12 @@ fun DesignSystemPreview() {
                 .fillMaxWidth()
                 .clip(PartyGalleryShapes.searchBar)
                 .background(colors.surfaceVariant)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Text(
                 text = "🔍  Search parties, venues...",
                 style = PartyGalleryTypography.bodyMedium,
-                color = colors.onBackgroundDisabled
+                color = colors.onBackgroundDisabled,
             )
         }
 
@@ -259,7 +259,7 @@ fun DesignSystemPreview() {
             text = "Design System v1.0",
             style = PartyGalleryTypography.labelSmall,
             color = colors.onBackgroundDisabled,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -271,7 +271,7 @@ fun SectionTitle(title: String) {
     Text(
         text = title,
         style = PartyGalleryTypography.titleMedium,
-        color = Theme.colors.primary
+        color = Theme.colors.primary,
     )
     Spacer(modifier = Modifier.height(12.dp))
 }
@@ -282,25 +282,25 @@ fun ColorRow(name: String, color: androidx.compose.ui.graphics.Color, hex: Strin
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
             modifier = Modifier
                 .size(32.dp)
                 .clip(PartyGalleryShapes.small)
-                .background(color)
+                .background(color),
         )
         Spacer(modifier = Modifier.width(12.dp))
         Text(
             text = name,
             style = PartyGalleryTypography.bodyMedium,
             color = Theme.colors.onBackground,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
         Text(
             text = hex,
             style = PartyGalleryTypography.labelSmall,
-            color = Theme.colors.onBackgroundVariant
+            color = Theme.colors.onBackgroundVariant,
         )
     }
 }
@@ -311,12 +311,12 @@ fun MoodChip(mood: String, color: androidx.compose.ui.graphics.Color) {
         modifier = Modifier
             .clip(PartyGalleryShapes.moodBadge)
             .background(color.copy(alpha = 0.2f))
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 12.dp, vertical = 6.dp),
     ) {
         Text(
             text = mood,
             style = PartyGalleryTypography.labelSmall,
-            color = color
+            color = color,
         )
     }
 }

@@ -28,7 +28,7 @@ data class User(
     val isProfileComplete: Boolean = false,
     val notificationsEnabled: Boolean = true,
     val createdAt: Instant,
-    val updatedAt: Instant? = null
+    val updatedAt: Instant? = null,
 ) {
     val displayName: String
         get() = "$firstName $lastName"
@@ -46,7 +46,7 @@ data class SocialLinks(
     val twitter: String? = null,
     val facebook: String? = null,
     val pinterest: String? = null,
-    val spotify: String? = null
+    val spotify: String? = null,
 ) {
     val hasAnyLink: Boolean
         get() = listOf(instagram, tiktok, twitter, facebook, pinterest, spotify).any { it != null }
@@ -60,7 +60,7 @@ data class UserSummary(
     val username: String,
     val displayName: String,
     val avatarUrl: String?,
-    val isVerified: Boolean = false
+    val isVerified: Boolean = false,
 )
 
 /**
@@ -71,5 +71,5 @@ fun User.toSummary(): UserSummary = UserSummary(
     username = username,
     displayName = displayName,
     avatarUrl = avatarUrl,
-    isVerified = isVerified
+    isVerified = isVerified,
 )
