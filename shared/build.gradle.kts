@@ -17,9 +17,17 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+    // iOS targets with framework configuration for Compose Multiplatform
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64(),
+    ).forEach { iosTarget ->
+        iosTarget.binaries.framework {
+            baseName = "shared"
+            isStatic = false  // Dynamic framework required for Compose Multiplatform iOS
+        }
+    }
 
     jvm("desktop")
 
