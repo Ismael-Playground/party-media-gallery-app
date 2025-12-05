@@ -1,5 +1,8 @@
 package com.partygallery.di
 
+import com.partygallery.data.auth.FirebaseAuthService
+import com.partygallery.data.repository.AuthRepositoryImpl
+import com.partygallery.domain.repository.AuthRepository
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
@@ -33,7 +36,13 @@ val domainModule = module {
  * Contains repositories and data sources.
  */
 val dataModule = module {
-    // Repository implementations will be added here
+    // Firebase Auth Service (S2-001)
+    single { FirebaseAuthService() }
+
+    // Auth Repository (S2-002)
+    single<AuthRepository> { AuthRepositoryImpl(get()) }
+
+    // Other repository implementations will be added here
     // Example:
     // single<UserRepository> { UserRepositoryImpl(get(), get()) }
     // single<PartyEventRepository> { PartyEventRepositoryImpl(get()) }
