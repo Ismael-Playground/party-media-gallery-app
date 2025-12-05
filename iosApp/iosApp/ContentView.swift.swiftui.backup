@@ -1,0 +1,276 @@
+import SwiftUI
+
+/// Party Gallery iOS App
+/// Dark Mode First Design
+/// Primary Color: Amber #F59E0B
+/// Background: #0A0A0A
+
+struct ContentView: View {
+    @State private var email = ""
+    @State private var password = ""
+    @State private var isLoading = false
+    @State private var showHome = false
+
+    // Party Gallery Colors
+    let backgroundColor = Color(red: 10/255, green: 10/255, blue: 10/255)
+    let primaryColor = Color(red: 245/255, green: 158/255, blue: 11/255)
+    let surfaceColor = Color(red: 20/255, green: 20/255, blue: 20/255)
+    let textSecondary = Color(red: 161/255, green: 161/255, blue: 170/255)
+
+    var body: some View {
+        NavigationView {
+            if showHome {
+                HomeView(
+                    email: email,
+                    onLogout: {
+                        showHome = false
+                        email = ""
+                        password = ""
+                    }
+                )
+            } else {
+                loginView
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+
+    var loginView: some View {
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+
+            ScrollView {
+                VStack(spacing: 24) {
+                    Spacer().frame(height: 60)
+
+                    // Logo
+                    VStack(spacing: 4) {
+                        Text("Party")
+                            .font(.system(size: 48, weight: .bold))
+                            .foregroundColor(primaryColor)
+                        Text("Gallery")
+                            .font(.system(size: 36, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+
+                    Text("Capture and share party moments")
+                        .font(.body)
+                        .foregroundColor(textSecondary)
+
+                    Spacer().frame(height: 32)
+
+                    // Email Field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Email")
+                            .font(.caption)
+                            .foregroundColor(textSecondary)
+                        TextField("Enter your email", text: $email)
+                            .textFieldStyle(PartyTextFieldStyle())
+                            .keyboardType(.emailAddress)
+                            .autocapitalization(.none)
+                    }
+
+                    // Password Field
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Password")
+                            .font(.caption)
+                            .foregroundColor(textSecondary)
+                        SecureField("Enter your password", text: $password)
+                            .textFieldStyle(PartyTextFieldStyle())
+                    }
+
+                    // Sign In Button
+                    Button(action: signIn) {
+                        HStack {
+                            if isLoading {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .black))
+                                    .scaleEffect(0.8)
+                            }
+                            Text(isLoading ? "Signing in..." : "Sign In")
+                                .font(.system(size: 17, weight: .semibold))
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                        .background(primaryColor)
+                        .foregroundColor(.black)
+                        .cornerRadius(12)
+                    }
+                    .disabled(isLoading || email.isEmpty || password.count < 6)
+                    .opacity(email.isEmpty || password.count < 6 ? 0.6 : 1)
+
+                    // Divider
+                    HStack {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 1)
+                        Text("or continue with")
+                            .font(.caption)
+                            .foregroundColor(textSecondary)
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 1)
+                    }
+
+                    // Social Buttons
+                    HStack(spacing: 16) {
+                        SocialButton(title: "Google", action: {})
+                        SocialButton(title: "Apple", action: {})
+                    }
+
+                    Spacer()
+
+                    // Sign Up Link
+                    HStack {
+                        Text("Don't have an account?")
+                            .foregroundColor(textSecondary)
+                        Button("Sign Up") {
+                            // TODO: Navigate to signup
+                        }
+                        .foregroundColor(primaryColor)
+                        .font(.system(size: 15, weight: .semibold))
+                    }
+                    .font(.subheadline)
+                    .padding(.bottom, 24)
+                }
+                .padding(.horizontal, 24)
+            }
+        }
+    }
+
+    func signIn() {
+        isLoading = true
+        // Simulate network delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            isLoading = false
+            showHome = true
+        }
+    }
+}
+
+struct HomeView: View {
+    let email: String
+    let onLogout: () -> Void
+
+    let backgroundColor = Color(red: 10/255, green: 10/255, blue: 10/255)
+    let primaryColor = Color(red: 245/255, green: 158/255, blue: 11/255)
+    let textSecondary = Color(red: 161/255, green: 161/255, blue: 170/255)
+
+    var displayName: String {
+        email.components(separatedBy: "@").first?.capitalized ?? "User"
+    }
+
+    var body: some View {
+        ZStack {
+            backgroundColor.ignoresSafeArea()
+
+            VStack(spacing: 24) {
+                Text("🎉")
+                    .font(.system(size: 64))
+
+                Text("Welcome, \(displayName)!")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(.white)
+
+                Text(email)
+                    .font(.subheadline)
+                    .foregroundColor(textSecondary)
+
+                Text("You're all set to start\ncapturing party moments!")
+                    .font(.body)
+                    .foregroundColor(textSecondary)
+                    .multilineTextAlignment(.center)
+
+                Spacer().frame(height: 32)
+
+                Button("Explore Parties") {
+                    // TODO
+                }
+                .buttonStyle(PrimaryButtonStyle())
+
+                Button("Create a Party") {
+                    // TODO
+                }
+                .buttonStyle(SecondaryButtonStyle())
+
+                Spacer()
+
+                Button("Logout") {
+                    onLogout()
+                }
+                .foregroundColor(.red)
+                .padding()
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 60)
+        }
+    }
+}
+
+// MARK: - Custom Styles
+
+struct PartyTextFieldStyle: TextFieldStyle {
+    func _body(configuration: TextField<Self._Label>) -> some View {
+        configuration
+            .padding()
+            .background(Color(red: 30/255, green: 30/255, blue: 30/255))
+            .cornerRadius(12)
+            .foregroundColor(.white)
+    }
+}
+
+struct PrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(Color(red: 245/255, green: 158/255, blue: 11/255))
+            .foregroundColor(.black)
+            .font(.system(size: 17, weight: .semibold))
+            .cornerRadius(12)
+            .opacity(configuration.isPressed ? 0.8 : 1)
+    }
+}
+
+struct SecondaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(Color(red: 30/255, green: 30/255, blue: 30/255))
+            .foregroundColor(.white)
+            .font(.system(size: 17, weight: .semibold))
+            .cornerRadius(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+            )
+            .opacity(configuration.isPressed ? 0.8 : 1)
+    }
+}
+
+struct SocialButton: View {
+    let title: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Text(title)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(Color(red: 30/255, green: 30/255, blue: 30/255))
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+                )
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
