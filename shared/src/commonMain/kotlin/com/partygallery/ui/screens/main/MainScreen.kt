@@ -16,7 +16,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import com.partygallery.ui.components.BottomNavBar
+import com.partygallery.ui.screens.favorites.FavoritesScreen
 import com.partygallery.ui.screens.party.PartyDetailScreen
+import com.partygallery.ui.screens.studio.StudioScreen
 import com.partygallery.ui.theme.PartyGalleryColors
 import com.partygallery.ui.theme.PartyGallerySpacing
 import com.partygallery.ui.theme.Theme
@@ -86,7 +88,9 @@ fun MainScreen(userFirstName: String = "User", userEmail: String = "", onLogout:
                         onPartyClick = onPartyClick,
                     )
                 }
-                is MainNavigation.Favorites -> FavoritesScreen()
+                is MainNavigation.Favorites -> FavoritesScreen(
+                    onPartyClick = onPartyClick,
+                )
                 is MainNavigation.Studio -> StudioScreen()
                 is MainNavigation.Profile -> ProfileScreen(
                     userName = userFirstName,
@@ -122,74 +126,6 @@ fun MainScreen(userFirstName: String = "User", userEmail: String = "", onLogout:
                         else -> MainNavigation.Home
                     }
                 },
-            )
-        }
-    }
-}
-
-/**
- * Favorites Screen placeholder.
- */
-@Composable
-fun FavoritesScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(PartyGalleryColors.DarkBackground)
-            .padding(PartyGallerySpacing.md),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = "⭐",
-                style = Theme.typography.displayLarge,
-            )
-            Text(
-                text = "Favorites",
-                style = Theme.typography.headlineMedium,
-                color = PartyGalleryColors.DarkOnBackground,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = "Your favorite parties will appear here",
-                style = Theme.typography.bodyMedium,
-                color = PartyGalleryColors.DarkOnBackgroundVariant,
-            )
-        }
-    }
-}
-
-/**
- * Studio Screen placeholder.
- */
-@Composable
-fun StudioScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(PartyGalleryColors.DarkBackground)
-            .padding(PartyGallerySpacing.md),
-        contentAlignment = Alignment.Center,
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Text(
-                text = "🎬",
-                style = Theme.typography.displayLarge,
-            )
-            Text(
-                text = "Party Studio",
-                style = Theme.typography.headlineMedium,
-                color = PartyGalleryColors.DarkOnBackground,
-                fontWeight = FontWeight.Bold,
-            )
-            Text(
-                text = "Create and edit your party content",
-                style = Theme.typography.bodyMedium,
-                color = PartyGalleryColors.DarkOnBackgroundVariant,
             )
         }
     }
