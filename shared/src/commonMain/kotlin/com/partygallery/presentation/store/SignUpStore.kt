@@ -8,7 +8,6 @@ import com.partygallery.presentation.state.SignUpEvent
 import com.partygallery.presentation.state.SignUpResult
 import com.partygallery.presentation.state.SignUpState
 import com.partygallery.presentation.state.SignUpStep
-import com.partygallery.presentation.state.SocialLinks
 import com.partygallery.presentation.state.SocialPlatform
 import com.partygallery.presentation.state.TagCategory
 import kotlinx.coroutines.CoroutineScope

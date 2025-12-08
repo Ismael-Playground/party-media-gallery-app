@@ -23,8 +23,8 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.partygallery.data.auth.FirebaseAuthService
 import com.partygallery.data.repository.AuthRepositoryImpl
-import com.partygallery.presentation.store.SignUpStore
 import com.partygallery.presentation.state.SignUpStep
+import com.partygallery.presentation.store.SignUpStore
 import com.partygallery.ui.components.PartyButton
 import com.partygallery.ui.components.PartyButtonSize
 import com.partygallery.ui.components.PartyButtonVariant
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 enum class Screen {
     LOGIN,
     SIGNUP,
-    HOME
+    HOME,
 }
 
 fun main() = application {
@@ -80,7 +80,7 @@ fun PartyGalleryApp() {
                     },
                     onNavigateToSignUp = {
                         currentScreen = Screen.SIGNUP
-                    }
+                    },
                 )
             }
             Screen.SIGNUP -> {
@@ -93,7 +93,7 @@ fun PartyGalleryApp() {
                     onSignUpComplete = {
                         loggedInEmail = signUpState.email
                         currentScreen = Screen.HOME
-                    }
+                    },
                 )
             }
             Screen.HOME -> {
@@ -110,7 +110,7 @@ fun PartyGalleryApp() {
                         currentScreen = Screen.LOGIN
                         loggedInEmail = null
                         signUpStore.processIntent(com.partygallery.presentation.intent.SignUpIntent.ResetFlow)
-                    }
+                    },
                 )
             }
         }
@@ -153,7 +153,7 @@ fun SignUpFlowScreen(
         transitionSpec = {
             slideInHorizontally { width -> width } + fadeIn() togetherWith
                 slideOutHorizontally { width -> -width } + fadeOut()
-        }
+        },
     ) { step ->
         when (step) {
             SignUpStep.BASIC_INFO -> BasicInfoScreen(
@@ -184,10 +184,7 @@ fun SignUpFlowScreen(
 }
 
 @Composable
-fun SimpleLoginScreen(
-    onLoginSuccess: (String) -> Unit,
-    onNavigateToSignUp: () -> Unit,
-) {
+fun SimpleLoginScreen(onLoginSuccess: (String) -> Unit, onNavigateToSignUp: () -> Unit) {
     val colors = Theme.colors
     val scope = rememberCoroutineScope()
 

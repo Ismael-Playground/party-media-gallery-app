@@ -1,0 +1,291 @@
+name: PR Check
+
+# Smart PR checks that run based on:
+# 1. Branch prefix (android/*, ios/*, desktop/*, web/*)
+# 2. Configuration file (.github/ci-config.yml)
+# 3. Always runs quality checks
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches:
+      - develop
+      - 'feature/*'
+      - 'bugfix/*'
+      - 'android/*'
+      - 'ios/*'
+      - 'desktop/*'
+      - 'web/*'
+
+concurrency:
+  group: pr-check-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '17'
+  JAVA_DISTRIBUTION: 'temurin'
+
+jobs:
+  # Determine which platforms to build based on branch and config
+  detect-platforms:
+    name: Detect Platforms
+    runs-on: ubuntu-latest
+    outputs:
+      build_android: ${{ steps.detect.outputs.build_android }}
+      build_ios: ${{ steps.detect.outputs.build_ios }}
+      build_desktop: ${{ steps.detect.outputs.build_desktop }}
+      build_web: ${{ steps.detect.outputs.build_web }}
+      build_shared: ${{ steps.detect.outputs.build_shared }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect platforms to build
+        id: detect
+        run: |
+          BRANCH="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          echo "Branch: $BRANCH"
+
+          # Default values from config file
+          if [ -f ".github/ci-config.yml" ]; then
+            ANDROID_CONFIG=$(grep -A1 "pr_checks:" .github/ci-config.yml | grep "android:" | awk '{print $2}' || echo "true")
+            IOS_CONFIG=$(grep -A2 "pr_checks:" .github/ci-config.yml | grep "ios:" | awk '{print $2}' || echo "true")
+            DESKTOP_CONFIG=$(grep -A3 "pr_checks:" .github/ci-config.yml | grep "desktop:" | awk '{print $2}' || echo "true")
+            WEB_CONFIG=$(grep -A4 "pr_checks:" .github/ci-config.yml | grep "web:" | awk '{print $2}' || echo "true")
+          else
+            ANDROID_CONFIG="true"
+            IOS_CONFIG="true"
+            DESKTOP_CONFIG="true"
+            WEB_CONFIG="true"
+          fi
+
+          # Branch-based override (branch prefix takes precedence)
+          case "$BRANCH" in
+            android/*)
+              echo "Android-specific branch detected"
+              BUILD_ANDROID="true"
+              BUILD_IOS="false"
+              BUILD_DESKTOP="false"
+              BUILD_WEB="false"
+              ;;
+            ios/*)
+              echo "iOS-specific branch detected"
+              BUILD_ANDROID="false"
+              BUILD_IOS="true"
+              BUILD_DESKTOP="false"
+              BUILD_WEB="false"
+              ;;
+            desktop/*)
+              echo "Desktop-specific branch detected"
+              BUILD_ANDROID="false"
+              BUILD_IOS="false"
+              BUILD_DESKTOP="true"
+              BUILD_WEB="false"
+              ;;
+            web/*)
+              echo "Web-specific branch detected"
+              BUILD_ANDROID="false"
+              BUILD_IOS="false"
+              BUILD_DESKTOP="false"
+              BUILD_WEB="true"
+              ;;
+            *)
+              echo "Using config file settings"
+              BUILD_ANDROID="$ANDROID_CONFIG"
+              BUILD_IOS="$IOS_CONFIG"
+              BUILD_DESKTOP="$DESKTOP_CONFIG"
+              BUILD_WEB="$WEB_CONFIG"
+              ;;
+          esac
+
+          echo "build_android=$BUILD_ANDROID" >> $GITHUB_OUTPUT
+          echo "build_ios=$BUILD_IOS" >> $GITHUB_OUTPUT
+          echo "build_desktop=$BUILD_DESKTOP" >> $GITHUB_OUTPUT
+          echo "build_web=$BUILD_WEB" >> $GITHUB_OUTPUT
+          echo "build_shared=true" >> $GITHUB_OUTPUT
+
+          echo "=== Build Configuration ==="
+          echo "Android: $BUILD_ANDROID"
+          echo "iOS: $BUILD_IOS"
+          echo "Desktop: $BUILD_DESKTOP"
+          echo "Web: $BUILD_WEB"
+          echo "Shared: true (always)"
+
+  # Code Quality Checks (always runs)
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck --continue
+
+      - name: Run detekt
+        run: ./gradlew detekt --continue
+
+      - name: Upload detekt reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: detekt-reports
+          path: '**/build/reports/detekt/'
+          retention-days: 7
+
+  # Build Shared Module (always runs)
+  build-shared:
+    name: Build Shared Module
+    runs-on: ubuntu-latest
+    needs: [quality, detect-platforms]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build shared module
+        run: ./gradlew :shared:build
+
+      - name: Run shared tests
+        run: ./gradlew :shared:allTests
+
+  # Build Android (conditional)
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    needs: [build-shared, detect-platforms]
+    if: needs.detect-platforms.outputs.build_android == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Create mock google-services.json
+        run: |
+          mkdir -p androidApp/src/debug
+          cat > androidApp/google-services.json << 'EOF'
+          {"project_info":{"project_number":"0","project_id":"mock","storage_bucket":"mock.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:0:android:mock","android_client_info":{"package_name":"com.partygallery.android"}},"oauth_client":[],"api_key":[{"current_key":"mock"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}
+          EOF
+
+      - name: Build Android Debug
+        run: ./gradlew :androidApp:assembleDebug
+
+      - name: Run Android Unit Tests
+        run: ./gradlew :androidApp:testDebugUnitTest
+
+  # Build Desktop (conditional)
+  build-desktop:
+    name: Build Desktop
+    runs-on: ubuntu-latest
+    needs: [build-shared, detect-platforms]
+    if: needs.detect-platforms.outputs.build_desktop == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build Desktop
+        run: ./gradlew :desktopApp:jar :desktopApp:compileKotlin
+
+  # Build Web (conditional)
+  build-web:
+    name: Build Web
+    runs-on: ubuntu-latest
+    needs: [build-shared, detect-platforms]
+    if: needs.detect-platforms.outputs.build_web == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Build Web
+        run: ./gradlew :webApp:jsBrowserProductionWebpack
+
+  # Build iOS (conditional - requires macOS runner)
+  build-ios:
+    name: Build iOS
+    runs-on: macos-latest
+    needs: [build-shared, detect-platforms]
+    if: needs.detect-platforms.outputs.build_ios == 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          cache-read-only: false
+
+      - name: Select Xcode version
+        run: |
+          if [ -d "/Applications/Xcode_15.4.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_15.4.app
+          elif [ -d "/Applications/Xcode.app" ]; then
+            sudo xcode-select -s /Applications/Xcode.app
+          fi
+          xcode-select -p
+          xcodebuild -version
+
+      - name: Build iOS Framework
+        run: ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+
+      - name: Run iOS Tests
+        run: ./gradlew :shared:iosSimulatorArm64Test

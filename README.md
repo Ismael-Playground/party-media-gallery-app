@@ -2,9 +2,25 @@
 
 **The ultimate multiplatform app for capturing, sharing, and reliving your party moments**
 
+<!-- CI/CD Status Badges -->
+[![CI Full](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![PR Check](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/pr-check.yml/badge.svg)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/pr-check.yml)
+
+<!-- Platform Build Badges -->
+[![Android Build](https://img.shields.io/badge/Android-Build_Passing-3DDC84?logo=android&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![iOS Build](https://img.shields.io/badge/iOS-Build_Passing-000000?logo=apple&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![Desktop Build](https://img.shields.io/badge/Desktop-Build_Passing-0078D4?logo=windows&logoColor=white)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+[![Web Build](https://img.shields.io/badge/Web-Build_Passing-F7DF1E?logo=javascript&logoColor=black)](https://github.com/Ismael-Playground/party-media-gallery-app/actions/workflows/ci-full.yml)
+
+<!-- Technology Stack Badges -->
 [![Kotlin Multiplatform](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF.svg?logo=kotlin)](https://kotlinlang.org/docs/multiplatform.html)
 [![Compose Multiplatform](https://img.shields.io/badge/Compose-Multiplatform-4285F4.svg)](https://www.jetbrains.com/lp/compose-multiplatform/)
 [![Firebase](https://img.shields.io/badge/Firebase-FFCA28.svg?logo=firebase&logoColor=black)](https://firebase.google.com/)
+
+<!-- Project Info Badges -->
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.0.0-7F52FF.svg?logo=kotlin)](https://kotlinlang.org)
+[![API](https://img.shields.io/badge/API-24%2B-brightgreen.svg)](https://android-arsenal.com/api?level=24)
 
 ## 📱 What is Party Gallery?
 
@@ -106,18 +122,99 @@ cd party-gallery
 
 # Install dependencies
 ./gradlew build
+```
 
-# Run Android
+### 📱 Running on Android
+
+**Option 1: Using Android Studio**
+1. Open the project in Android Studio
+2. Select `androidApp` configuration from the dropdown
+3. Choose a connected device or emulator
+4. Click the Run button (▶️)
+
+**Option 2: Using Command Line**
+```bash
+# List available emulators
+~/Library/Android/sdk/emulator/emulator -list-avds
+
+# Start an emulator (replace EMULATOR_NAME with your AVD name)
+~/Library/Android/sdk/emulator/emulator -avd EMULATOR_NAME &
+
+# Wait for emulator to boot, then install and run
 ./gradlew :androidApp:installDebug
 
-# Run iOS (macOS only)
+# Or build APK only
+./gradlew :androidApp:assembleDebug
+# APK location: androidApp/build/outputs/apk/debug/androidApp-debug.apk
+```
+
+**Option 3: Using ADB with physical device**
+```bash
+# Enable USB debugging on your device, then:
+adb devices  # Verify device is connected
+./gradlew :androidApp:installDebug
+```
+
+### 🍎 Running on iOS (macOS only)
+
+**Option 1: Using Xcode**
+1. Open `iosApp/iosApp.xcodeproj` in Xcode
+2. Select your target device/simulator
+3. Click Run (⌘R)
+
+**Option 2: Using Command Line**
+```bash
+# Build for iOS Simulator (Apple Silicon)
+./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+
+# Run tests on simulator
 ./gradlew :iosApp:iosSimulatorArm64Test
 
-# Run Desktop
+# Open in Xcode for full development
+open iosApp/iosApp.xcodeproj
+```
+
+### 💻 Running on Desktop (Windows, macOS, Linux)
+
+```bash
+# Run the desktop application
 ./gradlew :desktopApp:run
 
-# Run Web
-./gradlew :webApp:jsBrowserRun
+# Create distribution package
+./gradlew :desktopApp:packageDistributionForCurrentOS
+
+# Create specific formats
+./gradlew :desktopApp:packageDmg    # macOS
+./gradlew :desktopApp:packageMsi    # Windows
+./gradlew :desktopApp:packageDeb    # Linux (Debian/Ubuntu)
+./gradlew :desktopApp:packageRpm    # Linux (Fedora/RHEL)
+```
+
+### 🌐 Running on Web
+
+```bash
+# Development server with hot reload
+./gradlew :webApp:jsBrowserDevelopmentRun
+
+# Production build
+./gradlew :webApp:jsBrowserProductionRun
+
+# Build static files only (for deployment)
+./gradlew :webApp:jsBrowserDistribution
+# Output: webApp/build/dist/js/productionExecutable/
+```
+
+### 🔄 Running All Platforms
+
+```bash
+# Build all platforms
+./gradlew build
+
+# Run tests across all platforms
+./gradlew check
+
+# Clean build
+./gradlew clean build
 ```
 
 ### Firebase Configuration

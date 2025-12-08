@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
@@ -41,7 +42,6 @@ import com.partygallery.ui.components.PartyTextField
 import com.partygallery.ui.theme.PartyGallerySpacing
 import com.partygallery.ui.theme.PartyGalleryTypography
 import com.partygallery.ui.theme.Theme
-import androidx.compose.foundation.text.KeyboardOptions as ComposeKeyboardOptions
 
 /**
  * Login Screen

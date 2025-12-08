@@ -54,10 +54,11 @@ object MoodColors {
  *
  * @param mood The mood to display
  * @param showEmoji Whether to show the mood emoji
+ * @param compact Whether to show only emoji (for compact displays like grids)
  * @param modifier Modifier
  */
 @Composable
-fun MoodTag(mood: PartyMood, showEmoji: Boolean = true, modifier: Modifier = Modifier) {
+fun MoodTag(mood: PartyMood, showEmoji: Boolean = true, compact: Boolean = false, modifier: Modifier = Modifier) {
     val moodColor = MoodColors.getColor(mood)
     val emoji = MoodColors.getEmoji(mood)
 
@@ -66,7 +67,7 @@ fun MoodTag(mood: PartyMood, showEmoji: Boolean = true, modifier: Modifier = Mod
             .clip(PartyGalleryShapes.moodBadge)
             .background(moodColor.copy(alpha = 0.2f))
             .padding(
-                horizontal = PartyGallerySpacing.sm,
+                horizontal = if (compact) PartyGallerySpacing.xs else PartyGallerySpacing.sm,
                 vertical = PartyGallerySpacing.xxs,
             ),
         horizontalArrangement = Arrangement.spacedBy(4.dp),
@@ -79,11 +80,13 @@ fun MoodTag(mood: PartyMood, showEmoji: Boolean = true, modifier: Modifier = Mod
             )
         }
 
-        Text(
-            text = mood.name.lowercase().replaceFirstChar { it.uppercase() },
-            style = Theme.typography.labelSmall,
-            color = moodColor,
-        )
+        if (!compact) {
+            Text(
+                text = mood.name.lowercase().replaceFirstChar { it.uppercase() },
+                style = Theme.typography.labelSmall,
+                color = moodColor,
+            )
+        }
     }
 }
 
