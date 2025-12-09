@@ -76,8 +76,18 @@ jobs:
       - name: Build shared module
         run: ./gradlew :shared:build
 
-      - name: Run shared tests
-        run: ./gradlew :shared:allTests
+      - name: Run shared tests with coverage
+        run: ./gradlew :shared:koverXmlReport
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: shared/build/reports/kover/report.xml
+          flags: app
+          name: app-coverage
+          fail_ci_if_error: false
+          verbose: true
 
       - name: Upload test reports
         if: always()
@@ -85,6 +95,14 @@ jobs:
         with:
           name: shared-test-reports
           path: 'shared/build/reports/tests/'
+          retention-days: 7
+
+      - name: Upload coverage reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: 'shared/build/reports/kover/'
           retention-days: 7
 
   # Build Android

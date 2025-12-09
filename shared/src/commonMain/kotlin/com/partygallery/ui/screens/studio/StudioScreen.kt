@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
@@ -76,10 +75,7 @@ import com.partygallery.ui.theme.Theme
  * - Primary: #F59E0B (Amber)
  */
 @Composable
-fun StudioScreen(
-    onCreateContent: () -> Unit = {},
-    onContentClick: (String) -> Unit = {},
-) {
+fun StudioScreen(onCreateContent: () -> Unit = {}, onContentClick: (String) -> Unit = {}) {
     val store = remember { StudioStore() }
     val state by store.state.collectAsState()
 
@@ -143,9 +139,7 @@ fun StudioScreen(
  * Studio header with title and create button.
  */
 @Composable
-private fun StudioHeader(
-    onCreateClick: () -> Unit,
-) {
+private fun StudioHeader(onCreateClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,10 +183,7 @@ private fun StudioHeader(
  * Studio tabs for navigation.
  */
 @Composable
-private fun StudioTabs(
-    selectedTab: StudioTab,
-    onTabSelected: (StudioTab) -> Unit,
-) {
+private fun StudioTabs(selectedTab: StudioTab, onTabSelected: (StudioTab) -> Unit) {
     val tabs = StudioTab.entries.map { it.label }
     val selectedIndex = StudioTab.entries.indexOf(selectedTab)
 
@@ -245,11 +236,7 @@ private fun MyContentGrid(
  * Single content item in the grid.
  */
 @Composable
-private fun ContentGridItem(
-    content: StudioContent,
-    onClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-) {
+private fun ContentGridItem(content: StudioContent, onClick: () -> Unit, onDeleteClick: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -391,11 +378,7 @@ private fun DraftsContent(
  * Single draft item.
  */
 @Composable
-private fun DraftItem(
-    draft: StudioDraft,
-    onPublishClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-) {
+private fun DraftItem(draft: StudioDraft, onPublishClick: () -> Unit, onDeleteClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -491,10 +474,7 @@ private fun DraftItem(
  * List of recent parties for quick content upload.
  */
 @Composable
-private fun RecentPartiesContent(
-    parties: List<RecentParty>,
-    onPartyClick: (String) -> Unit,
-) {
+private fun RecentPartiesContent(parties: List<RecentParty>, onPartyClick: (String) -> Unit) {
     if (parties.isEmpty()) {
         EmptyStateView(
             icon = Icons.Filled.Star,
@@ -520,10 +500,7 @@ private fun RecentPartiesContent(
  * Single recent party item.
  */
 @Composable
-private fun RecentPartyItem(
-    party: RecentParty,
-    onClick: () -> Unit,
-) {
+private fun RecentPartyItem(party: RecentParty, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -615,11 +592,7 @@ private fun RecentPartyItem(
  * Empty state view for tabs with no content.
  */
 @Composable
-private fun EmptyStateView(
-    icon: ImageVector,
-    title: String,
-    subtitle: String,
-) {
+private fun EmptyStateView(icon: ImageVector, title: String, subtitle: String) {
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,

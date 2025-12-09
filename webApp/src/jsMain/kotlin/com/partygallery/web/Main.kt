@@ -241,7 +241,10 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                 Input(InputType.Email) {
                     value(email)
                     placeholder("Enter your email")
-                    onInput { email = it.value; emailError = null }
+                    onInput {
+                        email = it.value
+                        emailError = null
+                    }
                 }
                 emailError?.let { err ->
                     Span({
@@ -271,7 +274,10 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                 Input(InputType.Password) {
                     value(password)
                     placeholder("Enter your password")
-                    onInput { password = it.value; passwordError = null }
+                    onInput {
+                        password = it.value
+                        passwordError = null
+                    }
                 }
                 passwordError?.let { err ->
                     Span({
@@ -384,7 +390,10 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
                     }
                 }) { Text("Don't have an account? ") }
                 A(href = "#", {
-                    onClick { it.preventDefault(); errorMessage = "Sign Up coming soon" }
+                    onClick {
+                        it.preventDefault()
+                        errorMessage = "Sign Up coming soon"
+                    }
                     style {
                         color(PartyColors.primary)
                         fontSize(14.px)
@@ -399,12 +408,12 @@ fun LoginScreen(onLoginSuccess: (String) -> Unit) {
 
 // Mood colors for party tags
 object MoodColors {
-    val HYPE = Color("#EF4444")     // Red
-    val CHILL = Color("#3B82F6")    // Blue
-    val WILD = Color("#8B5CF6")     // Purple
+    val HYPE = Color("#EF4444") // Red
+    val CHILL = Color("#3B82F6") // Blue
+    val WILD = Color("#8B5CF6") // Purple
     val ROMANTIC = Color("#EC4899") // Pink
-    val CRAZY = Color("#F97316")    // Orange
-    val ELEGANT = Color("#F59E0B")  // Amber
+    val CRAZY = Color("#F97316") // Orange
+    val ELEGANT = Color("#F59E0B") // Amber
 }
 
 // Mock party data
@@ -497,7 +506,9 @@ fun HomeScreen(userEmail: String, onLogout: () -> Unit) {
                 Div({
                     onClick { selectedFilter = filter }
                     style {
-                        backgroundColor(if (selectedFilter == filter) PartyColors.primary else PartyColors.surfaceVariant)
+                        backgroundColor(
+                            if (selectedFilter == filter) PartyColors.primary else PartyColors.surfaceVariant,
+                        )
                         color(if (selectedFilter == filter) PartyColors.onPrimary else PartyColors.onBackground)
                         padding(8.px, 16.px)
                         borderRadius(20.px)

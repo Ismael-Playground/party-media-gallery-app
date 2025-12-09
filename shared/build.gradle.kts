@@ -5,7 +5,8 @@ plugins {
     kotlin("plugin.serialization")
     id("com.android.library")
     id("org.jetbrains.compose")
-    // id("app.cash.sqldelight")
+    id("app.cash.sqldelight")
+    id("org.jetbrains.kotlinx.kover")
 }
 
 kotlin {
@@ -74,6 +75,10 @@ kotlin {
 
                 // UUID
                 implementation("com.benasher44:uuid:${Dependencies.uuidVersion}")
+
+                // SQLDelight Runtime
+                implementation("app.cash.sqldelight:runtime:${Dependencies.sqlDelightVersion}")
+                implementation("app.cash.sqldelight:coroutines-extensions:${Dependencies.sqlDelightVersion}")
             }
         }
 
@@ -97,6 +102,9 @@ kotlin {
                 implementation("androidx.camera:camera-camera2:${Dependencies.cameraXVersion}")
                 implementation("androidx.camera:camera-lifecycle:${Dependencies.cameraXVersion}")
                 implementation("androidx.camera:camera-view:${Dependencies.cameraXVersion}")
+
+                // SQLDelight Android Driver
+                implementation("app.cash.sqldelight:android-driver:${Dependencies.sqlDelightVersion}")
             }
         }
 
@@ -105,6 +113,9 @@ kotlin {
             dependencies {
                 // Ktor iOS
                 implementation("io.ktor:ktor-client-darwin:${Dependencies.ktorVersion}")
+
+                // SQLDelight iOS Driver
+                implementation("app.cash.sqldelight:native-driver:${Dependencies.sqlDelightVersion}")
             }
         }
 
@@ -127,6 +138,9 @@ kotlin {
 
                 // Ktor JVM
                 implementation("io.ktor:ktor-client-cio:${Dependencies.ktorVersion}")
+
+                // SQLDelight JVM Driver
+                implementation("app.cash.sqldelight:sqlite-driver:${Dependencies.sqlDelightVersion}")
             }
         }
 
@@ -137,6 +151,11 @@ kotlin {
 
                 // Compose Web
                 implementation(compose.html.core)
+
+                // SQLDelight Web Driver
+                implementation("app.cash.sqldelight:web-worker-driver:${Dependencies.sqlDelightVersion}")
+                implementation(npm("sql.js", "1.8.0"))
+                implementation(npm("copy-webpack-plugin", "11.0.0"))
             }
         }
 
@@ -145,6 +164,7 @@ kotlin {
                 implementation(kotlin("test"))
                 implementation("io.insert-koin:koin-test:${Dependencies.koinTestVersion}")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:${Dependencies.kotlinxCoroutinesVersion}")
+                implementation("app.cash.turbine:turbine:${Dependencies.turbineVersion}")
             }
         }
     }
@@ -164,10 +184,45 @@ android {
     }
 }
 
-// sqldelight {
-//     databases {
-//         create("PartyGalleryDatabase") {
-//             packageName.set("com.partygallery.database")
-//         }
-//     }
-// }
+sqldelight {
+    databases {
+        create("PartyGalleryDatabase") {
+            packageName.set("com.partygallery.database")
+            schemaOutputDirectory.set(file("src/commonMain/sqldelight/databases"))
+        }
+    }
+}
+
+koverReport {
+    filters {
+        excludes {
+            classes(
+                // Generated code
+                "*.BuildConfig",
+                "*.R",
+                "*.R\$*",
+                "*_Factory",
+                "*_HiltModules*",
+                // Database generated
+                "com.partygallery.database.*",
+                // DI modules
+                "*.di.*Module*",
+                // Platform-specific implementations
+                "*.Platform*",
+            )
+            packages(
+                // Test packages
+                "com.app.test.*",
+            )
+        }
+    }
+
+    defaults {
+        xml {
+            onCheck = true
+        }
+        html {
+            onCheck = true
+        }
+    }
+}

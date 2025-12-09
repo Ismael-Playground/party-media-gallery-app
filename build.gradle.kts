@@ -22,6 +22,9 @@ plugins {
     // Code Quality
     id("org.jlleitschuh.gradle.ktlint") version Dependencies.ktlintVersion apply false
     id("io.gitlab.arturbosch.detekt") version Dependencies.detektVersion apply false
+
+    // Code Coverage
+    id("org.jetbrains.kotlinx.kover") version Dependencies.koverVersion apply false
 }
 
 allprojects {
@@ -60,6 +63,11 @@ subprojects {
             exclude("**/generated/**")
             exclude("**/build/**")
             exclude("**/*.gradle.kts")
+            // SQLDelight generated code
+            exclude { element ->
+                element.file.path.contains("/build/") ||
+                    element.file.path.contains("/generated/")
+            }
         }
     }
 

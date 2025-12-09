@@ -62,11 +62,15 @@ object Dependencies {
     const val junitVersion = "4.13.2"
     const val androidxJunitVersion = "1.1.5"
     const val espressoVersion = "3.5.1"
+    const val turbineVersion = "1.0.0"
 
     // Code Quality
     const val ktlintVersion = "12.1.0"
     const val ktlintRulesVersion = "1.1.1"
     const val detektVersion = "1.23.4"
+
+    // Code Coverage
+    const val koverVersion = "0.7.6"
 
     // JVM target version
     const val jvmTargetVersion = "17"

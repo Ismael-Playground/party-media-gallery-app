@@ -207,8 +207,11 @@ class FavoritesStore(
     private fun generateMockSavedParties(): List<FavoriteParty> {
         val moods = PartyMood.entries.toTypedArray()
         val partyNames = listOf(
-            "Rooftop Sunset", "Neon Dreams", "Beach Vibes",
-            "House Party Deluxe", "Club Paradiso Night",
+            "Rooftop Sunset",
+            "Neon Dreams",
+            "Beach Vibes",
+            "House Party Deluxe",
+            "Club Paradiso Night",
         )
         val hostNames = listOf("Alex M.", "Jordan K.", "Taylor S.", "Morgan B.")
         val venues = listOf(
@@ -263,8 +266,11 @@ class FavoritesStore(
     private fun generateMockSuggestedParties(): List<SuggestedParty> {
         val moods = PartyMood.entries.toTypedArray()
         val partyNames = listOf(
-            "Underground Techno", "Reggaeton Nights", "Jazz & Wine",
-            "Indie Rock Fest", "Hip Hop Showcase",
+            "Underground Techno",
+            "Reggaeton Nights",
+            "Jazz & Wine",
+            "Indie Rock Fest",
+            "Hip Hop Showcase",
         )
         val hostNames = listOf("DJ Nova", "Carlos M.", "Sophie L.", "Marcus B.", "Luna K.")
         val venues = listOf(
