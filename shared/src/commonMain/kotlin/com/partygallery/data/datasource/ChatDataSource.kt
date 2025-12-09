@@ -17,11 +17,7 @@ interface ChatDataSource {
     // Chat Room Operations
     // ============================================
 
-    suspend fun createChatRoom(
-        partyId: String?,
-        participants: List<String>,
-        isEventChat: Boolean,
-    ): ChatRoomDto
+    suspend fun createChatRoom(partyId: String?, participants: List<String>, isEventChat: Boolean): ChatRoomDto
 
     suspend fun getChatRoomById(roomId: String): ChatRoomDto?
 

@@ -21,8 +21,9 @@ data class UserDto(
     @SerialName("last_name")
     val lastName: String = "",
     val bio: String? = null,
+    // ISO-8601 format: "2000-01-15"
     @SerialName("birth_date")
-    val birthDate: String? = null, // ISO-8601 format: "2000-01-15"
+    val birthDate: String? = null,
     @SerialName("avatar_url")
     val avatarUrl: String? = null,
     @SerialName("cover_photo_url")
@@ -42,8 +43,9 @@ data class UserDto(
     val isProfileComplete: Boolean = false,
     @SerialName("notifications_enabled")
     val notificationsEnabled: Boolean = true,
+    // Unix timestamp in milliseconds
     @SerialName("created_at")
-    val createdAt: Long = 0L, // Unix timestamp millis
+    val createdAt: Long = 0L,
     @SerialName("updated_at")
     val updatedAt: Long? = null,
 )

@@ -22,7 +22,7 @@ class MockUserDataSource : UserDataSource {
         mapOf(
             "user1" to Pair(1234, 567),
             "user2" to Pair(89, 123),
-        )
+        ),
     )
 
     // Simulate network delay
@@ -175,7 +175,8 @@ class MockUserDataSource : UserDataSource {
             isVerified = true,
             isProfileComplete = true,
             notificationsEnabled = true,
-            createdAt = now - (30L * 24 * 60 * 60 * 1000), // 30 days ago
+            // 30 days ago
+            createdAt = now - (30L * 24 * 60 * 60 * 1000),
             updatedAt = now,
         )
 
@@ -200,8 +201,10 @@ class MockUserDataSource : UserDataSource {
             isVerified = false,
             isProfileComplete = true,
             notificationsEnabled = true,
-            createdAt = now - (60L * 24 * 60 * 60 * 1000), // 60 days ago
-            updatedAt = now - (5L * 24 * 60 * 60 * 1000), // 5 days ago
+            // 60 days ago
+            createdAt = now - (60L * 24 * 60 * 60 * 1000),
+            // 5 days ago
+            updatedAt = now - (5L * 24 * 60 * 60 * 1000),
         )
 
         val user3 = UserDto(

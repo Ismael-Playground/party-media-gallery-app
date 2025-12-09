@@ -34,7 +34,8 @@ fun ChatRoomDto.toDomain(): ChatRoom = ChatRoom(
 )
 
 fun ChatMessagePreviewDto.toDomain(chatRoomId: String): ChatMessage = ChatMessage(
-    id = "", // Preview doesn't have full ID
+    // Preview doesn't have full ID
+    id = "",
     chatRoomId = chatRoomId,
     senderId = "",
     content = text,
@@ -89,7 +90,8 @@ fun ChatMessage.toDto(): ChatMessageDto = ChatMessageDto(
     content = content,
     type = type.name,
     mediaUrl = mediaUrl,
-    mediaThumbnailUrl = null, // Would need to be set separately
+    // Would need to be set separately
+    mediaThumbnailUrl = null,
     isPartyMoment = isPartyMoment,
     reactions = reactionsToMap(reactions),
     replyToId = replyToMessageId,
@@ -141,8 +143,9 @@ private fun parseReactions(reactions: Map<String, List<String>>): List<MessageRe
                 MessageReaction(
                     emoji = emoji,
                     userId = userId,
-                    createdAt = Instant.fromEpochMilliseconds(0), // Not stored in DTO
-                )
+                    // Not stored in DTO
+                    createdAt = Instant.fromEpochMilliseconds(0),
+                ),
             )
         }
     }

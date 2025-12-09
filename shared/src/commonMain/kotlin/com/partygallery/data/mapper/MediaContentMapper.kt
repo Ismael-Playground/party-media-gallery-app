@@ -27,7 +27,8 @@ fun MediaContentDto.toDomain(): MediaContent = MediaContent(
     thumbnailUrl = thumbnailUrl,
     caption = caption,
     mood = partyMood?.let { parsePartyMood(it) },
-    tags = taggedUsers.map { it.username }, // Convert tagged users to tags
+    // Convert tagged users to tags
+    tags = taggedUsers.map { it.username },
     metadata = MediaMetadata(
         width = width,
         height = height,
@@ -55,7 +56,8 @@ fun MediaContent.toDto(): MediaContentDto = MediaContentDto(
     thumbnailUrl = thumbnailUrl,
     caption = caption,
     partyMood = mood?.name,
-    taggedUsers = emptyList(), // Tags would need to be resolved to UserSummaryDto separately
+    // Tags would need to be resolved to UserSummaryDto separately
+    taggedUsers = emptyList(),
     likesCount = socialMetrics.likesCount,
     commentsCount = socialMetrics.commentsCount,
     isPartyMoment = isHighlight,

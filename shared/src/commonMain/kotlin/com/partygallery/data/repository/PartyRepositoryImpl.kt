@@ -11,7 +11,6 @@ import com.partygallery.domain.repository.PartyRepository
 import com.partygallery.domain.repository.RsvpStatus
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
 /**

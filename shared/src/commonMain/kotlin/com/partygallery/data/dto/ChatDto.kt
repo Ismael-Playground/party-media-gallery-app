@@ -15,7 +15,8 @@ data class ChatRoomDto(
     @SerialName("party_event_id")
     val partyEventId: String? = null,
     val name: String? = null,
-    val participants: List<String> = emptyList(), // User IDs
+    // List of User IDs
+    val participants: List<String> = emptyList(),
     @SerialName("participant_details")
     val participantDetails: List<UserSummaryDto> = emptyList(),
     @SerialName("is_event_chat")
@@ -51,22 +52,25 @@ data class ChatMessageDto(
     val senderId: String = "",
     val sender: UserSummaryDto? = null,
     val content: String = "",
-    val type: String = "TEXT", // TEXT, IMAGE, VIDEO, AUDIO, SYSTEM
+    // Valid values: TEXT, IMAGE, VIDEO, AUDIO, SYSTEM
+    val type: String = "TEXT",
     @SerialName("media_url")
     val mediaUrl: String? = null,
     @SerialName("media_thumbnail_url")
     val mediaThumbnailUrl: String? = null,
     @SerialName("is_party_moment")
     val isPartyMoment: Boolean = false,
-    val reactions: Map<String, List<String>> = emptyMap(), // emoji -> list of user IDs
+    // Map of emoji -> list of user IDs
+    val reactions: Map<String, List<String>> = emptyMap(),
     @SerialName("reply_to_id")
     val replyToId: String? = null,
     @SerialName("reply_preview")
     val replyPreview: String? = null,
     @SerialName("is_read")
     val isRead: Boolean = false,
+    // User IDs who read this message
     @SerialName("read_by")
-    val readBy: List<String> = emptyList(), // User IDs who read this message
+    val readBy: List<String> = emptyList(),
     @SerialName("created_at")
     val createdAt: Long = 0L,
     @SerialName("updated_at")

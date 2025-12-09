@@ -3,9 +3,15 @@ package com.app.test.store
 import app.cash.turbine.test
 import com.partygallery.presentation.intent.FavoritesIntent
 import com.partygallery.presentation.state.FavoritesEvent
-import com.partygallery.presentation.state.FavoritesState
 import com.partygallery.presentation.state.FavoritesTab
 import com.partygallery.presentation.store.FavoritesStore
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertNull
+import kotlin.test.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -14,13 +20,6 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFalse
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 /**
  * Unit tests for FavoritesStore.

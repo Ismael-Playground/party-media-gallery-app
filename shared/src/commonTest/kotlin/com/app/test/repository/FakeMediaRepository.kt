@@ -126,7 +126,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .filter { it.partyEventId == partyId }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -135,7 +135,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .filter { it.uploaderId == userId }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -144,7 +144,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .filter { it.mood == mood }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -153,7 +153,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .filter { it.type == type }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -162,7 +162,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .sortedByDescending { it.createdAt }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -171,7 +171,7 @@ class FakeMediaRepository : MediaRepository {
         return Result.success(
             media.values
                 .sortedByDescending { it.socialMetrics.likesCount }
-                .take(limit)
+                .take(limit),
         )
     }
 

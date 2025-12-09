@@ -22,7 +22,9 @@ class MockChatDataSource : ChatDataSource {
     // In-memory storage
     private val chatRooms = MutableStateFlow<Map<String, ChatRoomDto>>(createInitialChatRooms())
     private val messages = MutableStateFlow<Map<String, List<ChatMessageDto>>>(createInitialMessages())
-    private val readStatus = MutableStateFlow<Map<String, Map<String, String>>>(emptyMap()) // roomId -> (userId -> lastReadMessageId)
+    private val readStatus = MutableStateFlow<Map<String, Map<String, String>>>(
+        emptyMap(),
+    ) // roomId -> (userId -> lastReadMessageId)
     private val typingUsers = MutableStateFlow<Map<String, Set<String>>>(emptyMap()) // roomId -> Set<userId>
 
     // Simulate network delay
@@ -68,8 +70,8 @@ class MockChatDataSource : ChatDataSource {
         simulateNetworkDelay()
         return chatRooms.value.values.find { room ->
             !room.isEventChat &&
-            room.participants.size == 2 &&
-            room.participants.containsAll(listOf(userId1, userId2))
+                room.participants.size == 2 &&
+                room.participants.containsAll(listOf(userId1, userId2))
         }
     }
 

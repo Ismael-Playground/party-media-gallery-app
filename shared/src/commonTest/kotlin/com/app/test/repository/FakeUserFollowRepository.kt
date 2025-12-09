@@ -149,10 +149,7 @@ class FakeUserFollowRepository : UserFollowRepository {
         return Result.success(follows[userId]?.size ?: 0)
     }
 
-    override suspend fun getMutualFollowers(
-        userId1: String,
-        userId2: String,
-    ): Result<List<UserSummary>> {
+    override suspend fun getMutualFollowers(userId1: String, userId2: String): Result<List<UserSummary>> {
         if (shouldFail) return Result.failure(failureError)
 
         // Get followers of both users
@@ -177,10 +174,7 @@ class FakeUserFollowRepository : UserFollowRepository {
         return getMutualFollowers(userId1, userId2).map { it.size }
     }
 
-    override suspend fun getSuggestedUsersToFollow(
-        userId: String,
-        limit: Int,
-    ): Result<List<UserSummary>> {
+    override suspend fun getSuggestedUsersToFollow(userId: String, limit: Int): Result<List<UserSummary>> {
         if (shouldFail) return Result.failure(failureError)
         return Result.success(suggestedUsers.take(limit))
     }

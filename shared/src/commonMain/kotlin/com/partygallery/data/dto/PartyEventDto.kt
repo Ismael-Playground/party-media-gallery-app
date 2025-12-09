@@ -22,12 +22,15 @@ data class PartyEventDto(
     val venue: VenueDto = VenueDto(),
     @SerialName("cover_image_url")
     val coverImageUrl: String? = null,
+    // Unix timestamp in milliseconds
     @SerialName("starts_at")
-    val startsAt: Long = 0L, // Unix timestamp millis
+    val startsAt: Long = 0L,
     @SerialName("ends_at")
     val endsAt: Long? = null,
-    val status: String = "PLANNED", // PLANNED, LIVE, ENDED, CANCELLED
-    val privacy: String = "PUBLIC", // PUBLIC, FRIENDS_ONLY, INVITE_ONLY, PRIVATE
+    // Valid values: PLANNED, LIVE, ENDED, CANCELLED
+    val status: String = "PLANNED",
+    // Valid values: PUBLIC, FRIENDS_ONLY, INVITE_ONLY, PRIVATE
+    val privacy: String = "PUBLIC",
     val tags: List<String> = emptyList(),
     @SerialName("music_genres")
     val musicGenres: List<String> = emptyList(),
@@ -81,7 +84,8 @@ data class PartyAttendeeDto(
     @SerialName("user_id")
     val userId: String = "",
     val user: UserSummaryDto? = null,
-    val status: String = "GOING", // GOING, MAYBE, NOT_GOING
+    // Valid values: GOING, MAYBE, NOT_GOING
+    val status: String = "GOING",
     @SerialName("rsvp_at")
     val rsvpAt: Long = 0L,
 )

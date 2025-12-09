@@ -1,7 +1,6 @@
 package com.partygallery.data.repository
 
 import com.partygallery.data.datasource.UserDataSource
-import com.partygallery.data.dto.UserDto
 import com.partygallery.data.mapper.toDomain
 import com.partygallery.data.mapper.toDto
 import com.partygallery.domain.model.SocialLinks
@@ -27,7 +26,7 @@ class UserRepositoryImpl(
 ) : UserRepository {
 
     // In-memory cache for current user
-    private val _currentUserFlow = MutableStateFlow<User?>(null)
+    private val currentUserCacheFlow = MutableStateFlow<User?>(null)
 
     // ============================================
     // CRUD Operations
@@ -77,8 +76,8 @@ class UserRepositoryImpl(
             val updatedUser = updatedDto.toDomain()
 
             // Update cache if this is the current user
-            if (_currentUserFlow.value?.id == user.id) {
-                _currentUserFlow.value = updatedUser
+            if (currentUserCacheFlow.value?.id == user.id) {
+                currentUserCacheFlow.value = updatedUser
             }
 
             Result.success(updatedUser)
@@ -92,8 +91,8 @@ class UserRepositoryImpl(
             userDataSource.deleteUser(userId)
 
             // Clear cache if this is the current user
-            if (_currentUserFlow.value?.id == userId) {
-                _currentUserFlow.value = null
+            if (currentUserCacheFlow.value?.id == userId) {
+                currentUserCacheFlow.value = null
             }
 
             Result.success(Unit)
@@ -160,9 +159,9 @@ class UserRepositoryImpl(
             userDataSource.updateField(userId, "avatar_url", avatarUrl)
 
             // Update cache if this is the current user
-            _currentUserFlow.value?.let { currentUser ->
+            currentUserCacheFlow.value?.let { currentUser ->
                 if (currentUser.id == userId) {
-                    _currentUserFlow.value = currentUser.copy(avatarUrl = avatarUrl)
+                    currentUserCacheFlow.value = currentUser.copy(avatarUrl = avatarUrl)
                 }
             }
 
@@ -177,9 +176,9 @@ class UserRepositoryImpl(
             userDataSource.updateField(userId, "cover_photo_url", coverPhotoUrl)
 
             // Update cache if this is the current user
-            _currentUserFlow.value?.let { currentUser ->
+            currentUserCacheFlow.value?.let { currentUser ->
                 if (currentUser.id == userId) {
-                    _currentUserFlow.value = currentUser.copy(coverPhotoUrl = coverPhotoUrl)
+                    currentUserCacheFlow.value = currentUser.copy(coverPhotoUrl = coverPhotoUrl)
                 }
             }
 
@@ -194,9 +193,9 @@ class UserRepositoryImpl(
             userDataSource.updateField(userId, "social_links", socialLinks.toDto())
 
             // Update cache if this is the current user
-            _currentUserFlow.value?.let { currentUser ->
+            currentUserCacheFlow.value?.let { currentUser ->
                 if (currentUser.id == userId) {
-                    _currentUserFlow.value = currentUser.copy(socialLinks = socialLinks)
+                    currentUserCacheFlow.value = currentUser.copy(socialLinks = socialLinks)
                 }
             }
 
@@ -211,9 +210,9 @@ class UserRepositoryImpl(
             userDataSource.updateField(userId, "tags", tags)
 
             // Update cache if this is the current user
-            _currentUserFlow.value?.let { currentUser ->
+            currentUserCacheFlow.value?.let { currentUser ->
                 if (currentUser.id == userId) {
-                    _currentUserFlow.value = currentUser.copy(tags = tags)
+                    currentUserCacheFlow.value = currentUser.copy(tags = tags)
                 }
             }
 
@@ -223,10 +222,7 @@ class UserRepositoryImpl(
         }
     }
 
-    override suspend fun completeProfile(
-        userId: String,
-        updates: ProfileCompletionData,
-    ): Result<User> {
+    override suspend fun completeProfile(userId: String, updates: ProfileCompletionData): Result<User> {
         return try {
             val existingDto = userDataSource.getUserById(userId)
                 ?: throw IllegalStateException("User not found: $userId")
@@ -247,8 +243,8 @@ class UserRepositoryImpl(
             val user = savedDto.toDomain()
 
             // Update cache if this is the current user
-            if (_currentUserFlow.value?.id == userId) {
-                _currentUserFlow.value = user
+            if (currentUserCacheFlow.value?.id == userId) {
+                currentUserCacheFlow.value = user
             }
 
             Result.success(user)
@@ -314,16 +310,16 @@ class UserRepositoryImpl(
     // ============================================
 
     override suspend fun getCurrentUser(): Result<User?> {
-        return Result.success(_currentUserFlow.value)
+        return Result.success(currentUserCacheFlow.value)
     }
 
     override suspend fun setCurrentUser(user: User): Result<Unit> {
-        _currentUserFlow.value = user
+        currentUserCacheFlow.value = user
         return Result.success(Unit)
     }
 
     override suspend fun clearCurrentUser(): Result<Unit> {
-        _currentUserFlow.value = null
+        currentUserCacheFlow.value = null
         return Result.success(Unit)
     }
 
@@ -338,7 +334,7 @@ class UserRepositoryImpl(
     }
 
     override fun observeCurrentUser(): Flow<User?> {
-        return _currentUserFlow.asStateFlow()
+        return currentUserCacheFlow.asStateFlow()
     }
 
     override fun observeFollowCounts(userId: String): Flow<FollowCounts> {

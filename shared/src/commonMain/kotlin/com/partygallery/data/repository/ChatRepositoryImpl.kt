@@ -2,7 +2,6 @@ package com.partygallery.data.repository
 
 import com.partygallery.data.datasource.ChatDataSource
 import com.partygallery.data.mapper.toDomain
-import com.partygallery.data.mapper.toDto
 import com.partygallery.domain.model.ChatMessage
 import com.partygallery.domain.model.ChatRoom
 import com.partygallery.domain.model.MessageType

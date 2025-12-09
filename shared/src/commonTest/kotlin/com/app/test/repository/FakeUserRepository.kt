@@ -24,7 +24,7 @@ class FakeUserRepository : UserRepository {
 
     private val users = mutableMapOf<String, User>()
     private var currentUser: User? = null
-    private val _currentUserFlow = MutableStateFlow<User?>(null)
+    private val currentUserStateFlow = MutableStateFlow<User?>(null)
     private val userFlows = mutableMapOf<String, MutableStateFlow<User?>>()
     private val followCountsFlows = mutableMapOf<String, MutableStateFlow<FollowCounts>>()
 
@@ -45,7 +45,7 @@ class FakeUserRepository : UserRepository {
 
     fun setCurrentUser(user: User?) {
         currentUser = user
-        _currentUserFlow.value = user
+        currentUserStateFlow.value = user
     }
 
     fun setShouldFail(fail: Boolean, error: Exception = Exception("Test error")) {
@@ -64,7 +64,7 @@ class FakeUserRepository : UserRepository {
     fun reset() {
         users.clear()
         currentUser = null
-        _currentUserFlow.value = null
+        currentUserStateFlow.value = null
         userFlows.clear()
         followCountsFlows.clear()
         shouldFail = false
@@ -103,7 +103,7 @@ class FakeUserRepository : UserRepository {
         userFlows[user.id]?.value = user
         if (currentUser?.id == user.id) {
             currentUser = user
-            _currentUserFlow.value = user
+            currentUserStateFlow.value = user
         }
         return Result.success(user)
     }
@@ -117,9 +117,11 @@ class FakeUserRepository : UserRepository {
     override suspend fun searchUsers(query: String, limit: Int): Result<List<UserSummary>> {
         if (shouldFail) return Result.failure(failureError)
         val results = users.values
-            .filter { it.username.contains(query, ignoreCase = true) ||
+            .filter {
+                it.username.contains(query, ignoreCase = true) ||
                     it.firstName.contains(query, ignoreCase = true) ||
-                    it.lastName.contains(query, ignoreCase = true) }
+                    it.lastName.contains(query, ignoreCase = true)
+            }
             .take(limit)
             .map { it.toSummary() }
         return Result.success(results)
@@ -136,7 +138,7 @@ class FakeUserRepository : UserRepository {
             users.values
                 .filter { it.id != userId }
                 .take(limit)
-                .map { it.toSummary() }
+                .map { it.toSummary() },
         )
     }
 
@@ -204,7 +206,7 @@ class FakeUserRepository : UserRepository {
     override suspend fun setCurrentUser(user: User): Result<Unit> {
         if (shouldFail) return Result.failure(failureError)
         currentUser = user
-        _currentUserFlow.value = user
+        currentUserStateFlow.value = user
         users[user.id] = user
         return Result.success(Unit)
     }
@@ -212,7 +214,7 @@ class FakeUserRepository : UserRepository {
     override suspend fun clearCurrentUser(): Result<Unit> {
         if (shouldFail) return Result.failure(failureError)
         currentUser = null
-        _currentUserFlow.value = null
+        currentUserStateFlow.value = null
         return Result.success(Unit)
     }
 
@@ -222,7 +224,7 @@ class FakeUserRepository : UserRepository {
         }
     }
 
-    override fun observeCurrentUser(): Flow<User?> = _currentUserFlow
+    override fun observeCurrentUser(): Flow<User?> = currentUserStateFlow
 
     override fun observeFollowCounts(userId: String): Flow<FollowCounts> {
         return followCountsFlows.getOrPut(userId) {

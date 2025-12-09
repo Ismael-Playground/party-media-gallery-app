@@ -132,7 +132,8 @@ class MockMediaDataSource : MediaDataSource {
         val newMedia = MediaContentDto(
             id = "media_${System.currentTimeMillis()}",
             partyEventId = partyId,
-            creatorId = "user1", // Would come from auth
+            // Would come from auth
+            creatorId = "user1",
             creator = UserSummaryDto(
                 id = "user1",
                 username = "partyking",
@@ -343,7 +344,8 @@ class MockMediaDataSource : MediaDataSource {
             partyMood = "CHILL",
             likesCount = 89,
             commentsCount = 8,
-            createdAt = now - (30 * 60 * 1000L), // 30 minutes ago
+            // 30 minutes ago
+            createdAt = now - (30 * 60 * 1000L),
         )
 
         val media5 = MediaContentDto(

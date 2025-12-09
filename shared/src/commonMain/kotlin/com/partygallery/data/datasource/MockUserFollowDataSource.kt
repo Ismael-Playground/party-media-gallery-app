@@ -203,12 +203,13 @@ class MockUserFollowDataSource : UserFollowDataSource {
     // ============================================
 
     private fun createInitialFollows(): Map<String, Set<String>> {
+        // Map of userId to set of userIds they follow
         return mapOf(
-            "user1" to setOf("user2", "user3", "user4"), // user1 follows user2, user3, user4
-            "user2" to setOf("user1", "user3", "user5"), // user2 follows user1, user3, user5
-            "user3" to setOf("user1", "user2"),          // user3 follows user1, user2
-            "user4" to setOf("user1", "user5"),          // user4 follows user1, user5
-            "user5" to setOf("user2", "user3", "user4"), // user5 follows user2, user3, user4
+            "user1" to setOf("user2", "user3", "user4"),
+            "user2" to setOf("user1", "user3", "user5"),
+            "user3" to setOf("user1", "user2"),
+            "user4" to setOf("user1", "user5"),
+            "user5" to setOf("user2", "user3", "user4"),
         )
     }
 }

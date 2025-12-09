@@ -26,7 +26,7 @@ class FakePartyRepository : PartyRepository {
     private val attendees = mutableMapOf<String, MutableList<PartyAttendee>>()
     private val rsvpStatuses = mutableMapOf<String, MutableMap<String, RsvpStatus>>()
     private val partyFlows = mutableMapOf<String, MutableStateFlow<PartyEvent?>>()
-    private val _livePartiesFlow = MutableStateFlow<List<PartyEvent>>(emptyList())
+    private val livePartiesStateFlow = MutableStateFlow<List<PartyEvent>>(emptyList())
     private val attendeeCountFlows = mutableMapOf<String, MutableStateFlow<Int>>()
     private val rsvpStatusFlows = mutableMapOf<String, MutableStateFlow<RsvpStatus?>>()
 
@@ -70,14 +70,14 @@ class FakePartyRepository : PartyRepository {
         attendees.clear()
         rsvpStatuses.clear()
         partyFlows.clear()
-        _livePartiesFlow.value = emptyList()
+        livePartiesStateFlow.value = emptyList()
         attendeeCountFlows.clear()
         rsvpStatusFlows.clear()
         shouldFail = false
     }
 
     private fun updateLivePartiesFlow() {
-        _livePartiesFlow.value = parties.values.filter { it.status == PartyStatus.LIVE }
+        livePartiesStateFlow.value = parties.values.filter { it.status == PartyStatus.LIVE }
     }
 
     // ============================================
@@ -118,7 +118,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { it.hostId == hostId }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -127,7 +127,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { it.status == PartyStatus.PLANNED }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -136,7 +136,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { it.status == PartyStatus.LIVE }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -145,7 +145,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { it.status == PartyStatus.ENDED && it.hostId == userId }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -157,7 +157,7 @@ class FakePartyRepository : PartyRepository {
                     it.title.contains(query, ignoreCase = true) ||
                         it.description?.contains(query, ignoreCase = true) == true
                 }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -166,7 +166,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { party -> tags.any { tag -> party.tags.contains(tag) } }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -181,7 +181,7 @@ class FakePartyRepository : PartyRepository {
         return Result.success(
             parties.values
                 .filter { it.venue.hasCoordinates }
-                .take(limit)
+                .take(limit),
         )
     }
 
@@ -279,7 +279,7 @@ class FakePartyRepository : PartyRepository {
         }
     }
 
-    override fun observeLiveParties(): Flow<List<PartyEvent>> = _livePartiesFlow
+    override fun observeLiveParties(): Flow<List<PartyEvent>> = livePartiesStateFlow
 
     override fun observeAttendeeCount(partyId: String): Flow<Int> {
         return attendeeCountFlows.getOrPut(partyId) {

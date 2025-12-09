@@ -1,6 +1,5 @@
 package com.partygallery.data.mapper
 
-import com.partygallery.data.dto.PartyAttendeeDto
 import com.partygallery.data.dto.PartyEventDto
 import com.partygallery.data.dto.PartyEventSummaryDto
 import com.partygallery.data.dto.VenueDto

@@ -63,6 +63,11 @@ subprojects {
             exclude("**/generated/**")
             exclude("**/build/**")
             exclude("**/*.gradle.kts")
+            // SQLDelight generated code
+            exclude { element ->
+                element.file.path.contains("/build/") ||
+                    element.file.path.contains("/generated/")
+            }
         }
     }
 

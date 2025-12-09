@@ -90,7 +90,8 @@ interface MediaDataSource {
  * DTO for upload progress tracking.
  */
 data class UploadProgressDto(
-    val status: String, // PENDING, UPLOADING, PROCESSING, COMPLETED, FAILED
+    // Valid values: PENDING, UPLOADING, PROCESSING, COMPLETED, FAILED
+    val status: String,
     val percentage: Float = 0f,
     val step: String? = null,
     val mediaId: String? = null,

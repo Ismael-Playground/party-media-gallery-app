@@ -12,9 +12,9 @@ import com.partygallery.domain.model.User
 import com.partygallery.domain.model.UserSummary
 import com.partygallery.domain.model.Venue
 import com.partygallery.domain.repository.AuthResult
+import kotlin.time.Duration.Companion.hours
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlin.time.Duration.Companion.hours
 
 /**
  * Test fixtures and factories for Party Gallery tests.

@@ -17,13 +17,15 @@ data class MediaContentDto(
     @SerialName("creator_id")
     val creatorId: String = "",
     val creator: UserSummaryDto? = null,
-    val type: String = "PHOTO", // PHOTO, VIDEO, AUDIO, DOCUMENT
+    // Valid values: PHOTO, VIDEO, AUDIO, DOCUMENT
+    val type: String = "PHOTO",
     val url: String = "",
     @SerialName("thumbnail_url")
     val thumbnailUrl: String? = null,
     val caption: String? = null,
+    // Valid values: HYPE, CHILL, WILD, ROMANTIC, CRAZY, ELEGANT
     @SerialName("party_mood")
-    val partyMood: String? = null, // HYPE, CHILL, WILD, ROMANTIC, CRAZY, ELEGANT
+    val partyMood: String? = null,
     @SerialName("tagged_users")
     val taggedUsers: List<UserSummaryDto> = emptyList(),
     @SerialName("likes_count")
@@ -32,8 +34,9 @@ data class MediaContentDto(
     val commentsCount: Int = 0,
     @SerialName("is_party_moment")
     val isPartyMoment: Boolean = false,
+    // For video/audio content
     @SerialName("duration_seconds")
-    val durationSeconds: Int? = null, // For video/audio
+    val durationSeconds: Int? = null,
     @SerialName("file_size_bytes")
     val fileSizeBytes: Long? = null,
     val width: Int? = null,
@@ -58,7 +61,8 @@ data class MediaUploadDto(
     val caption: String? = null,
     @SerialName("party_mood")
     val partyMood: String? = null,
-    val status: String = "PENDING", // PENDING, UPLOADING, COMPLETED, FAILED
+    // Valid values: PENDING, UPLOADING, COMPLETED, FAILED
+    val status: String = "PENDING",
     @SerialName("progress_percent")
     val progressPercent: Int = 0,
     @SerialName("error_message")

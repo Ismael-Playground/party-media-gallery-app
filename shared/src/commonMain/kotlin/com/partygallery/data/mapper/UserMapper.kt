@@ -67,7 +67,8 @@ fun User.toDto(): UserDto = UserDto(
     firstName = firstName,
     lastName = lastName,
     bio = bio,
-    birthDate = birthDate?.toString(), // ISO-8601 format
+    // ISO-8601 format
+    birthDate = birthDate?.toString(),
     avatarUrl = avatarUrl,
     coverPhotoUrl = coverPhotoUrl,
     phoneNumber = phoneNumber,

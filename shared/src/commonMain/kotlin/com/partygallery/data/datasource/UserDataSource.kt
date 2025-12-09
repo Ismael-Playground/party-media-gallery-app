@@ -1,6 +1,5 @@
 package com.partygallery.data.datasource
 
-import com.partygallery.data.dto.SocialLinksDto
 import com.partygallery.data.dto.UserDto
 import kotlinx.coroutines.flow.Flow
 
