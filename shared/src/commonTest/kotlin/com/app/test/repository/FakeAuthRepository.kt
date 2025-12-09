@@ -22,7 +22,7 @@ class FakeAuthRepository : AuthRepository {
     private var isAuthenticatedValue: Boolean = false
     private var currentUserIdValue: String? = null
 
-    private val _authState = MutableStateFlow<AuthState>(AuthState.Unknown)
+    private val authStateFlow = MutableStateFlow<AuthState>(AuthState.Unknown)
 
     // ============================================
     // Test Setup Methods
@@ -74,7 +74,7 @@ class FakeAuthRepository : AuthRepository {
     fun setAuthenticated(isAuthenticated: Boolean, userId: String? = null) {
         isAuthenticatedValue = isAuthenticated
         currentUserIdValue = userId
-        _authState.value = if (isAuthenticated && userId != null) {
+        authStateFlow.value = if (isAuthenticated && userId != null) {
             AuthState.Authenticated(userId)
         } else {
             AuthState.Unauthenticated
@@ -89,7 +89,7 @@ class FakeAuthRepository : AuthRepository {
         signUpResult = Result.success(defaultAuthResult())
         isAuthenticatedValue = false
         currentUserIdValue = null
-        _authState.value = AuthState.Unknown
+        authStateFlow.value = AuthState.Unknown
     }
 
     // ============================================
@@ -98,7 +98,7 @@ class FakeAuthRepository : AuthRepository {
 
     override suspend fun isAuthenticated(): Boolean = isAuthenticatedValue
 
-    override fun observeAuthState(): Flow<AuthState> = _authState
+    override fun observeAuthState(): Flow<AuthState> = authStateFlow
 
     override suspend fun getCurrentUserId(): String? = currentUserIdValue
 

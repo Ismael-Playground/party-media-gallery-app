@@ -1,0 +1,317 @@
+-- SQLDelight Schema for Party Gallery Local Cache
+-- S2.5-006: SQLDelight local cache setup
+
+-- ============================================
+-- Cached User Table
+-- ============================================
+CREATE TABLE CachedUser (
+    id TEXT NOT NULL PRIMARY KEY,
+    firebaseId TEXT NOT NULL,
+    email TEXT NOT NULL,
+    username TEXT NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT NOT NULL,
+    bio TEXT,
+    birthDate TEXT,
+    avatarUrl TEXT,
+    coverPhotoUrl TEXT,
+    phoneNumber TEXT,
+    -- Social links stored as JSON
+    socialLinksJson TEXT,
+    -- Tags stored as JSON array
+    tagsJson TEXT,
+    followersCount INTEGER NOT NULL DEFAULT 0,
+    followingCount INTEGER NOT NULL DEFAULT 0,
+    isVerified INTEGER NOT NULL DEFAULT 0,
+    isProfileComplete INTEGER NOT NULL DEFAULT 0,
+    notificationsEnabled INTEGER NOT NULL DEFAULT 1,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER,
+    -- Cache metadata
+    cachedAt INTEGER NOT NULL,
+    expiresAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_cached_user_firebase ON CachedUser(firebaseId);
+CREATE INDEX idx_cached_user_username ON CachedUser(username);
+CREATE INDEX idx_cached_user_email ON CachedUser(email);
+
+-- User queries
+selectUserById:
+SELECT * FROM CachedUser WHERE id = ?;
+
+selectUserByFirebaseId:
+SELECT * FROM CachedUser WHERE firebaseId = ?;
+
+selectUserByUsername:
+SELECT * FROM CachedUser WHERE username = ?;
+
+selectUserByEmail:
+SELECT * FROM CachedUser WHERE email = ?;
+
+selectAllUsers:
+SELECT * FROM CachedUser ORDER BY username ASC;
+
+selectNonExpiredUsers:
+SELECT * FROM CachedUser WHERE expiresAt > ? ORDER BY username ASC;
+
+insertUser:
+INSERT OR REPLACE INTO CachedUser(
+    id, firebaseId, email, username, firstName, lastName, bio, birthDate,
+    avatarUrl, coverPhotoUrl, phoneNumber, socialLinksJson, tagsJson,
+    followersCount, followingCount, isVerified, isProfileComplete,
+    notificationsEnabled, createdAt, updatedAt, cachedAt, expiresAt
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteUserById:
+DELETE FROM CachedUser WHERE id = ?;
+
+deleteExpiredUsers:
+DELETE FROM CachedUser WHERE expiresAt < ?;
+
+deleteAllUsers:
+DELETE FROM CachedUser;
+
+-- ============================================
+-- Cached Party Event Table
+-- ============================================
+CREATE TABLE CachedPartyEvent (
+    id TEXT NOT NULL PRIMARY KEY,
+    hostId TEXT NOT NULL,
+    -- Host summary stored as JSON
+    hostJson TEXT,
+    -- Co-hosts stored as JSON array
+    coHostsJson TEXT,
+    title TEXT NOT NULL,
+    description TEXT,
+    -- Venue stored as JSON
+    venueJson TEXT NOT NULL,
+    coverImageUrl TEXT,
+    startsAt INTEGER NOT NULL,
+    endsAt INTEGER,
+    status TEXT NOT NULL DEFAULT 'PLANNED',
+    privacy TEXT NOT NULL DEFAULT 'PUBLIC',
+    -- Tags stored as JSON array
+    tagsJson TEXT,
+    -- Music genres stored as JSON array
+    musicGenresJson TEXT,
+    maxAttendees INTEGER,
+    attendeesCount INTEGER NOT NULL DEFAULT 0,
+    mediaCount INTEGER NOT NULL DEFAULT 0,
+    isUserAttending INTEGER NOT NULL DEFAULT 0,
+    isUserHost INTEGER NOT NULL DEFAULT 0,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER,
+    -- Cache metadata
+    cachedAt INTEGER NOT NULL,
+    expiresAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_cached_party_host ON CachedPartyEvent(hostId);
+CREATE INDEX idx_cached_party_status ON CachedPartyEvent(status);
+CREATE INDEX idx_cached_party_starts ON CachedPartyEvent(startsAt);
+
+-- Party Event queries
+selectPartyById:
+SELECT * FROM CachedPartyEvent WHERE id = ?;
+
+selectPartiesByHost:
+SELECT * FROM CachedPartyEvent WHERE hostId = ? ORDER BY startsAt DESC;
+
+selectPartiesByStatus:
+SELECT * FROM CachedPartyEvent WHERE status = ? ORDER BY startsAt DESC;
+
+selectLiveParties:
+SELECT * FROM CachedPartyEvent WHERE status = 'LIVE' ORDER BY startsAt DESC;
+
+selectUpcomingParties:
+SELECT * FROM CachedPartyEvent
+WHERE status = 'PLANNED' AND startsAt > ?
+ORDER BY startsAt ASC;
+
+selectRecentParties:
+SELECT * FROM CachedPartyEvent
+ORDER BY startsAt DESC
+LIMIT ?;
+
+selectNonExpiredParties:
+SELECT * FROM CachedPartyEvent WHERE expiresAt > ? ORDER BY startsAt DESC;
+
+insertParty:
+INSERT OR REPLACE INTO CachedPartyEvent(
+    id, hostId, hostJson, coHostsJson, title, description, venueJson,
+    coverImageUrl, startsAt, endsAt, status, privacy, tagsJson,
+    musicGenresJson, maxAttendees, attendeesCount, mediaCount,
+    isUserAttending, isUserHost, createdAt, updatedAt, cachedAt, expiresAt
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deletePartyById:
+DELETE FROM CachedPartyEvent WHERE id = ?;
+
+deleteExpiredParties:
+DELETE FROM CachedPartyEvent WHERE expiresAt < ?;
+
+deleteAllParties:
+DELETE FROM CachedPartyEvent;
+
+-- ============================================
+-- Cached Media Content Table
+-- ============================================
+CREATE TABLE CachedMediaContent (
+    id TEXT NOT NULL PRIMARY KEY,
+    partyEventId TEXT NOT NULL,
+    uploaderId TEXT NOT NULL,
+    -- Uploader summary stored as JSON
+    uploaderJson TEXT,
+    type TEXT NOT NULL,
+    url TEXT NOT NULL,
+    thumbnailUrl TEXT,
+    caption TEXT,
+    mood TEXT,
+    -- Tags stored as JSON array
+    tagsJson TEXT,
+    -- Metadata stored as JSON
+    metadataJson TEXT,
+    -- Social metrics stored as JSON
+    socialMetricsJson TEXT,
+    isHighlight INTEGER NOT NULL DEFAULT 0,
+    isFeatured INTEGER NOT NULL DEFAULT 0,
+    capturedAt INTEGER,
+    createdAt INTEGER NOT NULL,
+    updatedAt INTEGER,
+    -- Cache metadata
+    cachedAt INTEGER NOT NULL,
+    expiresAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_cached_media_party ON CachedMediaContent(partyEventId);
+CREATE INDEX idx_cached_media_uploader ON CachedMediaContent(uploaderId);
+CREATE INDEX idx_cached_media_type ON CachedMediaContent(type);
+CREATE INDEX idx_cached_media_mood ON CachedMediaContent(mood);
+
+-- Media Content queries
+selectMediaById:
+SELECT * FROM CachedMediaContent WHERE id = ?;
+
+selectMediaByParty:
+SELECT * FROM CachedMediaContent WHERE partyEventId = ? ORDER BY createdAt DESC;
+
+selectMediaByUploader:
+SELECT * FROM CachedMediaContent WHERE uploaderId = ? ORDER BY createdAt DESC;
+
+selectMediaByType:
+SELECT * FROM CachedMediaContent WHERE type = ? ORDER BY createdAt DESC;
+
+selectMediaByMood:
+SELECT * FROM CachedMediaContent WHERE mood = ? ORDER BY createdAt DESC;
+
+selectHighlightedMedia:
+SELECT * FROM CachedMediaContent WHERE isHighlight = 1 ORDER BY createdAt DESC;
+
+selectFeaturedMedia:
+SELECT * FROM CachedMediaContent WHERE isFeatured = 1 ORDER BY createdAt DESC;
+
+selectRecentMedia:
+SELECT * FROM CachedMediaContent ORDER BY createdAt DESC LIMIT ?;
+
+selectNonExpiredMedia:
+SELECT * FROM CachedMediaContent WHERE expiresAt > ? ORDER BY createdAt DESC;
+
+insertMedia:
+INSERT OR REPLACE INTO CachedMediaContent(
+    id, partyEventId, uploaderId, uploaderJson, type, url, thumbnailUrl,
+    caption, mood, tagsJson, metadataJson, socialMetricsJson,
+    isHighlight, isFeatured, capturedAt, createdAt, updatedAt, cachedAt, expiresAt
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+deleteMediaById:
+DELETE FROM CachedMediaContent WHERE id = ?;
+
+deleteMediaByParty:
+DELETE FROM CachedMediaContent WHERE partyEventId = ?;
+
+deleteExpiredMedia:
+DELETE FROM CachedMediaContent WHERE expiresAt < ?;
+
+deleteAllMedia:
+DELETE FROM CachedMediaContent;
+
+-- ============================================
+-- Cached User Summary Table (for followers/following lists)
+-- ============================================
+CREATE TABLE CachedUserSummary (
+    id TEXT NOT NULL PRIMARY KEY,
+    username TEXT NOT NULL,
+    displayName TEXT NOT NULL,
+    avatarUrl TEXT,
+    isVerified INTEGER NOT NULL DEFAULT 0,
+    -- Cache metadata
+    cachedAt INTEGER NOT NULL,
+    expiresAt INTEGER NOT NULL
+);
+
+CREATE INDEX idx_cached_summary_username ON CachedUserSummary(username);
+
+selectSummaryById:
+SELECT * FROM CachedUserSummary WHERE id = ?;
+
+selectAllSummaries:
+SELECT * FROM CachedUserSummary ORDER BY displayName ASC;
+
+insertSummary:
+INSERT OR REPLACE INTO CachedUserSummary(
+    id, username, displayName, avatarUrl, isVerified, cachedAt, expiresAt
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+deleteSummaryById:
+DELETE FROM CachedUserSummary WHERE id = ?;
+
+deleteExpiredSummaries:
+DELETE FROM CachedUserSummary WHERE expiresAt < ?;
+
+deleteAllSummaries:
+DELETE FROM CachedUserSummary;
+
+-- ============================================
+-- Follow Relations Cache Table
+-- ============================================
+CREATE TABLE CachedFollowRelation (
+    followerId TEXT NOT NULL,
+    followedId TEXT NOT NULL,
+    createdAt INTEGER NOT NULL,
+    cachedAt INTEGER NOT NULL,
+    expiresAt INTEGER NOT NULL,
+    PRIMARY KEY (followerId, followedId)
+);
+
+CREATE INDEX idx_follow_follower ON CachedFollowRelation(followerId);
+CREATE INDEX idx_follow_followed ON CachedFollowRelation(followedId);
+
+selectFollowRelation:
+SELECT * FROM CachedFollowRelation WHERE followerId = ? AND followedId = ?;
+
+selectFollowersByUser:
+SELECT followerId FROM CachedFollowRelation WHERE followedId = ?;
+
+selectFollowingByUser:
+SELECT followedId FROM CachedFollowRelation WHERE followerId = ?;
+
+insertFollowRelation:
+INSERT OR REPLACE INTO CachedFollowRelation(
+    followerId, followedId, createdAt, cachedAt, expiresAt
+) VALUES (?, ?, ?, ?, ?);
+
+deleteFollowRelation:
+DELETE FROM CachedFollowRelation WHERE followerId = ? AND followedId = ?;
+
+deleteFollowRelationsByFollower:
+DELETE FROM CachedFollowRelation WHERE followerId = ?;
+
+deleteFollowRelationsByFollowed:
+DELETE FROM CachedFollowRelation WHERE followedId = ?;
+
+deleteExpiredFollowRelations:
+DELETE FROM CachedFollowRelation WHERE expiresAt < ?;
+
+deleteAllFollowRelations:
+DELETE FROM CachedFollowRelation;

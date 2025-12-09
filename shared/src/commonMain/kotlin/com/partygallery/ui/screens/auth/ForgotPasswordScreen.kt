@@ -208,10 +208,7 @@ private fun ForgotPasswordHeader() {
  * Success content shown after email is sent
  */
 @Composable
-private fun SuccessContent(
-    email: String,
-    onBackToLogin: () -> Unit,
-) {
+private fun SuccessContent(email: String, onBackToLogin: () -> Unit) {
     val colors = Theme.colors
 
     Column(

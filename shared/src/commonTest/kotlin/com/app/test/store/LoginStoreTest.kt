@@ -6,7 +6,6 @@ import com.app.test.repository.FakeAuthRepository
 import com.partygallery.presentation.intent.LoginIntent
 import com.partygallery.presentation.state.LoginResult
 import com.partygallery.presentation.store.LoginStore
-import kotlinx.coroutines.test.runTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -14,6 +13,7 @@ import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
+import kotlinx.coroutines.test.runTest
 
 /**
  * LoginStore Unit Tests using Turbine for Flow testing.

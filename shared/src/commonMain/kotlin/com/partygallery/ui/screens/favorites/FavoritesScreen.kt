@@ -237,11 +237,7 @@ private fun SavedPartiesContent(
 }
 
 @Composable
-private fun SavedPartyCard(
-    party: FavoriteParty,
-    onClick: () -> Unit,
-    onUnsave: () -> Unit,
-) {
+private fun SavedPartyCard(party: FavoriteParty, onClick: () -> Unit, onUnsave: () -> Unit) {
     FeaturedMediaCard(
         onClick = onClick,
         modifier = Modifier.height(180.dp),
@@ -352,11 +348,7 @@ private fun SavedPartyCard(
 // ============================================
 
 @Composable
-private fun LikedMediaContent(
-    media: List<FavoriteMedia>,
-    onMediaClick: (String) -> Unit,
-    onUnlike: (String) -> Unit,
-) {
+private fun LikedMediaContent(media: List<FavoriteMedia>, onMediaClick: (String) -> Unit, onUnlike: (String) -> Unit) {
     if (media.isEmpty()) {
         EmptyStateContent(
             icon = "❤️",
@@ -381,11 +373,7 @@ private fun LikedMediaContent(
 }
 
 @Composable
-private fun LikedMediaCard(
-    media: FavoriteMedia,
-    onClick: () -> Unit,
-    onUnlike: () -> Unit,
-) {
+private fun LikedMediaCard(media: FavoriteMedia, onClick: () -> Unit, onUnlike: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -497,12 +485,7 @@ private fun SuggestedPartiesContent(
 }
 
 @Composable
-private fun SuggestedPartyCard(
-    party: SuggestedParty,
-    onClick: () -> Unit,
-    onSave: () -> Unit,
-    onDismiss: () -> Unit,
-) {
+private fun SuggestedPartyCard(party: SuggestedParty, onClick: () -> Unit, onSave: () -> Unit, onDismiss: () -> Unit) {
     FeaturedMediaCard(
         onClick = onClick,
         modifier = Modifier.height(200.dp),
