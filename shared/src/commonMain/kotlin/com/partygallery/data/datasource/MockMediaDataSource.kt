@@ -35,7 +35,7 @@ class MockMediaDataSource : MediaDataSource {
         simulateNetworkDelay()
         val now = Clock.System.now().toEpochMilliseconds()
         val newMedia = media.copy(
-            id = "media_${System.currentTimeMillis()}",
+            id = "media_${Clock.System.now().toEpochMilliseconds()}",
             createdAt = now,
             updatedAt = now,
         )
@@ -130,7 +130,7 @@ class MockMediaDataSource : MediaDataSource {
 
         val now = Clock.System.now().toEpochMilliseconds()
         val newMedia = MediaContentDto(
-            id = "media_${System.currentTimeMillis()}",
+            id = "media_${Clock.System.now().toEpochMilliseconds()}",
             partyEventId = partyId,
             // Would come from auth
             creatorId = "user1",
@@ -141,8 +141,8 @@ class MockMediaDataSource : MediaDataSource {
                 lastName = "User",
             ),
             type = type,
-            url = "https://picsum.photos/seed/${System.currentTimeMillis()}/800/600",
-            thumbnailUrl = "https://picsum.photos/seed/${System.currentTimeMillis()}/400/300",
+            url = "https://picsum.photos/seed/${Clock.System.now().toEpochMilliseconds()}/800/600",
+            thumbnailUrl = "https://picsum.photos/seed/${Clock.System.now().toEpochMilliseconds()}/400/300",
             caption = caption,
             partyMood = mood,
             createdAt = now,

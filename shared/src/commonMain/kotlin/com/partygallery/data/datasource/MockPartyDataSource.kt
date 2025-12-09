@@ -4,6 +4,7 @@ import com.partygallery.data.dto.PartyAttendeeDto
 import com.partygallery.data.dto.PartyEventDto
 import com.partygallery.data.dto.UserSummaryDto
 import com.partygallery.data.dto.VenueDto
+import kotlin.math.PI
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
@@ -39,7 +40,7 @@ class MockPartyDataSource : PartyDataSource {
         simulateNetworkDelay()
         val now = Clock.System.now().toEpochMilliseconds()
         val newParty = party.copy(
-            id = "party_${System.currentTimeMillis()}",
+            id = "party_${Clock.System.now().toEpochMilliseconds()}",
             createdAt = now,
             updatedAt = now,
         )
@@ -291,10 +292,12 @@ class MockPartyDataSource : PartyDataSource {
 
     private fun calculateDistanceKm(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val earthRadius = 6371.0 // km
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
+        val dLat = (lat2 - lat1) * PI / 180.0
+        val dLon = (lon2 - lon1) * PI / 180.0
+        val lat1Rad = lat1 * PI / 180.0
+        val lat2Rad = lat2 * PI / 180.0
         val a = sin(dLat / 2) * sin(dLat / 2) +
-            cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+            cos(lat1Rad) * cos(lat2Rad) *
             sin(dLon / 2) * sin(dLon / 2)
         val c = 2 * acos(1 - 2 * a)
         return earthRadius * c

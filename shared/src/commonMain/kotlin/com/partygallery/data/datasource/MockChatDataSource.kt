@@ -44,7 +44,7 @@ class MockChatDataSource : ChatDataSource {
         simulateNetworkDelay()
         val now = Clock.System.now().toEpochMilliseconds()
         val newRoom = ChatRoomDto(
-            id = "room_${System.currentTimeMillis()}",
+            id = "room_${Clock.System.now().toEpochMilliseconds()}",
             partyEventId = partyId,
             participants = participants,
             participantDetails = participants.mapNotNull { userId -> getMockUserSummary(userId) },
@@ -105,7 +105,7 @@ class MockChatDataSource : ChatDataSource {
         val sender = getMockUserSummary(senderId)
 
         val newMessage = ChatMessageDto(
-            id = "msg_${System.currentTimeMillis()}",
+            id = "msg_${Clock.System.now().toEpochMilliseconds()}",
             chatRoomId = roomId,
             senderId = senderId,
             sender = sender,
