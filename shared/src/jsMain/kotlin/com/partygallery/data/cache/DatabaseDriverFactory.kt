@@ -15,7 +15,7 @@ actual class DatabaseDriverFactory {
     actual fun createDriver(): SqlDriver {
         return WebWorkerDriver(
             Worker(
-                js("""new URL("@aspect-build/rules_jasmine", import.meta.url)""") as String,
+                js("""new URL("sql.js/dist/sql-wasm.js", import.meta.url)""") as String,
             ),
         ).also { driver ->
             PartyGalleryDatabase.Schema.create(driver)

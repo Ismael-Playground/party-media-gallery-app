@@ -155,7 +155,7 @@ kotlin {
                 // SQLDelight Web Driver
                 implementation("app.cash.sqldelight:web-worker-driver:${Dependencies.sqlDelightVersion}")
                 implementation(npm("sql.js", "1.8.0"))
-                implementation(npm("@aspect-build/rules_jasmine", "1.1.1"))
+                implementation(npm("copy-webpack-plugin", "11.0.0"))
             }
         }
 
