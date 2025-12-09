@@ -45,64 +45,75 @@ jobs:
         id: detect
         run: |
           BRANCH="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
+          TARGET="${GITHUB_BASE_REF:-}"
           echo "Branch: $BRANCH"
+          echo "Target: ${TARGET:-"(push event)"}"
 
-          # Default values from config file (grep directly for each key)
-          if [ -f ".github/ci-config.yml" ]; then
-            ANDROID_CONFIG=$(grep "^[[:space:]]*android:" .github/ci-config.yml | awk '{print $2}' | head -1)
-            IOS_CONFIG=$(grep "^[[:space:]]*ios:" .github/ci-config.yml | awk '{print $2}' | head -1)
-            DESKTOP_CONFIG=$(grep "^[[:space:]]*desktop:" .github/ci-config.yml | awk '{print $2}' | head -1)
-            WEB_CONFIG=$(grep "^[[:space:]]*web:" .github/ci-config.yml | awk '{print $2}' | head -1)
-            # Default to true if not found
-            ANDROID_CONFIG="${ANDROID_CONFIG:-true}"
-            IOS_CONFIG="${IOS_CONFIG:-true}"
-            DESKTOP_CONFIG="${DESKTOP_CONFIG:-true}"
-            WEB_CONFIG="${WEB_CONFIG:-true}"
+          # PRs targeting main ALWAYS build all platforms
+          if [ "$TARGET" = "main" ]; then
+            echo "PR targeting main - building ALL platforms"
+            BUILD_ANDROID="true"
+            BUILD_IOS="true"
+            BUILD_DESKTOP="true"
+            BUILD_WEB="true"
           else
-            ANDROID_CONFIG="true"
-            IOS_CONFIG="true"
-            DESKTOP_CONFIG="true"
-            WEB_CONFIG="true"
-          fi
+            # For develop PRs or pushes, use config file settings
+            if [ -f ".github/ci-config.yml" ]; then
+              ANDROID_CONFIG=$(grep "^[[:space:]]*android:" .github/ci-config.yml | awk '{print $2}' | head -1)
+              IOS_CONFIG=$(grep "^[[:space:]]*ios:" .github/ci-config.yml | awk '{print $2}' | head -1)
+              DESKTOP_CONFIG=$(grep "^[[:space:]]*desktop:" .github/ci-config.yml | awk '{print $2}' | head -1)
+              WEB_CONFIG=$(grep "^[[:space:]]*web:" .github/ci-config.yml | awk '{print $2}' | head -1)
+              # Default to true if not found
+              ANDROID_CONFIG="${ANDROID_CONFIG:-true}"
+              IOS_CONFIG="${IOS_CONFIG:-true}"
+              DESKTOP_CONFIG="${DESKTOP_CONFIG:-true}"
+              WEB_CONFIG="${WEB_CONFIG:-true}"
+            else
+              ANDROID_CONFIG="true"
+              IOS_CONFIG="true"
+              DESKTOP_CONFIG="true"
+              WEB_CONFIG="true"
+            fi
 
-          # Branch-based override (branch prefix takes precedence)
-          case "$BRANCH" in
-            android/*)
-              echo "Android-specific branch detected"
-              BUILD_ANDROID="true"
-              BUILD_IOS="false"
-              BUILD_DESKTOP="false"
-              BUILD_WEB="false"
-              ;;
-            ios/*)
-              echo "iOS-specific branch detected"
-              BUILD_ANDROID="false"
-              BUILD_IOS="true"
-              BUILD_DESKTOP="false"
-              BUILD_WEB="false"
-              ;;
-            desktop/*)
-              echo "Desktop-specific branch detected"
-              BUILD_ANDROID="false"
-              BUILD_IOS="false"
-              BUILD_DESKTOP="true"
-              BUILD_WEB="false"
-              ;;
-            web/*)
-              echo "Web-specific branch detected"
-              BUILD_ANDROID="false"
-              BUILD_IOS="false"
-              BUILD_DESKTOP="false"
-              BUILD_WEB="true"
-              ;;
-            *)
-              echo "Using config file settings"
-              BUILD_ANDROID="$ANDROID_CONFIG"
-              BUILD_IOS="$IOS_CONFIG"
-              BUILD_DESKTOP="$DESKTOP_CONFIG"
-              BUILD_WEB="$WEB_CONFIG"
-              ;;
-          esac
+            # Branch-based override (branch prefix takes precedence)
+            case "$BRANCH" in
+              android/*)
+                echo "Android-specific branch detected"
+                BUILD_ANDROID="true"
+                BUILD_IOS="false"
+                BUILD_DESKTOP="false"
+                BUILD_WEB="false"
+                ;;
+              ios/*)
+                echo "iOS-specific branch detected"
+                BUILD_ANDROID="false"
+                BUILD_IOS="true"
+                BUILD_DESKTOP="false"
+                BUILD_WEB="false"
+                ;;
+              desktop/*)
+                echo "Desktop-specific branch detected"
+                BUILD_ANDROID="false"
+                BUILD_IOS="false"
+                BUILD_DESKTOP="true"
+                BUILD_WEB="false"
+                ;;
+              web/*)
+                echo "Web-specific branch detected"
+                BUILD_ANDROID="false"
+                BUILD_IOS="false"
+                BUILD_DESKTOP="false"
+                BUILD_WEB="true"
+                ;;
+              *)
+                echo "Using config file settings"
+                BUILD_ANDROID="$ANDROID_CONFIG"
+                BUILD_IOS="$IOS_CONFIG"
+                BUILD_DESKTOP="$DESKTOP_CONFIG"
+                BUILD_WEB="$WEB_CONFIG"
+                ;;
+            esac
+          fi
 
           echo "build_android=$BUILD_ANDROID" >> $GITHUB_OUTPUT
           echo "build_ios=$BUILD_IOS" >> $GITHUB_OUTPUT
