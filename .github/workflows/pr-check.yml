@@ -47,12 +47,17 @@ jobs:
           BRANCH="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
           echo "Branch: $BRANCH"
 
-          # Default values from config file
+          # Default values from config file (grep directly for each key)
           if [ -f ".github/ci-config.yml" ]; then
-            ANDROID_CONFIG=$(grep -A1 "pr_checks:" .github/ci-config.yml | grep "android:" | awk '{print $2}' || echo "true")
-            IOS_CONFIG=$(grep -A2 "pr_checks:" .github/ci-config.yml | grep "ios:" | awk '{print $2}' || echo "true")
-            DESKTOP_CONFIG=$(grep -A3 "pr_checks:" .github/ci-config.yml | grep "desktop:" | awk '{print $2}' || echo "true")
-            WEB_CONFIG=$(grep -A4 "pr_checks:" .github/ci-config.yml | grep "web:" | awk '{print $2}' || echo "true")
+            ANDROID_CONFIG=$(grep "^[[:space:]]*android:" .github/ci-config.yml | awk '{print $2}' | head -1)
+            IOS_CONFIG=$(grep "^[[:space:]]*ios:" .github/ci-config.yml | awk '{print $2}' | head -1)
+            DESKTOP_CONFIG=$(grep "^[[:space:]]*desktop:" .github/ci-config.yml | awk '{print $2}' | head -1)
+            WEB_CONFIG=$(grep "^[[:space:]]*web:" .github/ci-config.yml | awk '{print $2}' | head -1)
+            # Default to true if not found
+            ANDROID_CONFIG="${ANDROID_CONFIG:-true}"
+            IOS_CONFIG="${IOS_CONFIG:-true}"
+            DESKTOP_CONFIG="${DESKTOP_CONFIG:-true}"
+            WEB_CONFIG="${WEB_CONFIG:-true}"
           else
             ANDROID_CONFIG="true"
             IOS_CONFIG="true"
