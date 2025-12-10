@@ -1,19 +1,20 @@
 # CI Build Configuration
 # =======================
-# This file controls which platform builds run during PR checks.
-# Agents should modify this file based on platforms affected by the ticket.
+# This file controls which platform builds run during PR checks TO DEVELOP.
+#
+# IMPORTANT: PRs targeting MAIN always build ALL platforms (this config is ignored).
 #
 # Usage:
-# - Set platforms to `true` to enable build during PR checks
-# - Set platforms to `false` to skip build during PR checks
+# - Set platforms to `true` to enable build during PR checks to develop
+# - Set platforms to `false` to skip build during PR checks to develop
 # - The "quality" job (ktlint, detekt) always runs regardless of settings
-# - Full builds (all platforms) always run on main, release/*, and fix/* branches
+# - Full builds (all platforms) always run on: PRs to main, pushes to main/release/*/fix/*
 #
-# Branch-based auto-detection:
-# - android/* branches: Auto-enables android build
-# - ios/* branches: Auto-enables ios build
-# - desktop/* branches: Auto-enables desktop build
-# - web/* branches: Auto-enables web build
+# Branch-based auto-detection (for PRs to develop):
+# - android/* branches: Auto-enables android build only
+# - ios/* branches: Auto-enables ios build only
+# - desktop/* branches: Auto-enables desktop build only
+# - web/* branches: Auto-enables web build only
 # - feature/*, bugfix/*: Uses this config file
 #
 # Agents: When working on a ticket, modify the platforms below based on which
